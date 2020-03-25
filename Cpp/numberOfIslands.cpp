@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <queue>
 
+// g++ -std=c++14 numberOfIslands.cpp -o numberOfIslands
+
 using namespace std;
 
 class Solution
