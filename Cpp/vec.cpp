@@ -67,6 +67,10 @@ int main()
 		std::cout<<e.what()<<std::endl;
 	}
 
+	//std::vector<int> secondVec (10,10);
+	//std::cout<<secondVec[10]<<std::endl; //this will violate memory
+	//std::cout<<secondVec.at(10)<<std::endl; // this will return out_of_rangee error
+
 	std::vector<int> vec = {1,2,3,4,5,6,7,8,9};
 	std::sort(vec.begin(), vec.end(), std::greater<int>());
 	
