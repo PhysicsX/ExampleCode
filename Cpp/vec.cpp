@@ -1,3 +1,7 @@
+/*
+ *	Example vector usage
+ *	ulasdikme.com
+ */
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -14,6 +18,7 @@ class Example
 			return i>ex.i;
 		}
 
+		//Binary operators can not modify their left operands that is why method should be friend. Note: friend methods are non-member methods even if they implemented in the definition of class.
 		friend bool operator > (const Example &lhs, const Example &rhs)
 		{
 			return lhs.i > rhs.i;
@@ -74,6 +79,7 @@ int main()
 	std::vector<int> vec = {1,2,3,4,5,6,7,8,9};
 	std::sort(vec.begin(), vec.end(), std::greater<int>());
 	
+	//iterate through c++11 range based loop
 	for(auto s : vec)
 		std::cout<<s;
 
@@ -97,8 +103,12 @@ int main()
 
 	std::cout<<std::endl;
 
-	for(auto s : vec2)
-		std::cout<<s.first<<" "<<s.second<<std::endl;
+	//iterate through stl style
+	std::vector<std::pair<int, int>>::iterator vecIt;
+
+	for(vecIt = vec2.begin(); vecIt != vec2.end(); vecIt++)
+		std::cout<<vecIt->first<<" "<<vecIt->second<<std::endl;
+
 
 	std::sort(vec2.begin(), vec2.end(), comparetor);
 	//std::sort(vec2.begin(), vec2.end(), std::greater<std::pair<int, int>>());
