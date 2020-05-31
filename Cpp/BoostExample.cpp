@@ -13,6 +13,7 @@
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
+#include <boost/beast/core/buffers_to_string.hpp>
 #include <algorithm>
 #include <cstdlib>
 #include <functional>
@@ -103,11 +104,13 @@ public:
     do_read()
     {
         // Read a message into our buffer
+       
         ws_.async_read(
             buffer_,
             beast::bind_front_handler(
                 &session::on_read,
                 shared_from_this()));
+
     }
 
     void
@@ -126,11 +129,20 @@ public:
 
         // Echo the message
         ws_.text(ws_.got_text());
+
+        std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
+
+        beast::flat_buffer buf;
+        buffer_.consume(buffer_.size());
+        boost::beast::ostream(buffer_) <<"ulasdikme";
+
         ws_.async_write(
             buffer_.data(),
             beast::bind_front_handler(
                 &session::on_write,
                 shared_from_this()));
+
+        std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
     }
 
     void
