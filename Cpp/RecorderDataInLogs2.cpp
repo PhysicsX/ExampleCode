@@ -12,6 +12,8 @@
 	Input: logs = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"]
 	output: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
 */
+//Runtime: 12 ms, faster than 96.91% of C++ online submissions for Reorder Data in Log Files.
+//Memory Usage: 11.2 MB, less than 100.00% of C++ online submissions for Reorder Data in Log Files.
 
 #include <iostream>
 #include <vector>
@@ -29,29 +31,21 @@ public:
         vector<string> resLet;
         vector<string> resDig;
         
-        for(int i=0; i<logs.size(); i++)
+        for(std::string &s : logs)
         {
-            std::size_t found = logs[i].find_first_of(" ");
-            
-            size_t count = std::count_if( logs[i].begin()+found, logs[i].end(), 
-                                  []( char c ) { return std::isdigit( c ); } );
-            
-            if(count > 1)
-                resDig.push_back(logs[i]);
+            if(std::string::npos != ((s.substr(s.find_first_of(" ")+1)).find_first_of("0123456789")))
+                resDig.push_back(s);
             else
-                 resLet.push_back(logs[i].substr(found+1) + " " + logs[i].substr(0,found));
+                resLet.push_back(s.substr(s.find_first_of(" ")+1) + " " + s.substr(0,s.find_first_of(" ")));
             
         }
         
         std::sort(resLet.begin(), resLet.end());
         
-        for(int i=0; i<resLet.size(); i++)
-        {
-            std::size_t found = resLet[i].find_last_of(" ");
-            resLet[i] = resLet[i].substr(found+1) + " " + resLet[i].substr(0,found);
-        }
-              
-        resLet.insert(resLet.end(),resDig.begin(),resDig.end());
+        for(std::string &s : resLet) 
+            s = s.substr(s.find_last_of(" ")+1) + " " + s.substr(0,s.find_last_of(" "));
+
+        for(std::string &s : resDig) resLet.push_back(s);
                               
         return resLet;
     }
