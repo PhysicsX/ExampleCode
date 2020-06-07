@@ -43,12 +43,13 @@ class session : public std::enable_shared_from_this<session>
 {
     websocket::stream<beast::tcp_stream> ws_;
     beast::flat_buffer buffer_;
+    int a;
 
 public:
     // Take ownership of the socket
     explicit
     session(tcp::socket&& socket)
-        : ws_(std::move(socket))
+        : ws_(std::move(socket)),a(0)
     {
     }
 
@@ -104,7 +105,7 @@ public:
 
     void do_write()
     {
-        boost::beast::ostream(buffer_) <<"a";
+        boost::beast::ostream(buffer_) <<a;
 
         ws_.async_write(
             buffer_.data(),
@@ -137,17 +138,18 @@ public:
          
         if(ec)
             fail(ec, "read");
-
+    buffer_.consume(buffer_.size());    
         // Echo the message
         ws_.text(ws_.got_text());
 
         //std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
         std::string str1 = beast::buffers_to_string(buffer_.data());    
         str1 = str1 + "a";
+        a = a + 1;
 
         beast::flat_buffer buf;
         //buffer_.consume(buffer_.size());
-        boost::beast::ostream(buffer_) <<str1;
+        boost::beast::ostream(buffer_) <<a;
 
         ws_.async_write(
             buffer_.data(),
@@ -169,7 +171,7 @@ public:
             return fail(ec, "write");
 
         // Clear the buffer
-        //buffer_.consume(buffer_.size());
+        buffer_.consume(buffer_.size());
 
         // Do another read
         do_write();
