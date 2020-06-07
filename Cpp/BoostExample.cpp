@@ -96,21 +96,33 @@ public:
         if(ec)
             return fail(ec, "accept");
 
+        //std::cout<<"here"<<'\n';
         // Read a message
-        do_read();
+
+        do_write();
+    }
+
+    void do_write()
+    {
+        boost::beast::ostream(buffer_) <<"a";
+
+        ws_.async_write(
+            buffer_.data(),
+            beast::bind_front_handler(
+                &session::on_read,
+                shared_from_this()));
+
     }
 
     void
     do_read()
     {
         // Read a message into our buffer
-       
         ws_.async_read(
             buffer_,
             beast::bind_front_handler(
                 &session::on_read,
                 shared_from_this()));
-
     }
 
     void
@@ -119,22 +131,23 @@ public:
         std::size_t bytes_transferred)
     {
         boost::ignore_unused(bytes_transferred);
-
         // This indicates that the session was closed
         if(ec == websocket::error::closed)
             return;
-
+         
         if(ec)
             fail(ec, "read");
 
         // Echo the message
         ws_.text(ws_.got_text());
 
-        std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
+        //std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
+        std::string str1 = beast::buffers_to_string(buffer_.data());    
+        str1 = str1 + "a";
 
         beast::flat_buffer buf;
-        buffer_.consume(buffer_.size());
-        boost::beast::ostream(buffer_) <<"ulasdikme";
+        //buffer_.consume(buffer_.size());
+        boost::beast::ostream(buffer_) <<str1;
 
         ws_.async_write(
             buffer_.data(),
@@ -142,7 +155,7 @@ public:
                 &session::on_write,
                 shared_from_this()));
 
-        std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
+       // std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
     }
 
     void
@@ -156,10 +169,10 @@ public:
             return fail(ec, "write");
 
         // Clear the buffer
-        buffer_.consume(buffer_.size());
+        //buffer_.consume(buffer_.size());
 
         // Do another read
-        do_read();
+        do_write();
     }
 };
 
