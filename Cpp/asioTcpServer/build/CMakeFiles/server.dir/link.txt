@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/server.dir/server.cpp.o  -o server -lboost_system -lboost_thread -lpthread -lboost_chrono -lboost_date_time -lboost_atomic -lpthread 
