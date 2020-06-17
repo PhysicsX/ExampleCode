@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 
 	if(argc != 4)
 	{
-		std::cout<<"Wrong parameter"<<std::endl;	
+		std::cout<<"Wrong parameter\n"<<"Example usage ./client 127.0.0.1 1234 hello"<<std::endl;	
 		return -1;
 	}
 

@@ -27,16 +27,34 @@ int main()
 
     	boost::asio::ip::tcp::socket socket_(io_service_);
 
-    	acceptor_.async_accept(socket_, [&](boost::system::error_code ec){
+	std::function<void(boost::system::error_code)> fun2;
+	std::function<void(boost::asio::ip::tcp::socket)> asyn_acc;
 
-        	boost::asio::async_read(socket_, boost::asio::buffer(packet_type, 4), 
-        	[&](boost::system::error_code ec, std::size_t N)
-        	{
-           		std::cout << "Received: '";
-            		std::cout.write(packet_type, sizeof(packet_type)) << "'\n";
- 			write(socket_, boost::asio::buffer(packet_type),ec);
-        	});
-    	});
+	fun2 = [&](boost::system::error_code ec){};
+
+	asyn_acc = [&,&asyn_acc](boost::asio::ip::tcp::socket socket_)
+	{
+
+		acceptor_.async_accept(socket_, [&](boost::system::error_code ec){
+
+			boost::asio::async_read(socket_, boost::asio::buffer(packet_type, 4), 
+			[&](boost::system::error_code ec, std::size_t N)
+			{
+		   		std::cout << "Received: '";
+		    		std::cout.write(packet_type, sizeof(packet_type)) << "'\n";
+	 			write(socket_, boost::asio::buffer(packet_type),ec);
+			});
+
+			
+    		});
+		//boost::asio::ip::tcp::socket socket(io_service_);
+		//asyn_acc(std::move(socket));	
+	};
+	
+	asyn_acc(std::move(socket_));
+
+	//auto fun2 = [&](boost::system::error_code ec){};
+
 
 	io_service_.run();
 

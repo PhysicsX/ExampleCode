@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
 	if(argc != 3)
 	{
-		std::cout<<"Wrong parameter"<<std::endl;	
+		std::cout<<"Wrong parameter\n"<<"Example usage 127.0.0.1 1234"<<std::endl;	
 		return -1;
 	}
 
