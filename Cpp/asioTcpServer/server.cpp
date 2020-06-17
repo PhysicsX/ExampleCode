@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	}
 
 	auto const address = boost::asio::ip::make_address(argv[1]);
-	auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
+	auto const port = std::atoi(argv[2]);
 
 	
 

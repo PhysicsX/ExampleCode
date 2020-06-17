@@ -7,16 +7,31 @@ using std::string;
 using std::cout;
 using std::endl;
 
-int main() {
+int main(int argc, char* argv[]) 
+{
+
+
+	if(argc != 4)
+	{
+		std::cout<<"Wrong parameter"<<std::endl;	
+		return -1;
+	}
+
+	auto const address = boost::asio::ip::make_address(argv[1]);
+	auto const port = std::atoi(argv[2]);
+	string msg = argv[3];
+	
+	msg = msg + '\n';
+
 	boost::asio::io_service io_service;
 	//socket creation
 	tcp::socket socket(io_service);
 	//connection
 	boost::system::error_code ec;
- 	socket.connect( tcp::endpoint( boost::asio::ip::address::from_string("127.0.0.1"), 1234 ),ec);
+ 	socket.connect( tcp::endpoint( address, port ),ec);
 	if(ec){std::cout<<ec.message()<<std::endl; return 1;}
 	// request/message from client
-	const string msg = "Hello from Client!\n";
+	//const string msg = "Hello from Client!\n";
 	boost::system::error_code error;
 	boost::asio::write( socket, boost::asio::buffer(msg), error );
 	if( !error ) {
