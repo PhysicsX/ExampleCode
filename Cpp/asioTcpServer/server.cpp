@@ -16,12 +16,24 @@ using std::string;
 using std::cout;
 using std::endl;
 
-int main() 
+int main(int argc, char* argv[]) 
 {
+
+	if(argc != 3)
+	{
+		std::cout<<"Wrong parameter"<<std::endl;	
+		return -1;
+	}
+
+	auto const address = boost::asio::ip::make_address(argv[1]);
+	auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
+
+	
+
 	boost::asio::io_service io_service;
 	//listen for new connection
 	boost::system::error_code ec;
-      	boost::asio::ip::tcp::acceptor acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1234 )); 
+      	boost::asio::ip::tcp::acceptor acceptor_(io_service, boost::asio::ip::tcp::endpoint(address, port )); 
 	boost::asio::ip::tcp::socket socket_(io_service);//socket creation	
 	acceptor_.accept(socket_);//waiting for connection
 	//read operation
