@@ -41,7 +41,7 @@ public:
  void write()
  {
 
-	msg =  data;
+	msg = data;
 	sock.async_write_some(
 		boost::asio::buffer(msg, max_length),
 		boost::bind(&con_handler::handle_write,
@@ -75,12 +75,10 @@ class Server
 {
 private:
    tcp::acceptor acceptor_;
-	boost::asio::io_service &io_service;	
+   boost::asio::io_service &io_service;	
    void start_accept()
    {
-    // socket
-     //con_handler::pointer connection = con_handler::create(acceptor_.get_io_service());
-
+    // socket    
 	std::shared_ptr<con_handler> con = std::make_shared<con_handler>(io_service);
 	
     // asynchronous accept operation and wait for a new connection.
@@ -90,7 +88,7 @@ private:
   }
 public:
 //constructor for accepting connection from client
-  Server(boost::asio::io_service& io_service): acceptor_(io_service, tcp::endpoint(tcp::v4(), 1234)),io_service(io_service)
+  Server(boost::asio::io_service& io_service, std::string address, unsigned int port): acceptor_(io_service, tcp::endpoint(boost::asio::ip::make_address(address), port)),io_service(io_service)
   {
      start_accept();
   }
@@ -106,15 +104,20 @@ public:
 
 int main(int argc, char *argv[])
 {
-  try
-    {
-    boost::asio::io_service io_service;  
-    Server server(io_service);
-    io_service.run();
-    }
-  catch(std::exception& e)
-    {
-    std::cerr << e.what() << endl;
-    }
-  return 0;
+
+	if(argc != 3)
+	{
+		std::cout<<"Wrong parameter\n"<<"Example usage ./async_server 127.0.0.1 1234"<<std::endl;	
+		return -1;
+	}
+
+	std::string address = argv[1];
+	unsigned int port = std::atoi(argv[2]);
+
+
+    	boost::asio::io_service io_service;  
+    	Server server(io_service,address,port);
+    	io_service.run();
+  
+	return 0;
 }
