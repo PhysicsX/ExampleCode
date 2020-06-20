@@ -5,16 +5,10 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <memory>
 
-using namespace boost::asio;
-using ip::tcp;
-using std::cout;
-using std::endl;
-
-
 class con_handler : public std::enable_shared_from_this<con_handler>
 {
 private:
-  tcp::socket sock;
+  boost::asio::ip::tcp::socket sock;
   std::string msg;
   enum { max_length = 10 };
   char data[max_length];
@@ -22,7 +16,7 @@ private:
 public:
   con_handler(boost::asio::io_service& io_service): sock(io_service){}
 //socket creation
-  tcp::socket& socket()
+  boost::asio::ip::tcp::socket& socket()
   {
     return sock;
   }
@@ -35,7 +29,6 @@ public:
                     shared_from_this(),
                     boost::asio::placeholders::error,
                     boost::asio::placeholders::bytes_transferred));
-
   }
 
  void write()
@@ -54,7 +47,7 @@ public:
   void handle_read(const boost::system::error_code& err, size_t bytes_transferred)
   {
     if (!err) {
-         cout << data << endl;
+         std::cout << data << std::endl;
     } else {
          std::cerr << "error: " << err.message() << std::endl;
          sock.close();
@@ -65,7 +58,7 @@ public:
   {
     if (err) 
     {
-       std::cerr << "error: " << err.message() << endl;
+       std::cerr << "error: " << err.message() << std::endl;
        sock.close();
     }
   }
@@ -74,7 +67,7 @@ public:
 class Server 
 {
 private:
-   tcp::acceptor acceptor_;
+   boost::asio::ip::tcp::acceptor acceptor_;
    boost::asio::io_service &io_service;	
    void start_accept()
    {
@@ -88,7 +81,8 @@ private:
   }
 public:
 //constructor for accepting connection from client
-  Server(boost::asio::io_service& io_service, std::string address, unsigned int port): acceptor_(io_service, tcp::endpoint(boost::asio::ip::make_address(address), port)),io_service(io_service)
+  Server(boost::asio::io_service& io_service, std::string address, unsigned int port): 
+  acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(address), port)),io_service(io_service)
   {
      start_accept();
   }
@@ -113,7 +107,6 @@ int main(int argc, char *argv[])
 
 	std::string address = argv[1];
 	unsigned int port = std::atoi(argv[2]);
-
 
     	boost::asio::io_service io_service;  
     	Server server(io_service,address,port);
