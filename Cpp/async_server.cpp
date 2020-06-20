@@ -1,25 +1,15 @@
-
 #include <iostream>
 #include <boost/asio.hpp>
-#include <boost/beast/core.hpp>
-#include <boost/beast/websocket.hpp>
-#include <boost/asio/dispatch.hpp>
-#include <boost/asio/strand.hpp>
 #include <boost/bind.hpp>
-
+#include <memory>
 
 //using namespace boost::asio
 //using ip::tcp
 
-using std::string;
-using std::cout;
-using std::endl;
+typedef std::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
 
-typedef boost::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
-
-	boost::asio::io_service io_service;
-      	boost::asio::ip::tcp::acceptor acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1234 )); 
-
+boost::asio::io_service io_service;
+boost::asio::ip::tcp::acceptor acceptor_(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1234 )); 
 
 void handle_accept(socket_ptr sock, const boost::system::error_code & err);
 
@@ -33,7 +23,7 @@ void handle_accept(socket_ptr sock, const boost::system::error_code & err) {
 
 	boost::system::error_code ec;
 	boost::asio::streambuf buf;
-	char data[512];
+	char data[10];
 	size_t len = sock->read_some(boost::asio::buffer(data),ec);
 	
             if (len > 0)
@@ -49,7 +39,7 @@ void handle_accept(socket_ptr sock, const boost::system::error_code & err) {
     start_accept(sock_);
 }
 
-int main()
+int main(int argc, char* argv[]) 
 {
 	
 	socket_ptr sock(new boost::asio::ip::tcp::socket(io_service));
