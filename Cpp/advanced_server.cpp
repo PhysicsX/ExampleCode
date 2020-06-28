@@ -218,12 +218,12 @@ class websocket_session : public std::enable_shared_from_this<websocket_session>
 {
     websocket::stream<beast::tcp_stream> ws_;
     beast::flat_buffer buffer_;
-
+    int a;
 public:
     // Take ownership of the socket
     explicit
     websocket_session(tcp::socket&& socket)
-        : ws_(std::move(socket))
+        : ws_(std::move(socket)),a(0)
     {
     }
 
@@ -262,7 +262,20 @@ private:
             return fail(ec, "accept");
 
         // Read a message
-        do_read();
+
+        do_write();
+    }
+
+    void do_write()
+    {
+        boost::beast::ostream(buffer_) <<a;
+
+        ws_.async_write(
+            buffer_.data(),
+            beast::bind_front_handler(
+                &websocket_session::on_read,
+                shared_from_this()));
+        buffer_.consume(buffer_.size());
     }
 
     void
@@ -282,7 +295,7 @@ private:
         std::size_t bytes_transferred)
     {
         boost::ignore_unused(bytes_transferred);
-
+        buffer_.consume(buffer_.size());
         // This indicates that the websocket_session was closed
         if(ec == websocket::error::closed)
             return;
@@ -292,6 +305,13 @@ private:
 
         // Echo the message
         ws_.text(ws_.got_text());
+
+         //std::cout<<beast::buffers_to_string(buffer_.data())<<'\n';
+        std::string str1 = beast::buffers_to_string(buffer_.data());    
+        a = a + 1;
+        str1 = str1 + std::to_string(a);
+        //std::cout<<"here"<<std::endl;
+        boost::beast::ostream(buffer_) <<a;
         ws_.async_write(
             buffer_.data(),
             beast::bind_front_handler(
@@ -313,7 +333,7 @@ private:
         buffer_.consume(buffer_.size());
 
         // Do another read
-        do_read();
+        do_write();
     }
 };
 
