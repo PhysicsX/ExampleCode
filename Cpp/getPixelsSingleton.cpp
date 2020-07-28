@@ -9,10 +9,10 @@
 
 // g++ -std=c++14 getPixelsSingleton.cpp -lX11 -o frame2
 
-class Singleton
+class xPixelHandler
 {
 	private:
-		static std::unique_ptr<Singleton> instance;
+		static std::unique_ptr<xPixelHandler> instance;
 		struct _cons {explicit _cons() = default; };
         Display* display;
         Window root;
@@ -22,19 +22,19 @@ class Singleton
         int height;
       //  std::vector<unsigned int> Pixels;
         
-		Singleton(_cons)
+		xPixelHandler(_cons)
         {
             display = XOpenDisplay(nullptr);
             root = DefaultRootWindow(display);
         }
         
-		static std::unique_ptr<Singleton> instanceFactory()
+		static std::unique_ptr<xPixelHandler> instanceFactory()
 		{
-			return std::make_unique<Singleton>(_cons{});
+			return std::make_unique<xPixelHandler>(_cons{});
 		}
 
-	static std::unique_ptr<Singleton> &getInstance();
-	~Singleton()
+	static std::unique_ptr<xPixelHandler> &getInstance();
+	~xPixelHandler()
     {
         
         XCloseDisplay(display);
@@ -82,13 +82,13 @@ class Singleton
 
 };
 
-std::unique_ptr<Singleton> Singleton::instance = NULL;
+std::unique_ptr<xPixelHandler> xPixelHandler::instance = NULL;
 
-std::unique_ptr<Singleton>& Singleton::getInstance()
+std::unique_ptr<xPixelHandler>& xPixelHandler::getInstance()
 {
 	if(instance == NULL)
 	{
-		instance = Singleton::instanceFactory();
+		instance = xPixelHandler::instanceFactory();
 	}
 
 	return instance;
@@ -102,7 +102,7 @@ int main()
     int Bpp = 0;
     std::vector<unsigned int> Pixels;
 
-	std::unique_ptr<Singleton> &p = Singleton::getInstance();
+	std::unique_ptr<xPixelHandler> &p = xPixelHandler::getInstance();
   
     p->getPixels(Pixels, Width, Height);
     
