@@ -16,6 +16,10 @@ collect_data = pd.concat([x_df, y_df], axis=1)
 print(collect_data)
 collect_data.sample(300).plot(kind='scatter', x='X', y='Y')
 #plt.show()
+axes = plt.gca()
+axes.set_xlim(0,20)
+axes.set_xlim(0,10)
+line, = axes.plot(x_df, y_df, 'r-')
 
 #create model
 step_size=10
@@ -29,12 +33,18 @@ init = tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
-    train_step = 100000
+    train_step = 1000000
     for i in range(train_step):
         index = np.random.randint(len(x),size=step_size)
         feed = {x_ph: x[index], y_ph:y[index]}
         sess.run(train_model, feed_dict=feed)
-    result_m, result_b = sess.run([m,b])
+        #mode_m, model_b = sess.run([m,b])
+        result_m, result_b = sess.run([m, b])
+        result_y = x * result_m + result_b
+        line.set_xdata(x)
+        line.set_ydata(result_y)
+        plt.draw()
+        plt.pause(1e-20)
 
 result_y = x * result_m + result_b
 plt.plot(x, result_y, 'r')
