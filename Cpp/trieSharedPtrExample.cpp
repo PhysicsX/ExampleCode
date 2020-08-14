@@ -1,5 +1,7 @@
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -30,6 +32,11 @@ class Trie {
             }
             ~Trie()
             {}
+            
+            shared_ptr<TrieNode> getRoot()
+            {
+                return root;
+            }
             
             int i2c(char c)
             {
@@ -122,6 +129,30 @@ class Trie {
                 
                 return true;
             }
+            
+            void display(shared_ptr<TrieNode> node, string str, int level, vector<string>& vec)
+            {
+                
+                if(node->isEndOfWord)
+                {
+                    string tmp = str;
+                    tmp.erase(remove_if(tmp.begin(),tmp.end(),[](char c){
+                        return isspace(c);
+                    }),tmp.end());
+                    //std::cout<<tmp.size();
+                    vec.push_back(tmp);
+                }
+                
+                for(int i=0; i< Size; i++)
+                {
+                    if(node->children[i])
+                    {    
+                        str[level] = i + 'a';
+                        display(node->children[i], str, level + 1, vec);
+                    }
+                }
+            
+            }
         
 };
 
@@ -138,6 +169,7 @@ int main()
     string word3 = "daledondale"; 
   
     myTrie->insertWord(word1); 
+  
   
     if (myTrie->searchWord(word1)) 
         cout << word1 << ": Is Present" << endl; 
@@ -161,6 +193,22 @@ int main()
     else
         cout << word2 << ": Not Present" << endl; 
     
+    myTrie->insertWord(word2);
+    word2 = "a";
+    myTrie->insertWord(word2);
+    word2 = "b";
+    myTrie->insertWord(word2);
+    word2 = "c";
+    myTrie->insertWord(word2);
+    
+    string str(20, ' ');
+    vector<string> vec;
+    //    char str[20];
+    //myTrie->display(myTrie->getRoot(), str, 0, vec);
+    myTrie->display(myTrie->getRoot(), str, 0, vec);
+    for(auto s : vec)
+        cout<<s<<endl;
+
     
     
     return 0;
