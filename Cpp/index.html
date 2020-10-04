@@ -44,12 +44,14 @@
     };
 
     function doSend(message) {
-        writeToScreen("SENT: " + message);
+        //writeToScreen("SENT: " + message);
         websocket.send(message);
     }
 
     function writeToScreen(message) {
-        output.insertAdjacentHTML("afterbegin", "<p>" + message + "</p>");
+		document.getElementById("output").innerHTML = message;
+		
+        //output.insertAdjacentHTML("afterbegin", "<p>" + message + "</p>");
     }
 
     function onClickButton() {
