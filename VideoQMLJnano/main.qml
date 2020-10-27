@@ -4,15 +4,38 @@ import QtMultimedia 5.12
 import QtQuick.Controls.Styles 1.2
 
 Window {
+    id: windowMain
     visible: true
-    width: 640
+    width: 800
     height: 480
     title: qsTr("Hello World")
 
     Rectangle {
+        id:streaming
+        objectName: "streaming"
         width: 800
         height: 480
         color: "black"
+
+        Timer
+        {
+            id: timer
+
+
+        function delay(delayTime, cb){
+            timer.interval = delayTime;
+            timer.repeat = false;
+            timer.triggered.connect(cb);
+            timer.triggered.connect(function release()
+            {
+                timer.triggered.disconnect(cb);
+                timer.triggered.disconnect(release);
+            })
+            timer.start();
+        }
+
+        }
+
 
         MediaPlayer {
             id: player
@@ -22,6 +45,7 @@ Window {
             //source: "file:///home/jnano/Desktop/build-VideoOutput-Desktop-Release/file_example_WEBM_480_900KB.webm"
             //source: "file:///home/ulas/Desktop/file_example_WEBM_1920_3_7MB.webm"
             autoPlay: true
+
         }
 
         VideoOutput {
@@ -29,29 +53,71 @@ Window {
             source: player
             anchors.fill: parent
         }
-        Item {
-          y: 300;
-          property string text: " this is Qt streaming! "
-          property string spacing: "      "
-          property string combined: text + spacing + text
-          property string display: combined.substring(step) + combined.substring(0, step)
-          property int step: 0
+//        Item {
+//          y: 300;
+//          property string text: " this is Qt streaming! "
+//          property string spacing: "      "
+//          property string combined: text + spacing + text
+//          property string display: combined.substring(step) + combined.substring(0, step)
+//          property int step: 0
 
-          Timer {
-            interval: 200
-            running: true
-            repeat: true
-            onTriggered: parent.step = (parent.step + 1) % parent.combined.length
-          }
+//          Timer {
+//            interval: 200
+//            running: true
+//            repeat: true
+//            onTriggered: parent.step = (parent.step + 1) % parent.combined.length
+//          }
 
-          Text {
-            text: parent.display
-            color: "red"
-            font.family: fontAwesomeSolid.name
-            fontSizeMode: Text.Fit
-            font.pointSize: 40
-          }
+//          Text {
+//            text: parent.display
+//            color: "red"
+//            font.family: fontAwesomeSolid.name
+//            fontSizeMode: Text.Fit
+//            font.pointSize: 40
+//          }
+//        }
+
+        signal qmlSignal()
+
+        TapHandler{
+            onTapped: {
+                console.log("rec1");
+               // settigs.visible = true
+                streaming.qmlSignal();
+                    //settigs.visible = false
+
+            }
         }
 
+    }
+
+
+    Rectangle {
+        id: settigs
+        objectName: "settings"
+        width: 120
+        height: 120
+        color:"transparent"
+        Image
+        {
+        //source:"file:/home/jnano/Downloads/settings.png"
+        source:"file:/home/ulas/Desktop/settings.png"
+        fillMode:  Image.Tile
+        anchors.fill: parent
+        opacity: 0.3
+        sourceSize.width: 120
+        sourceSize.height: 120
+        }
+        y: windowMain.height - height -15
+        x: windowMain.width - width - 30
+        visible: false
+
+
+
+        TapHandler{
+            onTapped: {
+                console.log("rec2");
+            }
+        }
     }
 }
