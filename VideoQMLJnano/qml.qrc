@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>index.png</file>
+        <file>AutoScroller.qml</file>
     </qresource>
 </RCC>

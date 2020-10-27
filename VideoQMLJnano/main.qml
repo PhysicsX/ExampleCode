@@ -2,6 +2,10 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtMultimedia 5.12
 import QtQuick.Controls.Styles 1.2
+import QtQuick.VirtualKeyboard 2.4
+import QtQuick.Controls 2.3
+import QtQuick.VirtualKeyboard.Settings 2.2
+
 
 Window {
     id: windowMain
@@ -83,7 +87,8 @@ Window {
             onTapped: {
                 console.log("rec1");
                // settigs.visible = true
-                streaming.qmlSignal();
+                if(!password.visible)
+                    streaming.qmlSignal();
                     //settigs.visible = false
 
             }
@@ -95,8 +100,8 @@ Window {
     Rectangle {
         id: settigs
         objectName: "settings"
-        width: 120
-        height: 120
+        width: 100
+        height: 100
         color:"transparent"
         Image
         {
@@ -105,10 +110,10 @@ Window {
         fillMode:  Image.Tile
         anchors.fill: parent
         opacity: 0.3
-        sourceSize.width: 120
-        sourceSize.height: 120
+        sourceSize.width: 100
+        sourceSize.height: 100
         }
-        y: windowMain.height - height -15
+        y: windowMain.height - height -10
         x: windowMain.width - width - 30
         visible: false
 
@@ -117,7 +122,63 @@ Window {
         TapHandler{
             onTapped: {
                 console.log("rec2");
+                password.visible = true;
             }
         }
     }
+
+
+    Rectangle
+    {
+        id:password
+        objectName: "password"
+        width: 800
+        height: 480
+        color: "white"
+        opacity: 0.4
+        visible: false
+
+            TextField {
+                width: 300
+                placeholderText: "Enter Password"
+                echoMode: TextInput.Password
+            }
+
+    }
+
+    InputPanel {
+        id: inputPanel
+        z: 99
+        x: 0
+        y: windowMain.height
+        width: windowMain.width
+
+        states: State {
+            name: "visible"
+            when: inputPanel.active
+            PropertyChanges {
+                target: inputPanel
+                y: windowMain.height - inputPanel.height
+            }
+        }
+        transitions: Transition {
+            from: ""
+            to: "visible"
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 250
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+        Binding {
+            target: InputContext
+            property: "animating"
+            value: inputPanelTransition.running
+        }
+        AutoScroller {}
+    }
+
 }
