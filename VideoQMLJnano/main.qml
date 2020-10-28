@@ -18,7 +18,7 @@ Window {
         objectName: "streaming"
         width: 800
         height: 480
-      //  z:40
+        z:40
         color: "black"
 
 
@@ -105,8 +105,10 @@ Window {
                 console.log("rec2");
                 password.visible = true;
                 password.opacity = 0.3
-             //   password.z = 32
-                //passTextField.focus = true;
+                password.z = 60;
+                //passTextField.z = 60;
+                streaming.z = -1;
+                passTextField.visible = true;
             }
         }
     }
@@ -161,6 +163,8 @@ Window {
                         onTapped: {
                             console.log("back");
                             password.opacity = 0;
+                            password.z = -1;
+                            passTextField.visible = false;
                             //back.qmlSignalPass();
                         }
                     }
