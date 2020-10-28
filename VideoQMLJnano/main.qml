@@ -12,33 +12,14 @@ Window {
     visible: true
     width: 800
     height: 480
-    title: qsTr("Hello World")
 
     Rectangle {
         id:streaming
         objectName: "streaming"
         width: 800
         height: 480
+      //  z:40
         color: "black"
-
-        Timer
-        {
-            id: timer
-
-
-        function delay(delayTime, cb){
-            timer.interval = delayTime;
-            timer.repeat = false;
-            timer.triggered.connect(cb);
-            timer.triggered.connect(function release()
-            {
-                timer.triggered.disconnect(cb);
-                timer.triggered.disconnect(release);
-            })
-            timer.start();
-        }
-
-        }
 
 
         MediaPlayer {
@@ -87,7 +68,7 @@ Window {
             onTapped: {
                 console.log("rec1");
                // settigs.visible = true
-                if(!password.visible)
+                if(!password.visible || (password.opacity === 0))
                     streaming.qmlSignal();
                     //settigs.visible = false
 
@@ -123,10 +104,22 @@ Window {
             onTapped: {
                 console.log("rec2");
                 password.visible = true;
+                password.opacity = 0.3
+             //   password.z = 32
+                //passTextField.focus = true;
             }
         }
     }
 
+    Flickable
+    {
+        id: flickable
+        anchors.fill: parent
+        //anchors.margins: 20
+        anchors.bottomMargin: inputPanel.visible ? inputPanel.height : anchors.margins
+        contentWidth: password.implicitWidth
+        contentHeight: password.implicitHeight
+        flickableDirection: Flickable.VerticalFlick
 
     Rectangle
     {
@@ -135,16 +128,84 @@ Window {
         width: 800
         height: 480
         color: "white"
-        opacity: 0.4
+        opacity: 0.3
         visible: false
+     //   z: -1;
+        Rectangle
+        {
+            id: title
+            y: 14
+            color: "blue"
+            width: 800
+            height: 40
+            Rectangle
+            {
+                id:back
+                objectName: "back"
+                width: 40
+                height: 40
+                anchors.right: parent.right
+                color:"transparent"
 
+                    Image
+                    {
+                    //source:"file:/home/jnano/Downloads/settings.png"
+                    source:"file:/home/ulas/Desktop/back.png"
+                    fillMode:  Image.PreserveAspectFit
+                    anchors.fill: parent
+                    sourceSize.width: 40
+                    sourceSize.height: 40
+                    }
+                    signal qmlSignalPass()
+                    TapHandler{
+                        onTapped: {
+                            console.log("back");
+                            password.opacity = 0;
+                            //back.qmlSignalPass();
+                        }
+                    }
+            }
+
+            Text
+            {
+                text:"PIN"
+                font.family: "Helvetica"
+                font.pixelSize: 26
+                color: "white"
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+        }
+
+        TapHandler{
+            onTapped: {
+                console.log("rec3");
+                inputPanel.visible = false;
+                passTextField.focus = false;
+            }
+        }
             TextField {
+                id: passTextField
                 width: 300
-                placeholderText: "Enter Password"
+                y:190
+                x:250
+                placeholderText: "Enter PIN"
                 echoMode: TextInput.Password
+
+                onActiveFocusChanged: {
+                    if(activeFocus)
+                    {
+                        inputPanel.visible = activeFocus
+                        var posWithinFlicable = mapToItem(password,0, height/2);
+                        flickable.contentY = posWithinFlicable.y - flickable.height/2;
+                    }
+                }
             }
 
     }
+}
 
     InputPanel {
         id: inputPanel

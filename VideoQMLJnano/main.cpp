@@ -47,6 +47,22 @@ int main(int argc, char *argv[])
 
     QObject::connect(item,SIGNAL(qmlSignal()),&myClass,SLOT(foo()));
 
+
+    QObject* item3 = NULL;
+    item3 = engine.rootObjects().at(0)->findChild<QQuickItem*>("back");
+    if(item3 == NULL)
+        qDebug()<<"NUL3";
+
+
+QObject* item4 = NULL;
+item4 = engine.rootObjects().at(0)->findChild<QQuickItem*>("password");
+if(item4 == NULL)
+    qDebug()<<"NUL4";
+
+    MyClass myClass2; //experimental
+    myClass2.setItem(item4);
+    QObject::connect(item3,SIGNAL(qmlSignalPass()),&myClass2,SLOT(foo2()));
+
     //QObject::connect(item,SIGNAL(qmlSignal()),[=](){qDebug()<<"asasda";});
     //QTimer::singleShot(5000,&app,[](){
     //});

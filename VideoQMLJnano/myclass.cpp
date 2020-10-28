@@ -17,8 +17,10 @@ void MyClass::foo()
         QTimer::singleShot(5000,this,[&](){
 
                 if(item->property("visible").toBool())
+                {
                     item->setProperty("visible",false);
-
+                  //  item->setProperty("z",-1);
+                }
         });
     }
 }
@@ -26,4 +28,10 @@ void MyClass::foo()
 void MyClass::setItem(QObject* it)
 {
     item = it;
+}
+
+void MyClass::foo2()
+{
+    qDebug()<<"foo2() is called";
+    item->setProperty("visible",false);
 }

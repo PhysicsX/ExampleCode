@@ -7,6 +7,7 @@ public:
     Q_OBJECT
         public slots:
         void foo();
+        void foo2();
 
         public:
         void setItem(QObject* it);
