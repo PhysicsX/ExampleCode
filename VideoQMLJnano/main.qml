@@ -132,7 +132,7 @@ Window {
         color: "white"
         opacity: 0.3
         visible: false
-     //   z: -1;
+        //z: -1;
         Rectangle
         {
             id: title
@@ -151,7 +151,7 @@ Window {
 
                     Image
                     {
-                    //source:"file:/home/jnano/Downloads/settings.png"
+                    //source:"file:/home/jnano/Downloads/back.png"
                     source:"file:/home/ulas/Desktop/back.png"
                     fillMode:  Image.PreserveAspectFit
                     anchors.fill: parent
@@ -165,7 +165,9 @@ Window {
                             password.opacity = 0;
                             password.z = -1;
                             passTextField.visible = false;
-                            //back.qmlSignalPass();
+                            //password.visible = false; // this do not work because of parent child relationship
+                            //so visibility shoul be handled by z and opacity property
+                            //back.qmlSignalPass(); // same as above, c++ part do not handle
                         }
                     }
             }
@@ -192,11 +194,19 @@ Window {
         }
             TextField {
                 id: passTextField
+                objectName: "passTextField"
                 width: 300
                 y:190
                 x:250
                 placeholderText: "Enter PIN"
                 echoMode: TextInput.Password
+
+                onEditingFinished :
+                {
+                    console.log("enter is pressed")
+                    console.log(passTextField.text)
+                    //editingFinished() signal will be signalled automatically
+                }
 
                 onActiveFocusChanged: {
                     if(activeFocus)

@@ -34,5 +34,4 @@ void MyClass::setItem(QObject* it)
 void MyClass::foo2()
 {
     qDebug()<<"foo2() is called";
-    item->setProperty("visible",false);
 }
