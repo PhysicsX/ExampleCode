@@ -34,4 +34,14 @@ HEADERS += \
     myclass.h
 
 DISTFILES += \
-    index.png
+    Admin.qml \
+    AndroidDelegate.qml \
+    DesignDelegate.qml \
+    Local.qml \
+    Wifi.qml \
+    content/Admin.qml \
+    content/Alarm.qml \
+    content/DesignDelegate.qml \
+    delegate.qml \
+    index.png \
+    network.qml

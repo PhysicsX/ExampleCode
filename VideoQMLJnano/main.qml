@@ -5,7 +5,8 @@ import QtQuick.Controls.Styles 1.2
 import QtQuick.VirtualKeyboard 2.4
 import QtQuick.Controls 2.3
 import QtQuick.VirtualKeyboard.Settings 2.2
-
+import QtQuick.Layouts 1.12
+import "content"
 
 Window {
     id: windowMain
@@ -86,6 +87,7 @@ Window {
         color:"transparent"
         Image
         {
+        //source:"qrc:/settings.png"
         //source:"file:/home/jnano/Downloads/settings.png"
         source:"file:/home/ulas/Desktop/settings.png"
         fillMode:  Image.Tile
@@ -104,8 +106,8 @@ Window {
             onTapped: {
                 console.log("rec2");
                 password.visible = true;
-                password.opacity = 0.3
-                password.z = 60;
+                password.opacity = 1.0
+                password.z = 90;
                 //passTextField.z = 60;
                 streaming.z = -1;
                 passTextField.visible = true;
@@ -127,12 +129,21 @@ Window {
     {
         id:password
         objectName: "password"
-        width: 800
-        height: 480
-        color: "white"
-        opacity: 0.3
+        width: parent.width
+        height: parent.height
+        color: "transparent"
+        //opacity: 0.3
         visible: false
-        //z: -1;
+        z: -1;
+
+//        Rectangle{
+//            width: 800
+//            height: 480
+//            color: "transparent"
+//            //opacity: 0.3
+//            y:100
+//        }
+
         Rectangle
         {
             id: title
@@ -140,6 +151,7 @@ Window {
             color: "blue"
             width: 800
             height: 40
+            z:99;
             Rectangle
             {
                 id:back
@@ -151,6 +163,7 @@ Window {
 
                     Image
                     {
+                    //source:"qrc:/back.png"
                     //source:"file:/home/jnano/Downloads/back.png"
                     source:"file:/home/ulas/Desktop/back.png"
                     fillMode:  Image.PreserveAspectFit
@@ -163,8 +176,9 @@ Window {
                         onTapped: {
                             console.log("back");
                             password.opacity = 0;
-                            password.z = -1;
+                            password.z = -2;
                             passTextField.visible = false;
+                            streaming.z = 30
                             //password.visible = false; // this do not work because of parent child relationship
                             //so visibility shoul be handled by z and opacity property
                             //back.qmlSignalPass(); // same as above, c++ part do not handle
@@ -205,6 +219,12 @@ Window {
                 {
                     console.log("enter is pressed")
                     console.log(passTextField.text)
+
+                    stackViewRect.visible = true
+                    password.opacity = 0;
+                    password.z = -1;
+                    passTextField.visible = false;
+
                     //editingFinished() signal will be signalled automatically
                 }
 
@@ -220,6 +240,219 @@ Window {
 
     }
 }
+
+
+
+
+
+//    Text
+//    {
+//        text:"PIN"
+//        font.family: "Helvetica"
+//        font.pixelSize: 26
+//        color: "white"
+//        anchors.top: parent.top
+//        anchors.bottom: parent.bottom
+//        anchors.horizontalCenter: parent.horizontalCenter
+//    }
+//    Rectangle
+//    {
+//        id: titleSettings
+//        y: 14
+//        color: "blue"
+//        width: 800
+//        height: 40
+//        Rectangle
+//        {
+//            id:backSettings
+//            objectName: "back"
+//            width: 40
+//            height: 40
+//            anchors.right: parent.right
+//            color:"transparent"
+
+//                Image
+//                {
+//                source:"file:/home/jnano/Downloads/back.png"
+//                //source:"file:/home/ulas/Desktop/back.png"
+//                fillMode:  Image.PreserveAspectFit
+//                anchors.fill: parent
+//                sourceSize.width: 40
+//                sourceSize.height: 40
+//                }
+//                //signal qmlSignalPass()
+//                TapHandler{
+//                    onTapped: {
+//                        console.log("back");
+//                        password.opacity = 0;
+//                        password.z = -1;
+//                        passTextField.visible = false;
+//                        //password.visible = false; // this do not work because of parent child relationship
+//                        //so visibility shoul be handled by z and opacity property
+//                        //back.qmlSignalPass(); // same as above, c++ part do not handle
+//                    }
+//                }
+//        }
+//    }
+
+
+
+
+        Rectangle
+        {
+            id: stackViewRect
+            width: parent.width
+            height: parent.height
+            color:"transparent"
+            //opacity: 0.3
+            visible: false
+            //y: 200
+
+          Rectangle{
+              width: parent.width
+              height: parent.height
+              color:"white"
+              opacity: 0.3
+          }
+
+
+          Rectangle
+          {
+              id: titleSettings
+              y: 14
+              color: "blue"
+              width: 800
+              height: 40
+
+              Rectangle
+              {
+                  id:backSettings
+                  objectName: "back"
+                  width: 40
+                  height: 40
+                  anchors.right: parent.right
+                  color:"transparent"
+
+                      Image
+                      {
+                      //source:"qrc:/back.png"
+                      //source:"file:/home/jnano/Downloads/back.png"
+                      source:"file:/home/ulas/Desktop/back.png"
+                      fillMode:  Image.PreserveAspectFit
+                      anchors.fill: parent
+                      sourceSize.width: 40
+                      sourceSize.height: 40
+                      }
+                      //signal qmlSignalPass()
+//                      TapHandler{
+//                          onTapped: {
+//                              console.log("back");
+//                              password.opacity = 0;
+//                              password.z = -1;
+//                              passTextField.visible = false;
+//                              //password.visible = false; // this do not work because of parent child relationship
+//                              //so visibility shoul be handled by z and opacity property
+//                              //back.qmlSignalPass(); // same as above, c++ part do not handle
+//                          }
+//                      }
+              }
+          }
+
+          Text
+          {
+              text:"SETTINGS"
+              font.family: "Helvetica"
+              font.pixelSize: 26
+              color: "white"
+              anchors.top: titleSettings.top
+              anchors.bottom: titleSettings.bottom
+              anchors.horizontalCenter: titleSettings.horizontalCenter
+          }
+
+            Rectangle{
+                id: stackViewRect2
+                width: parent.width
+                height: parent.height
+                color:"transparent"
+                //opacity: 0.3
+                y: 120
+
+                  ListModel {
+                      id: pageModel
+
+                      ListElement {
+                          title: "Network"
+                          page: "network.qml"
+                      }
+                      ListElement {
+                          title: "Local"
+                          page: "Local.qml"
+                      }
+                      ListElement {
+                          title: "Wifi"
+                          page: "Wifi.qml"
+                      }
+                      ListElement {
+                          title: "Admin"
+                          page: "Admin.qml"
+                      }
+                  }
+
+
+            StackView {
+                id: stackView
+
+                anchors.fill: parent
+                // Implements back key navigation
+                focus: true
+
+                Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
+                                     stackView.pop();
+                                     event.accepted = true;
+                                 }
+
+
+
+                    initialItem: Item {
+                        ListView {
+                            //contentWidth: parent.width
+                            //contentHeight: parent.height
+
+                            //flickDeceleration: Flickable.
+                            //flickableDirection: Flickable.AutoFlickDirection
+                            model: pageModel
+                            //highlightRangeMode: ListView.ApplyRange
+                            orientation: ListView.Horizontal
+                            //orientation: ListView.DragOverBounds
+                            anchors.fill: parent
+
+                            spacing: 10
+                            //highlightRangeMode: ListView.StrictlyEnforceRange
+                            delegate: DesignDelegate {
+                                text: title
+                                Image {
+                                    id: example
+                                    width: 250
+                                    height: 250
+                                    fillMode: Image.PreserveAspectFit
+                                    //source:"qrc:/"+title+".png"
+                                    //source:"file:/home/jnano/Downloads/"+title+".png"
+                                    source:"file:/home/ulas/Desktop/"+title+".png"
+                                }
+                                onClicked: stackView.push(Qt.resolvedUrl(page))
+                            }
+
+                        }
+                    }
+
+            }
+        }
+
+        }
+
+
+
+
 
     InputPanel {
         id: inputPanel

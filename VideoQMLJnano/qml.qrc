@@ -3,5 +3,25 @@
         <file>main.qml</file>
         <file>index.png</file>
         <file>AutoScroller.qml</file>
+        <file>settings.png</file>
+        <file>Alarm.qml</file>
+        <file>content/Admin.qml</file>
+        <file>content/Alarm.qml</file>
+        <file>content/DesignDelegate.qml</file>
+        <file>Local.qml</file>
+        <file>network.qml</file>
+        <file>content/network.qml</file>
+        <file>content/Local.qml</file>
+        <file>../../../Downloads/Network.png</file>
+        <file>../../../Downloads/Wifi.png</file>
+        <file>../../../Downloads/settings.png</file>
+        <file>../../../Downloads/back.png</file>
+        <file>../../../Downloads/Admin.png</file>
+        <file>../../../Downloads/Local.png</file>
+        <file>Wifi.png</file>
+        <file>Network.png</file>
+        <file>Local.png</file>
+        <file>back.png</file>
+        <file>Admin.png</file>
     </qresource>
 </RCC>
