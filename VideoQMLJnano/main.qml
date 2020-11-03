@@ -26,8 +26,8 @@ Window {
         MediaPlayer {
             id: player
             //source: "gst-pipeline: videotestsrc ! qtvideosink"
-            //source: "gst-pipeline: playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm"
-            source: "gst-pipeline: nvarguscamerasrc ! video/x-raw,width=800,height480 ! autovideoconvert ! qtvideosink"
+            source: "gst-pipeline: playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm"
+            //source: "gst-pipeline: nvarguscamerasrc ! video/x-raw,width=800,height480 ! autovideoconvert ! qtvideosink"
             //source: "file:///home/jnano/Desktop/build-VideoOutput-Desktop-Release/file_example_WEBM_480_900KB.webm"
             //source: "file:///home/ulas/Desktop/file_example_WEBM_1920_3_7MB.webm"
             autoPlay: true
@@ -88,8 +88,8 @@ Window {
         Image
         {
         //source:"qrc:/settings.png"
-        //source:"file:/home/jnano/Downloads/settings.png"
-        source:"file:/home/ulas/Desktop/settings.png"
+        source:"file:/home/jnano/Downloads/settings.png"
+        //source:"file:/home/ulas/Desktop/settings.png"
         fillMode:  Image.Tile
         anchors.fill: parent
         opacity: 0.3
@@ -111,6 +111,7 @@ Window {
                 //passTextField.z = 60;
                 streaming.z = -1;
                 passTextField.visible = true;
+                back.visible = true;
             }
         }
     }
@@ -164,8 +165,8 @@ Window {
                     Image
                     {
                     //source:"qrc:/back.png"
-                    //source:"file:/home/jnano/Downloads/back.png"
-                    source:"file:/home/ulas/Desktop/back.png"
+                    source:"file:/home/jnano/Downloads/back.png"
+                    //source:"file:/home/ulas/Desktop/back.png"
                     fillMode:  Image.PreserveAspectFit
                     anchors.fill: parent
                     sourceSize.width: 40
@@ -221,10 +222,14 @@ Window {
                     console.log(passTextField.text)
 
                     stackViewRect.visible = true
+                    stackViewRect.opacity = 1;
+                    stackViewRect.z = 40;
                     password.opacity = 0;
                     password.z = -1;
                     passTextField.visible = false;
-
+                    //back.z = -1
+                    //back.opacity = 0;
+                    back.visible = false;
                     //editingFinished() signal will be signalled automatically
                 }
 
@@ -336,25 +341,26 @@ Window {
                       Image
                       {
                       //source:"qrc:/back.png"
-                      //source:"file:/home/jnano/Downloads/back.png"
-                      source:"file:/home/ulas/Desktop/back.png"
+                      source:"file:/home/jnano/Downloads/back.png"
+                      //source:"file:/home/ulas/Desktop/back.png"
                       fillMode:  Image.PreserveAspectFit
                       anchors.fill: parent
                       sourceSize.width: 40
                       sourceSize.height: 40
                       }
                       //signal qmlSignalPass()
-//                      TapHandler{
-//                          onTapped: {
-//                              console.log("back");
-//                              password.opacity = 0;
-//                              password.z = -1;
-//                              passTextField.visible = false;
-//                              //password.visible = false; // this do not work because of parent child relationship
-//                              //so visibility shoul be handled by z and opacity property
-//                              //back.qmlSignalPass(); // same as above, c++ part do not handle
-//                          }
-//                      }
+                      TapHandler{
+                          onTapped: {
+                              console.log("back2");
+                              stackViewRect.opacity = 0;
+                              stackViewRect.z = -1;
+                              streaming.z = 30
+                              //passTextField.visible = false;
+                              //password.visible = false; // this do not work because of parent child relationship
+                              //so visibility shoul be handled by z and opacity property
+                              //back.qmlSignalPass(); // same as above, c++ part do not handle
+                          }
+                      }
               }
           }
 
@@ -436,8 +442,8 @@ Window {
                                     height: 250
                                     fillMode: Image.PreserveAspectFit
                                     //source:"qrc:/"+title+".png"
-                                    //source:"file:/home/jnano/Downloads/"+title+".png"
-                                    source:"file:/home/ulas/Desktop/"+title+".png"
+                                    source:"file:/home/jnano/Downloads/"+title+".png"
+                                    //source:"file:/home/ulas/Desktop/"+title+".png"
                                 }
                                 onClicked: stackView.push(Qt.resolvedUrl(page))
                             }
