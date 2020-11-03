@@ -381,7 +381,7 @@ Window {
                 height: parent.height
                 color:"transparent"
                 //opacity: 0.3
-                y: 120
+                y: 60
 
                   ListModel {
                       id: pageModel
@@ -412,6 +412,7 @@ Window {
                 // Implements back key navigation
                 focus: true
 
+
                 Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
                                      stackView.pop();
                                      event.accepted = true;
@@ -435,6 +436,7 @@ Window {
                             spacing: 10
                             //highlightRangeMode: ListView.StrictlyEnforceRange
                             delegate: DesignDelegate {
+                                y: 40
                                 text: title
                                 Image {
                                     id: example

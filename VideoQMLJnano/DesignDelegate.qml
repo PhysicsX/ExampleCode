@@ -55,7 +55,6 @@ Item {
     width: 150
     height: 150
 
-
     property alias text: textitem.text
     signal clicked
 
