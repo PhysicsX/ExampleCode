@@ -230,6 +230,7 @@ Window {
                     //back.z = -1
                     //back.opacity = 0;
                     back.visible = false;
+                    listViewSettings.visible = true;
                     //editingFinished() signal will be signalled automatically
                 }
 
@@ -355,6 +356,9 @@ Window {
                               stackViewRect.opacity = 0;
                               stackViewRect.z = -1;
                               streaming.z = 30
+                              listViewSettings.visible = false;
+
+
                               //passTextField.visible = false;
                               //password.visible = false; // this do not work because of parent child relationship
                               //so visibility shoul be handled by z and opacity property
@@ -427,6 +431,7 @@ Window {
 
                             //flickDeceleration: Flickable.
                             //flickableDirection: Flickable.AutoFlickDirection
+                            id: listViewSettings
                             model: pageModel
                             //highlightRangeMode: ListView.ApplyRange
                             orientation: ListView.Horizontal
