@@ -23,5 +23,6 @@
         <file>Local.png</file>
         <file>back.png</file>
         <file>Admin.png</file>
+        <file>Wifi.qml</file>
     </qresource>
 </RCC>

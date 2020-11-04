@@ -67,11 +67,16 @@ Window {
 
         TapHandler{
             onTapped: {
-                console.log("rec1");
-               // settigs.visible = true
-                if(!password.visible || (password.opacity === 0))
-                    streaming.qmlSignal();
-                    //settigs.visible = false
+                console.log("rec11");
+                console.log(stackViewRect.visible);
+                if(stackViewRect.visible === false)
+                {
+                    console.log("rec1");
+                   // settigs.visible = true
+                    if(!password.visible || (password.opacity === 0))
+                        streaming.qmlSignal();
+                        //settigs.visible = false
+                }
 
             }
         }
@@ -104,14 +109,18 @@ Window {
 
         TapHandler{
             onTapped: {
-                console.log("rec2");
-                password.visible = true;
-                password.opacity = 1.0
-                password.z = 90;
-                //passTextField.z = 60;
-                streaming.z = -1;
-                passTextField.visible = true;
-                back.visible = true;
+                console.log("rec22");
+                if(stackViewRect.visible === false)
+                {
+                    console.log("rec2");
+                    password.visible = true;
+                    password.opacity = 1.0
+                    password.z = 90;
+                    //passTextField.z = 60;
+                    streaming.z = -1;
+                    passTextField.visible = true;
+                    back.visible = true;
+                    }
             }
         }
     }
@@ -353,11 +362,19 @@ Window {
                       TapHandler{
                           onTapped: {
                               console.log("back2");
-                              stackViewRect.opacity = 0;
-                              stackViewRect.z = -1;
-                              streaming.z = 30
-                              listViewSettings.visible = false;
-
+                              if(stackView.depth === 1)
+                              {
+                                    stackViewRect.opacity = 0;
+                                    stackViewRect.z = -1;
+                                    //stackViewRect.visible = true;
+                                    streaming.z = 30
+                                    listViewSettings.visible = false;
+                                    stackViewRect.visible = false;
+                              }
+                              else
+                              {
+                                    stackView.pop();
+                              }
 
                               //passTextField.visible = false;
                               //password.visible = false; // this do not work because of parent child relationship
