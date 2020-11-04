@@ -39,43 +39,18 @@ Window {
             source: player
             anchors.fill: parent
         }
-//        Item {
-//          y: 300;
-//          property string text: " this is Qt streaming! "
-//          property string spacing: "      "
-//          property string combined: text + spacing + text
-//          property string display: combined.substring(step) + combined.substring(0, step)
-//          property int step: 0
-
-//          Timer {
-//            interval: 200
-//            running: true
-//            repeat: true
-//            onTriggered: parent.step = (parent.step + 1) % parent.combined.length
-//          }
-
-//          Text {
-//            text: parent.display
-//            color: "red"
-//            font.family: fontAwesomeSolid.name
-//            fontSizeMode: Text.Fit
-//            font.pointSize: 40
-//          }
-//        }
 
         signal qmlSignal()
 
         TapHandler{
             onTapped: {
-                console.log("rec11");
+                console.log("streaming is touched");
                 console.log(stackViewRect.visible);
                 if(stackViewRect.visible === false)
                 {
-                    console.log("rec1");
-                   // settigs.visible = true
+                    console.log("treaming is touched stackview rect false");
                     if(!password.visible || (password.opacity === 0))
                         streaming.qmlSignal();
-                        //settigs.visible = false
                 }
 
             }
@@ -116,7 +91,6 @@ Window {
                     password.visible = true;
                     password.opacity = 1.0
                     password.z = 90;
-                    //passTextField.z = 60;
                     streaming.z = -1;
                     passTextField.visible = true;
                     back.visible = true;
@@ -124,7 +98,7 @@ Window {
             }
         }
     }
-
+    // If QtQuick.Controls 1.4 needed to control transition for stackview then Flickable does not work same as QtQuick.Controls 2.3.
     Flickable
     {
         id: flickable
@@ -135,184 +109,120 @@ Window {
         contentHeight: password.implicitHeight
         flickableDirection: Flickable.VerticalFlick
 
-    Rectangle
-    {
-        id:password
-        objectName: "password"
-        width: parent.width
-        height: parent.height
-        color: "transparent"
-        //opacity: 0.3
-        visible: false
-        z: -1;
-
-//        Rectangle{
-//            width: 800
-//            height: 480
-//            color: "transparent"
-//            //opacity: 0.3
-//            y:100
-//        }
-
         Rectangle
         {
-            id: title
-            y: 14
-            color: "blue"
-            width: 800
-            height: 40
-            z:99;
+            id:password
+            objectName: "password"
+            width: parent.width
+            height: parent.height
+            color: "transparent"
+            //opacity: 0.3
+            visible: false
+            z: -1;
+
             Rectangle
             {
-                id:back
-                objectName: "back"
-                width: 40
+                id: title
+                y: 14
+                color: "blue"
+                width: 800
                 height: 40
-                anchors.right: parent.right
-                color:"transparent"
+                z:99;
+                Rectangle
+                {
+                    id:back
+                    objectName: "back"
+                    width: 40
+                    height: 40
+                    anchors.right: parent.right
+                    color:"transparent"
 
-                    Image
+                        Image
+                        {
+                        //source:"qrc:/back.png"
+                        source:"file:/home/jnano/Downloads/back.png"
+                        //source:"file:/home/ulas/Desktop/back.png"
+                        fillMode:  Image.PreserveAspectFit
+                        anchors.fill: parent
+                        sourceSize.width: 40
+                        sourceSize.height: 40
+                        }
+                        signal qmlSignalPass()
+                        TapHandler{
+                            onTapped: {
+                                console.log("backButton");
+                                password.opacity = 0;
+                                password.z = -2;
+                                passTextField.visible = false;
+                                streaming.z = 30
+                                //password.visible = false; // this do not work because of parent child relationship
+                                //so visibility shoul be handled by z and opacity property
+                                //back.qmlSignalPass(); // same as above, c++ part do not handle
+                            }
+                        }
+                }
+
+                Text
+                {
+                    text:"PIN"
+                    font.family: "Helvetica"
+                    font.pixelSize: 26
+                    color: "white"
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+            }
+
+            TapHandler{
+                onTapped: {
+                    console.log("rec3");
+                    inputPanel.visible = false;
+                    passTextField.focus = false;
+                }
+            }
+                TextField {
+                    id: passTextField
+                    objectName: "passTextField"
+                    width: 300
+                    y:190
+                    x:250
+                    placeholderText: "Enter PIN"
+                    echoMode: TextInput.Password
+
+                    onEditingFinished :
                     {
-                    //source:"qrc:/back.png"
-                    source:"file:/home/jnano/Downloads/back.png"
-                    //source:"file:/home/ulas/Desktop/back.png"
-                    fillMode:  Image.PreserveAspectFit
-                    anchors.fill: parent
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-                    }
-                    signal qmlSignalPass()
-                    TapHandler{
-                        onTapped: {
-                            console.log("back");
+                        console.log("enter is pressed")
+                        console.log(passTextField.text)
+
+                        if( passTextField.text === "1234") // dummy password this will handle in C++ for hardware
+                        {
+                            stackViewRect.visible = true
+                            stackViewRect.opacity = 1;
+                            stackViewRect.z = 40;
                             password.opacity = 0;
-                            password.z = -2;
+                            password.z = -1;
                             passTextField.visible = false;
-                            streaming.z = 30
-                            //password.visible = false; // this do not work because of parent child relationship
-                            //so visibility shoul be handled by z and opacity property
-                            //back.qmlSignalPass(); // same as above, c++ part do not handle
+                            passTextField.text = "";
+                            back.visible = false;
+                            listViewSettings.visible = true;
+                            //editingFinished() signal will be signalled automatically
                         }
                     }
-            }
 
-            Text
-            {
-                text:"PIN"
-                font.family: "Helvetica"
-                font.pixelSize: 26
-                color: "white"
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-        }
-
-        TapHandler{
-            onTapped: {
-                console.log("rec3");
-                inputPanel.visible = false;
-                passTextField.focus = false;
-            }
-        }
-            TextField {
-                id: passTextField
-                objectName: "passTextField"
-                width: 300
-                y:190
-                x:250
-                placeholderText: "Enter PIN"
-                echoMode: TextInput.Password
-
-                onEditingFinished :
-                {
-                    console.log("enter is pressed")
-                    console.log(passTextField.text)
-
-                    if( passTextField.text === "1234")
-                    {
-                        stackViewRect.visible = true
-                        stackViewRect.opacity = 1;
-                        stackViewRect.z = 40;
-                        password.opacity = 0;
-                        password.z = -1;
-                        passTextField.visible = false;
-                        passTextField.text = "";
-                        //back.z = -1
-                        //back.opacity = 0;
-                        back.visible = false;
-                        listViewSettings.visible = true;
-                        //editingFinished() signal will be signalled automatically
+                    onActiveFocusChanged: {
+                        if(activeFocus)
+                        {
+                            inputPanel.visible = activeFocus
+                            var posWithinFlicable = mapToItem(password,0, height/2);
+                            flickable.contentY = posWithinFlicable.y - flickable.height/2;
+                        }
                     }
                 }
 
-                onActiveFocusChanged: {
-                    if(activeFocus)
-                    {
-                        inputPanel.visible = activeFocus
-                        var posWithinFlicable = mapToItem(password,0, height/2);
-                        flickable.contentY = posWithinFlicable.y - flickable.height/2;
-                    }
-                }
-            }
-
+        }
     }
-}
-
-
-//    Text
-//    {
-//        text:"PIN"
-//        font.family: "Helvetica"
-//        font.pixelSize: 26
-//        color: "white"
-//        anchors.top: parent.top
-//        anchors.bottom: parent.bottom
-//        anchors.horizontalCenter: parent.horizontalCenter
-//    }
-//    Rectangle
-//    {
-//        id: titleSettings
-//        y: 14
-//        color: "blue"
-//        width: 800
-//        height: 40
-//        Rectangle
-//        {
-//            id:backSettings
-//            objectName: "back"
-//            width: 40
-//            height: 40
-//            anchors.right: parent.right
-//            color:"transparent"
-
-//                Image
-//                {
-//                source:"file:/home/jnano/Downloads/back.png"
-//                //source:"file:/home/ulas/Desktop/back.png"
-//                fillMode:  Image.PreserveAspectFit
-//                anchors.fill: parent
-//                sourceSize.width: 40
-//                sourceSize.height: 40
-//                }
-//                //signal qmlSignalPass()
-//                TapHandler{
-//                    onTapped: {
-//                        console.log("back");
-//                        password.opacity = 0;
-//                        password.z = -1;
-//                        passTextField.visible = false;
-//                        //password.visible = false; // this do not work because of parent child relationship
-//                        //so visibility shoul be handled by z and opacity property
-//                        //back.qmlSignalPass(); // same as above, c++ part do not handle
-//                    }
-//                }
-//        }
-//    }
-
-
-
 
         Rectangle
         {
@@ -320,9 +230,7 @@ Window {
             width: parent.width
             height: parent.height
             color:"transparent"
-            //opacity: 0.3
             visible: false
-            //y: 200
 
           Rectangle{
               width: parent.width
@@ -362,7 +270,7 @@ Window {
                       //signal qmlSignalPass()
                       TapHandler{
                           onTapped: {
-                              console.log("back2");
+                              console.log("backButton for stack");
                               if(stackView.depth === 1)
                               {
                                     stackViewRect.opacity = 0;
@@ -484,40 +392,40 @@ Window {
 
 
 
+        // for keyboard
+        InputPanel {
+            id: inputPanel
+            z: 99
+            x: 0
+            y: windowMain.height
+            width: windowMain.width
 
-    InputPanel {
-        id: inputPanel
-        z: 99
-        x: 0
-        y: windowMain.height
-        width: windowMain.width
-
-        states: State {
-            name: "visible"
-            when: inputPanel.active
-            PropertyChanges {
-                target: inputPanel
-                y: windowMain.height - inputPanel.height
-            }
-        }
-        transitions: Transition {
-            from: ""
-            to: "visible"
-            reversible: true
-            ParallelAnimation {
-                NumberAnimation {
-                    properties: "y"
-                    duration: 250
-                    easing.type: Easing.InOutQuad
+            states: State {
+                name: "visible"
+                when: inputPanel.active
+                PropertyChanges {
+                    target: inputPanel
+                    y: windowMain.height - inputPanel.height
                 }
             }
+            transitions: Transition {
+                from: ""
+                to: "visible"
+                reversible: true
+                ParallelAnimation {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: 250
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+            }
+            Binding {
+                target: InputContext
+                property: "animating"
+                value: inputPanelTransition.running
+            }
+            AutoScroller {}
         }
-        Binding {
-            target: InputContext
-            property: "animating"
-            value: inputPanelTransition.running
-        }
-        AutoScroller {}
-    }
 
 }
