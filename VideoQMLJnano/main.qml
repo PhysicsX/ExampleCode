@@ -230,17 +230,21 @@ Window {
                     console.log("enter is pressed")
                     console.log(passTextField.text)
 
-                    stackViewRect.visible = true
-                    stackViewRect.opacity = 1;
-                    stackViewRect.z = 40;
-                    password.opacity = 0;
-                    password.z = -1;
-                    passTextField.visible = false;
-                    //back.z = -1
-                    //back.opacity = 0;
-                    back.visible = false;
-                    listViewSettings.visible = true;
-                    //editingFinished() signal will be signalled automatically
+                    if( passTextField.text === "1234")
+                    {
+                        stackViewRect.visible = true
+                        stackViewRect.opacity = 1;
+                        stackViewRect.z = 40;
+                        password.opacity = 0;
+                        password.z = -1;
+                        passTextField.visible = false;
+                        passTextField.text = "";
+                        //back.z = -1
+                        //back.opacity = 0;
+                        back.visible = false;
+                        listViewSettings.visible = true;
+                        //editingFinished() signal will be signalled automatically
+                    }
                 }
 
                 onActiveFocusChanged: {
@@ -255,9 +259,6 @@ Window {
 
     }
 }
-
-
-
 
 
 //    Text
