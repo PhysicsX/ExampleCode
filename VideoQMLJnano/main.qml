@@ -26,8 +26,8 @@ Window {
         MediaPlayer {
             id: player
             //source: "gst-pipeline: videotestsrc ! qtvideosink"
-            source: "gst-pipeline: playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm"
-            //source: "gst-pipeline: nvarguscamerasrc ! video/x-raw,width=800,height480 ! autovideoconvert ! qtvideosink"
+            //source: "gst-pipeline: playbin uri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm"
+            source: "gst-pipeline: nvarguscamerasrc ! autovideoconvert ! qtvideosink"
             //source: "file:///home/jnano/Desktop/build-VideoOutput-Desktop-Release/file_example_WEBM_480_900KB.webm"
             //source: "file:///home/ulas/Desktop/file_example_WEBM_1920_3_7MB.webm"
             autoPlay: true
@@ -68,8 +68,8 @@ Window {
         Image
         {
         //source:"qrc:/settings.png"
-        source:"file:/home/jnano/Downloads/settings.png"
-        //source:"file:/home/ulas/Desktop/settings.png"
+        //source:"file:/home/jnano/Downloads/settings.png"
+        source:"file:/home/ulas/Desktop/settings.png"
         fillMode:  Image.Tile
         anchors.fill: parent
         opacity: 0.3
@@ -140,8 +140,8 @@ Window {
                         Image
                         {
                         //source:"qrc:/back.png"
-                        source:"file:/home/jnano/Downloads/back.png"
-                        //source:"file:/home/ulas/Desktop/back.png"
+                        //source:"file:/home/jnano/Downloads/back.png"
+                        source:"file:/home/ulas/Desktop/back.png"
                         fillMode:  Image.PreserveAspectFit
                         anchors.fill: parent
                         sourceSize.width: 40
@@ -260,8 +260,8 @@ Window {
                       Image
                       {
                       //source:"qrc:/back.png"
-                      source:"file:/home/jnano/Downloads/back.png"
-                      //source:"file:/home/ulas/Desktop/back.png"
+                      //source:"file:/home/jnano/Downloads/back.png"
+                      source:"file:/home/ulas/Desktop/back.png"
                       fillMode:  Image.PreserveAspectFit
                       anchors.fill: parent
                       sourceSize.width: 40
@@ -375,8 +375,8 @@ Window {
                                     height: 250
                                     fillMode: Image.PreserveAspectFit
                                     //source:"qrc:/"+title+".png"
-                                    source:"file:/home/jnano/Downloads/"+title+".png"
-                                    //source:"file:/home/ulas/Desktop/"+title+".png"
+                                    //source:"file:/home/jnano/Downloads/"+title+".png"
+                                    source:"file:/home/ulas/Desktop/"+title+".png"
                                 }
                                 onClicked: stackView.push(Qt.resolvedUrl(page))
                             }

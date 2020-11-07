@@ -5,9 +5,9 @@ Item {
     id: networkSettings
 
     Rectangle{
-        width: 270
-        height: 20
-        y: 80
+        width: 470
+        height: 50
+        y: 50
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
 
@@ -15,7 +15,7 @@ Item {
             text: "Mode: "
             anchors.left: parent.left
             font.family: "Helvetica"
-            font.pointSize: 16
+            font.pointSize: 24
             font.bold: true
             color: "black"
         }
@@ -29,9 +29,10 @@ Item {
             }
 
             TabButton {
-                height: 30
-                width: 60
+                height: 50
+                width: 120
                 text: "DHCP"
+                font.pointSize: 16
 
                 background: Rectangle {
                     color: tabBar.currentIndex == 0 ? "blue" : "black"
@@ -39,9 +40,11 @@ Item {
                 }
             }
             TabButton {
-                height: 30
-                width: 60
+                height: 50
+                width: 120
                 text: "STATIC"
+                font.pointSize: 16
+
                 background: Rectangle {
                     color: tabBar.currentIndex == 1 ? "blue" : "black"
                     //radius: 10
@@ -52,8 +55,8 @@ Item {
 
 
     Rectangle{
-        width: 270
-        height: 20
+        width: 470
+        height: 50
         y: 120
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
@@ -62,7 +65,7 @@ Item {
             text: "Connection: "
             anchors.left: parent.left
             font.family: "Helvetica"
-            font.pointSize: 16
+            font.pointSize: 24
             font.bold: true
             color: "black"
         }
@@ -76,9 +79,10 @@ Item {
             }
 
             TabButton {
-                height: 30
-                width: 60
+                height: 50
+                width: 120
                 text: "Wired"
+                font.pointSize: 16
 
                 background: Rectangle {
                     color: connectionTab.currentIndex == 0 ? "blue" : "black"
@@ -86,9 +90,11 @@ Item {
                 }
             }
             TabButton {
-                height: 30
-                width: 60
+                height: 50
+                width: 120
                 text: "Wifi"
+                font.pointSize: 16
+
                 background: Rectangle {
                     color: connectionTab.currentIndex == 1 ? "blue" : "black"
                     //radius: 10
@@ -100,8 +106,8 @@ Item {
 
 
     Rectangle{
-        width: 270
-        height: 20
+        width: 470
+        height: 50
         y: 180
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
@@ -110,7 +116,7 @@ Item {
             text: "IP address: "
             anchors.left: parent.left
             font.family: "Helvetica"
-            font.pointSize: 16
+            font.pointSize: 24
             font.bold: true
             color: "black"
         }
@@ -121,11 +127,12 @@ Item {
             anchors.right: parent.right
             placeholderText: qsTr("192.168.137.63")
             color: "black"
+            font.pointSize: 18
             font.bold: true
 
             background: Rectangle {
-                implicitWidth: 140
-                implicitHeight: 30
+                implicitWidth: 240
+                implicitHeight: 40
                 color: control.enabled ? "transparent" : "#353637"
                 border.color: control.enabled ? "#21be2b" : "transparent"
             }
@@ -135,8 +142,8 @@ Item {
     }
 
     Rectangle{
-        width: 270
-        height: 20
+        width: 470
+        height: 50
         y: 240
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
@@ -145,7 +152,7 @@ Item {
             text: "Mask: "
             anchors.left: parent.left
             font.family: "Helvetica"
-            font.pointSize: 16
+            font.pointSize: 24
             font.bold: true
             color: "black"
         }
@@ -156,11 +163,12 @@ Item {
             anchors.right: parent.right
             placeholderText: qsTr("255.255.255.0")
             color: "black"
+            font.pointSize: 18
             font.bold: true
 
             background: Rectangle {
-                implicitWidth: 140
-                implicitHeight: 30
+                implicitWidth: 240
+                implicitHeight: 40
                 color: mask.enabled ? "transparent" : "#353637"
                 border.color: mask.enabled ? "#21be2b" : "transparent"
             }
@@ -170,8 +178,8 @@ Item {
     }
 
     Rectangle{
-        width: 270
-        height: 20
+        width: 470
+        height: 50
         y: 300
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
@@ -180,7 +188,7 @@ Item {
             text: "Gateway: "
             anchors.left: parent.left
             font.family: "Helvetica"
-            font.pointSize: 16
+            font.pointSize: 24
             font.bold: true
             color: "black"
         }
@@ -191,11 +199,12 @@ Item {
             anchors.right: parent.right
             placeholderText: qsTr("192.168.137.1")
             color: "black"
+            font.pointSize: 18
             font.bold: true
 
             background: Rectangle {
-                implicitWidth: 140
-                implicitHeight: 30
+                implicitWidth: 240
+                implicitHeight: 40
                 color: gateway.enabled ? "transparent" : "#353637"
                 border.color: gateway.enabled ? "#21be2b" : "transparent"
             }
