@@ -1,4 +1,4 @@
-#include<QObject>
+#include <QObject>
 #include <QTimer>
 
 class MyClass : public QObject

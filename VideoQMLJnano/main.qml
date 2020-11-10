@@ -14,6 +14,7 @@ Window {
     width: 800
     height: 480
 
+
     Rectangle {
         id:streaming
         objectName: "streaming"
@@ -44,11 +45,11 @@ Window {
 
         TapHandler{
             onTapped: {
-                console.log("streaming is touched");
-                console.log(stackViewRect.visible);
+                ///later on console.log("streaming is touched");
+                ///later on console.log(stackViewRect.visible);
                 if(stackViewRect.visible === false)
                 {
-                    console.log("treaming is touched stackview rect false");
+                    ///later on console.log("treaming is touched stackview rect false");
                     if(!password.visible || (password.opacity === 0))
                         streaming.qmlSignal();
                 }
@@ -84,10 +85,10 @@ Window {
 
         TapHandler{
             onTapped: {
-                console.log("rec22");
+                ///later on console.log("rec22");
                 if(stackViewRect.visible === false)
                 {
-                    console.log("rec2");
+                    ///later on console.log("rec2");
                     password.visible = true;
                     password.opacity = 1.0
                     password.z = 90;
@@ -102,6 +103,7 @@ Window {
     Flickable
     {
         id: flickable
+        objectName: "passwordFli"
         anchors.fill: parent
         //anchors.margins: 20
         anchors.bottomMargin: inputPanel.visible ? inputPanel.height : anchors.margins
@@ -150,7 +152,7 @@ Window {
                         signal qmlSignalPass()
                         TapHandler{
                             onTapped: {
-                                console.log("backButton");
+                                ///later on console.log("backButton");
                                 password.opacity = 0;
                                 password.z = -2;
                                 passTextField.visible = false;
@@ -177,7 +179,7 @@ Window {
 
             TapHandler{
                 onTapped: {
-                    console.log("rec3");
+                    ///later on console.log("rec3");
                     inputPanel.visible = false;
                     passTextField.focus = false;
                 }
@@ -193,8 +195,8 @@ Window {
 
                     onEditingFinished :
                     {
-                        console.log("enter is pressed")
-                        console.log(passTextField.text)
+                        ///later on console.log("enter is pressed")
+                        ///later on console.log(passTextField.text)
 
                         if( passTextField.text === "1234") // dummy password this will handle in C++ for hardware
                         {
@@ -227,6 +229,7 @@ Window {
         Rectangle
         {
             id: stackViewRect
+            objectName: "stackViewRect"
             width: parent.width
             height: parent.height
             color:"transparent"
@@ -257,6 +260,7 @@ Window {
                   anchors.right: parent.right
                   color:"transparent"
 
+
                       Image
                       {
                       //source:"qrc:/back.png"
@@ -270,7 +274,7 @@ Window {
                       //signal qmlSignalPass()
                       TapHandler{
                           onTapped: {
-                              console.log("backButton for stack");
+                              ///later on console.log("backButton for stack");
                               if(stackView.depth === 1)
                               {
                                     stackViewRect.opacity = 0;
@@ -307,18 +311,20 @@ Window {
 
             Rectangle{
                 id: stackViewRect2
+
                 width: parent.width
                 height: parent.height
                 color:"transparent"
                 //opacity: 0.3
                 y: 60
-
+               // objectName: "pageModel"
                   ListModel {
                       id: pageModel
-
+                objectName: "pageModel2"
                       ListElement {
                           title: "Network"
                           page: "network.qml"
+                          objectName: "networK"
                       }
                       ListElement {
                           title: "Local"

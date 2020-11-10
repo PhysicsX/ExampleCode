@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        myclass.cpp
+        myclass.cpp \
+        networkManager.cpp
 
 RESOURCES += qml.qrc
 
@@ -31,7 +32,8 @@ else: unix:!android: target.path = /home/ulas/Desktop
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    myclass.h
+    myclass.h \
+    networkManager.h
 
 DISTFILES += \
     Admin.qml \

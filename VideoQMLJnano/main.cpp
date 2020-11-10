@@ -7,7 +7,11 @@
 #include <QTimer>
 #include <QDebug>
 #include <QObject>
+#include <QAbstractListModel>
+#include <QQmlProperty>
+#include <QVariant>
 #include "myclass.h"
+#include "networkManager.h"
 
 void foo()
 {
@@ -20,6 +24,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+
+
+    qmlRegisterType<NetworkManager>("com.ulasdikme.networkManager",1,0,"NetworkManager");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -54,18 +61,17 @@ int main(int argc, char *argv[])
         qDebug()<<"NUL3";
 
 
-    //QObject* item4 = NULL;
-    //item4 = engine.rootObjects().at(0)->findChild<QQuickItem*>("password");
-    //if(item4 == NULL)
-     //   qDebug()<<"NUL4";
-
     MyClass myClass2; //experimental
     //myClass2.setItem(item4);
     QObject::connect(item3,SIGNAL(editingFinished()),&myClass2,SLOT(foo2()));
 
-    //QObject::connect(item,SIGNAL(qmlSignal()),[=](){qDebug()<<"asasda";});
-    //QTimer::singleShot(5000,&app,[](){
-    //});
+
+    auto rootObj = engine.rootObjects().at(0); //assume main.qml is loaded
+
+    QObject* catagory = rootObj->findChild<QObject *>("pageModel2");
+
+    qDebug()<<catagory->property("count");
+
 
     return app.exec();
 }

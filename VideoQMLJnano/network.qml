@@ -1,9 +1,18 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import com.ulasdikme.networkManager 1.0
 
 Item {
     id: networkSettings
+    signal example()
+    objectName: "networkSettings"
+    Component.onCompleted: {
 
+        console.log("Network loaded");
+        console.log(networkManager.enableDHCP);
+        tabBar.currentIndex = networkManager.enableDHCP;
+
+    }
     Rectangle{
         width: 470
         height: 50
@@ -35,6 +44,7 @@ Item {
                 font.pointSize: 16
 
                 background: Rectangle {
+                    id: tabRect
                     color: tabBar.currentIndex == 0 ? "blue" : "black"
                     //radius: 10
                 }
@@ -46,6 +56,7 @@ Item {
                 font.pointSize: 16
 
                 background: Rectangle {
+                    id: tabRect2
                     color: tabBar.currentIndex == 1 ? "blue" : "black"
                     //radius: 10
                 }
@@ -125,7 +136,7 @@ Item {
         TextField {
             id: control
             anchors.right: parent.right
-            placeholderText: qsTr("192.168.137.63")
+            text: networkManager.ipAddr
             color: "black"
             font.pointSize: 18
             font.bold: true
@@ -161,7 +172,7 @@ Item {
         TextField {
             id: mask
             anchors.right: parent.right
-            placeholderText: qsTr("255.255.255.0")
+            text: networkManager.maskAddr //qsTr("255.255.255.0")
             color: "black"
             font.pointSize: 18
             font.bold: true
@@ -197,7 +208,7 @@ Item {
         TextField {
             id: gateway
             anchors.right: parent.right
-            placeholderText: qsTr("192.168.137.1")
+            text: networkManager.routerAddr //qsTr("192.168.137.1")
             color: "black"
             font.pointSize: 18
             font.bold: true
@@ -211,6 +222,84 @@ Item {
 
         }
 
+    }
+
+    Rectangle{
+        width: 270
+        height: 50
+        y: 355
+        //anchors.horizontalCenter: parent.horizontalCenter
+        anchors.right: parent.right
+        color: "transparent"
+
+
+        Button {
+            text: "Apply"
+           // id:controlButton
+
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 25
+                border.width: control.activeFocus ? 2 : 1
+                border.color: "#888"
+                radius: 4
+                gradient: Gradient {
+                    GradientStop { position: 0 ; color: controlButton.pressed ? "#ccc" : "#eee" }
+                    GradientStop { position: 1 ; color: controlButton.pressed ? "#aaa" : "#ccc" }
+                }
+            }
+            objectName: "controlButton"
+            signal qmlSignalForIpChange()
+            id:controlButton
+
+            NetworkManager{
+                id: networkManager
+                //ipAddr: ipAddr
+                onIpAddrChanged:{
+                    control.text = ipAddr;
+                    console.log("ipaddr is updated");
+                }
+
+                onMaskAddrChanged:{
+                    mask.text = maskAddr;
+                    console.log("maskAddr is updated");
+                }
+
+                onRouterAddrChanged:{
+                    gateway.text = routerAddr;
+                    console.log("routerAddr is updated");
+                }
+
+                onEnableDHCPChanged:{
+                    tabBar.currentIndex = enableDHCP;
+                     console.log("enableDHCP is updated");
+                }
+
+            }
+
+            onClicked:
+            {
+                //controlButton.qmlSignalForIpChange()
+                console.log("Apply is clicked");
+                console.log("tabbar "+tabBar.currentIndex);
+                console.log("connectionTab "+connectionTab.currentIndex);
+                if(tabBar.currentIndex === 0)
+                {
+                    networkManager.applyNetwork(tabBar.currentIndex, connectionTab.currentIndex);
+                    networkManager.enableDHCP = 0;
+                }
+                else if(tabBar.currentIndex === 1)
+                {
+                    console.log("static configuration");
+                    networkManager.ipAddr = control.text;
+                    networkManager.maskAddr = mask.text;
+                    networkManager.routerAddr = gateway.text;
+                    networkManager.setStatic();
+                    networkManager.enableDHCP = 1;
+                }
+
+            }
+        }
     }
 
 }
