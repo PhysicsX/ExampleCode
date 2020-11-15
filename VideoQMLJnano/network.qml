@@ -10,8 +10,10 @@ Item {
 
         console.log("Network loaded");
         console.log(networkManager.enableDHCP);
-        tabBar.currentIndex = networkManager.enableDHCP;
+        console.log(networkManager.enableAP);
 
+        tabBar.currentIndex = networkManager.enableDHCP;
+      //  connectionTab.currentIndex = networkManager.enableAP;
     }
     Rectangle{
         width: 470
@@ -269,23 +271,67 @@ Item {
                 id: networkManager
                 //ipAddr: ipAddr
                 onIpAddrChanged:{
-                    control.text = ipAddr;
-                    console.log("ipaddr is updated");
+                    if(connectionTab.currentIndex === 0)
+                    {
+                        control.text = ipAddr;
+                        console.log("ipaddr is updated");
+                    }
                 }
 
                 onMaskAddrChanged:{
-                    mask.text = maskAddr;
-                    console.log("maskAddr is updated");
+                    if(connectionTab.currentIndex === 0)
+                    {
+                        mask.text = maskAddr;
+                        console.log("maskAddr is updated");
+                    }
                 }
 
                 onRouterAddrChanged:{
-                    gateway.text = routerAddr;
-                    console.log("routerAddr is updated");
+                    if(connectionTab.currentIndex === 0)
+                    {
+                        gateway.text = routerAddr;
+                        console.log("routerAddr is updated");
+                    }
+                }
+
+                onWlanIpAddrChanged:{
+                    if(connectionTab.currentIndex === 1)
+                    {
+                        control.text = wlanIpAddr;
+                        console.log("Wipaddr is updated");
+                    }
+                }
+
+                onWlanMaskAddrChanged:{
+                    if(connectionTab.currentIndex === 1)
+                    {
+                        mask.text = wlanMaskAddr;
+                        console.log("WmaskAddr is updated");
+                    }
+                }
+
+                onWlanRouterAddrChanged:{
+                    if(connectionTab.currentIndex === 1)
+                    {
+                        gateway.text = wlanRouterAddr;
+                        console.log("WrouterAddr is updated");
+                    }
                 }
 
                 onEnableDHCPChanged:{
-                    tabBar.currentIndex = enableDHCP;
-                     console.log("enableDHCP is updated");
+                    if(connectionTab.currentIndex === 0)
+                    {
+                        tabBar.currentIndex = enableDHCP;
+                        console.log("enableDHCP is updated");
+                    }
+                }
+
+                onEnableAPChanged:{
+                     if(connectionTab.currentIndex === 1)
+                     {
+                        tabBar.currentIndex = enableAP;
+                        console.log("enableAP is updated");
+                     }
                 }
 
             }
@@ -296,21 +342,37 @@ Item {
                 console.log("Apply is clicked");
                 console.log("tabbar "+tabBar.currentIndex);
                 console.log("connectionTab "+connectionTab.currentIndex);
-                if(tabBar.currentIndex === 0)
+                if(connectionTab.currentIndex === 0)
                 {
-                    networkManager.applyNetwork(tabBar.currentIndex, connectionTab.currentIndex);
-                    networkManager.enableDHCP = 0;
+                    if(tabBar.currentIndex === 0)
+                    {
+                        networkManager.applyNetwork(tabBar.currentIndex, connectionTab.currentIndex);
+                        networkManager.enableDHCP = 0;
+                    }
+                    else if(tabBar.currentIndex === 1)
+                    {
+                        console.log("static configuration");
+                        networkManager.ipAddr = control.text;
+                        networkManager.maskAddr = mask.text;
+                        networkManager.routerAddr = gateway.text;
+                        networkManager.setStatic();
+                        networkManager.enableDHCP = 1;
+                    }
                 }
-                else if(tabBar.currentIndex === 1)
+                else if(connectionTab.currentIndex === 1)
                 {
-                    console.log("static configuration");
-                    networkManager.ipAddr = control.text;
-                    networkManager.maskAddr = mask.text;
-                    networkManager.routerAddr = gateway.text;
-                    networkManager.setStatic();
-                    networkManager.enableDHCP = 1;
-                }
+                    if(tabBar.currentIndex === 0)
+                    {
+                        networkManager.applyNetwork(tabBar.currentIndex, connectionTab.currentIndex);
+                        networkManager.enableAP = 0;
+                    }
+                    else if(tabBar.currentIndex === 1)
+                    {
+                        networkManager.applyNetwork(tabBar.currentIndex, connectionTab.currentIndex);
+                        networkManager.enableAP = 1; // station mode
+                    }
 
+                }
             }
         }
     }
