@@ -38,6 +38,7 @@ Item {
             }
 
             TabButton {
+                id: tabDhcp
                 height: 50
                 width: 120
                 text: "DHCP"
@@ -50,6 +51,7 @@ Item {
                 }
             }
             TabButton {
+                id: tabStatic
                 height: 50
                 width: 120
                 text: "STATIC"
@@ -99,6 +101,11 @@ Item {
                     color: connectionTab.currentIndex == 0 ? "blue" : "black"
                     //radius: 10
                 }
+                onClicked:{
+                    tabDhcp.text = "DHCP"
+                    tabStatic.text = "STATIC"
+                    tabBar.currentIndex = networkManager.enableDHCP;
+                }
             }
             TabButton {
                 height: 50
@@ -109,6 +116,12 @@ Item {
                 background: Rectangle {
                     color: connectionTab.currentIndex == 1 ? "blue" : "black"
                     //radius: 10
+                }
+
+                onClicked:{
+                    tabDhcp.text = "AP Mode"
+                    tabStatic.text = "STATION"
+                    //tabBar.currentIndex = networkManager.enableDHCP; enable ap mode !
                 }
             }
         }

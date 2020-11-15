@@ -6,7 +6,6 @@
 
 NetworkManager::NetworkManager(): QObject()
 {
-    qDebug()<<"BEginninnnngngngngn";
     QProcess process;
 
     process.start("bash", QStringList()<<"-c"<<"nmcli connection show 'Wired connection 1' | grep  -w ipv4.method");
@@ -26,15 +25,28 @@ NetworkManager::NetworkManager(): QObject()
     else if(out == "auto")
     setEnableDHCP(false);
 
-    process.start("bash", QStringList()<<"-c"<<"nmcli connection show 'Wired connection 1' | grep  ipv4.address");
+//    process.start("bash", QStringList()<<"-c"<<"nmcli connection show 'Wired connection 1' | grep  ipv4.address");
+//    process.waitForFinished();
+//    p_stdout = process.readAllStandardOutput();
+//     p_stderr = process.readAllStandardError();
+//    //qDebug()<<p_stdout;
+//    //qDebug()<<p_stderr;
+//    lastSlash = p_stdout.lastIndexOf('/');
+//    prevSpace = p_stdout.lastIndexOf(' ');
+//    out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
+//    //qDebug()<<out;
+//    if(out.contains("\n"))
+//        out = "";
+
+    process.start("bash", QStringList()<<"-c"<<"nmcli -g ip4.address connection show 'Wired connection 1'");
     process.waitForFinished();
     p_stdout = process.readAllStandardOutput();
-     p_stderr = process.readAllStandardError();
+    p_stderr = process.readAllStandardError();
     //qDebug()<<p_stdout;
     //qDebug()<<p_stderr;
     lastSlash = p_stdout.lastIndexOf('/');
-    prevSpace = p_stdout.lastIndexOf(' ');
-    out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
+    //prevSpace = p_stdout.lastIndexOf(' ');
+    out = p_stdout.mid(0, lastSlash);
     //qDebug()<<out;
     if(out.contains("\n"))
         out = "";
@@ -171,16 +183,16 @@ bool NetworkManager::setDHCP()
 
 
 
-    process.start("bash", QStringList()<<"-c"<<"nmcli connection show 'Wired connection 1' | grep  ipv4.address");
+    process.start("bash", QStringList()<<"-c"<<"nmcli -g ip4.address connection show 'Wired connection 1'");
     process.waitForFinished();
     QString p_stdout = process.readAllStandardOutput();
     QString p_stderr = process.readAllStandardError();
-    qDebug()<<p_stdout;
+    //qDebug()<<p_stdout;
     //qDebug()<<p_stderr;
     int lastSlash = p_stdout.lastIndexOf('/');
     int prevSpace = p_stdout.lastIndexOf(' ');
-    QString out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
-    qDebug()<<out;
+    //qDebug()<<out;
+    QString out = p_stdout.mid(0, lastSlash);
     if(out.contains("\n"))
         out = "";
 
