@@ -16,7 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         myclass.cpp \
-        networkManager.cpp
+        networkManager.cpp \
+        wifiConf.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,7 +34,8 @@ else: unix:!android: target.path = /home/ulas/Desktop
 
 HEADERS += \
     myclass.h \
-    networkManager.h
+    networkManager.h \
+    wifiConf.h
 
 DISTFILES += \
     Admin.qml \

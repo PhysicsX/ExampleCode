@@ -20,7 +20,7 @@ public:
     Q_PROPERTY(bool enableAP READ getEnableAP WRITE setEnableAP NOTIFY enableAPChanged)
 
     public slots:
-         public:
+        public:
         void setIpAddr(const QString &ip);
         void setRouterAddr(const QString &router);
         void setMaskAddr(const QString &mask);

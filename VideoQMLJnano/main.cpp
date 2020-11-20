@@ -13,6 +13,7 @@
 #include <QProcess>
 #include "myclass.h"
 #include "networkManager.h"
+#include "wifiConf.h"
 
 //#define QT_NO_DEBUG_OUTPUT
 int main(int argc, char *argv[])
@@ -25,6 +26,8 @@ int main(int argc, char *argv[])
 
 
     qmlRegisterType<NetworkManager>("com.ulasdikme.networkManager",1,0,"NetworkManager");
+    qmlRegisterType<WifiConf>("com.ulasdikme.wifiConf",1,0,"WifiConf");
+
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
