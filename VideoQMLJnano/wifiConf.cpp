@@ -1,7 +1,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QDebug>
-
+#include <QTimer>
 #include "wifiConf.h"
 
 WifiConf::WifiConf(): QObject()
@@ -137,6 +137,30 @@ QString WifiConf::getStationSsid() const
 void WifiConf::updateHotspot(QString name, QString pass)
 {
     qDebug()<<"hotspot name "<<name<<" pass "<<pass;
+    QProcess process;
+    process.start("bash", QStringList()<<"-c"<<"nmcli -g general.connection device show wlan0"); // get connection name (id)
+    if(!process.waitForFinished())
+        qDebug()<<"can not get hotspot name";
+    QString p_stdout = process.readAllStandardOutput();
+    qDebug()<<p_stdout;
+    process.start("bash", QStringList()<<"-c"<<"nmcli connection delete id'"+p_stdout+"'");
+    if(!process.waitForFinished())
+        qDebug()<<"can not delete connection hotspot";
+
+    process.start("bash", QStringList()<<"-c"<<"nmcli r wifi off");
+    if(!process.waitForFinished())
+        qDebug()<<"can not turn off wifi";
+
+    process.start("bash", QStringList()<<"-c"<<"nmcli r wifi on");
+    if(!process.waitForFinished())
+        qDebug()<<"can not start wifi";
+
+    QTimer::singleShot(3000,[&,name,pass](){
+        QProcess process;
+        process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid '"+name+"' password '"+pass+"'");
+        if(process.waitForFinished())
+            qDebug()<<"can not start hotspot "+name;
+    });
 }
 
 

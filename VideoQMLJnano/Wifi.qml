@@ -14,9 +14,15 @@ Item {
         console.log("wifiqml is loaded");
         console.log(wifiConf.enableHot)
         if(!wifiConf.enableHot)
+        {
             station.visible = true;
+            hotspot.visible = false;
+        }
         else
+        {
             station.visible = false;
+            hotspot.visible = true;
+        }
         console.log(wifiConf.ssidNames.length)
         console.log(wifiConf.ssidNames[2])
 
@@ -51,39 +57,6 @@ Item {
             name:'ssid1'
             number:'strong'
         }
-        ListElement {
-            name:'ssid2'
-            number:'normal'
-        }
-        ListElement {
-            name:'ssid3'
-            number:'weak'
-        }
-        ListElement {
-            name:'ssid1'
-            number:'strong'
-        }
-        ListElement {
-            name:'ssid2'
-            number:'normal'
-        }
-        ListElement {
-            name:'ssid3'
-            number:'weak'
-        }
-        ListElement {
-            name:'ssid1'
-            number:'strong'
-        }
-        ListElement {
-            name:'ssid2'
-
-            number:'normal'
-        }
-        ListElement {
-            name:'ssid3'
-            number:'weak'
-        }
     }
 
     Rectangle
@@ -99,8 +72,73 @@ Item {
             color: "green"
             font.pixelSize: 28
             font.weight: Font.DemiBold
-            text: 'Double tap to connect'
+            text: wifiConf.enableHot ? 'Update ssid and password' : 'Double tap to connect'
          }
+    }
+
+    Rectangle
+    {
+        id: hotspot
+        width: 400
+        height: 180
+        y: 80
+        color: "transparent"
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        TextField
+        {
+            id: hotspotSsid
+            width: 220
+            height: 30
+            y: 20
+            placeholderText: "Enter SSID"
+            echoMode: TextInput.Normal
+            anchors.horizontalCenter: parent.horizontalCenter
+
+        }
+
+        TextField
+        {
+            id: hotspotpass
+            width: 220
+            height: 30
+            y: 60
+            placeholderText: "Enter Password"
+            echoMode: TextInput.Password
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Button {
+
+            text: "Update"
+            //anchors.top : parent.bottom
+           // anchors.left: control.right;
+            //anchors.margins: 10
+            y : 100
+            anchors.right: hotspotpass.right
+            //anchors.topMargin: 40
+            //anchors.horizontalCenter: parent.horizontalCenter
+            background: Rectangle {
+                implicitWidth: 90
+                implicitHeight: 30
+                border.width: hotspotpass.activeFocus ? 2 : 1
+                border.color: "#888"
+                radius: 4
+                gradient: Gradient {
+                    GradientStop { position: 0 ; color: hotspotButton.pressed ? "#ccc" : "#eee" }
+                    GradientStop { position: 1 ; color: hotspotButton.pressed ? "#aaa" : "#ccc" }
+                }
+            }
+            objectName: "hotspotButton"
+            signal hotspotButton()
+            id:hotspotButton
+            onClicked:
+            {
+                console.log("hotspotButton network is clicked");
+                wifiConf.updateHotspot(hotspotSsid.text, hotspotpass.text);
+            }
+        }
+
     }
 
     Rectangle

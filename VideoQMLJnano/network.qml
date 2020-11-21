@@ -107,6 +107,22 @@ Item {
                     tabDhcp.text = "DHCP"
                     tabStatic.text = "STATIC"
                     tabBar.currentIndex = networkManager.enableDHCP;
+
+                    if(networkManager.enableDHCP === false)
+                    {
+                        console.log("dhcp mode active");
+                        control.text = networkManager.ipAddr;
+                        mask.text = networkManager.maskAddr
+                        gateway.text = networkManager.routerAddr
+
+                    }
+                    else if(networkManager.enableDHCP === true)
+                    {
+                        console.log("static mode active");
+                        control.text = networkManager.ipAddr;
+                        mask.text = networkManager.maskAddr
+                        gateway.text = networkManager.routerAddr
+                    }
                 }
             }
             TabButton {
@@ -123,7 +139,22 @@ Item {
                 onClicked:{
                     tabDhcp.text = "AP Mode"
                     tabStatic.text = "STATION"
-                    //tabBar.currentIndex = networkManager.enableDHCP; enable ap mode !
+                    tabBar.currentIndex = networkManager.enableAP; //enable ap mode !
+
+                    if(networkManager.enableAP === false)
+                    {
+                        console.log("ap mode active");
+                        control.text = networkManager.wlanIpAddr;
+                        mask.text = networkManager.wlanMaskAddr
+                        gateway.text = networkManager.wlanRouterAddr
+                    }
+                    else if(networkManager.enableAP === true)
+                    {
+                        console.log("station mode active");
+                        control.text = networkManager.wlanIpAddr;
+                        mask.text = networkManager.wlanMaskAddr
+                        gateway.text = networkManager.wlanRouterAddr
+                    }
                 }
             }
         }

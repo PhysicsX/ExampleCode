@@ -76,6 +76,14 @@ int main(int argc, char *argv[])
 
     //start device as a hotspot
     QProcess process;
+    process.start("bash", QStringList()<<"-c"<<"nmcli -g general.connection device show wlan0"); // get connection name (id)
+    if(!process.waitForFinished())
+        qDebug()<<"can not get hotspot name";
+    QString p_stdout = process.readAllStandardOutput();
+    qDebug()<<p_stdout;
+    process.start("bash", QStringList()<<"-c"<<"nmcli connection delete id'"+p_stdout+"'");
+    if(!process.waitForFinished())
+        qDebug()<<"can not delete connection hotspot";
     process.start("bash", QStringList()<<"-c"<<"nmcli r wifi off"); // enable wifi
     if(!process.waitForFinished())
         qDebug()<<"wifi can not off, check wifi hardware is exist";
@@ -87,7 +95,7 @@ int main(int argc, char *argv[])
 
 
     QTimer::singleShot(2000,[&](){
-
+        QProcess process;
         process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
         if(process.waitForFinished())
             qDebug()<<"Hotspot is created";

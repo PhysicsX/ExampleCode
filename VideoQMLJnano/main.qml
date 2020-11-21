@@ -11,15 +11,15 @@ import "content"
 Window {
     id: windowMain
     visible: true
-    width: 800
-    height: 480
+    width: parent.width
+    height: parent.height
 
 
     Rectangle {
         id:streaming
         objectName: "streaming"
-        width: 800
-        height: 480
+        width: parent.width
+        height: parent.height
         z:40
         color: "black"
 
@@ -319,25 +319,25 @@ Window {
                 y: 60
                // objectName: "pageModel"
                   ListModel {
-                      id: pageModel
-                objectName: "pageModel2"
-                      ListElement {
-                          title: "Network"
-                          page: "network.qml"
-                          objectName: "networK"
-                      }
-                      ListElement {
-                          title: "Local"
-                          page: "Local.qml"
-                      }
-                      ListElement {
-                          title: "Wifi"
-                          page: "Wifi.qml"
-                      }
-                      ListElement {
-                          title: "Admin"
-                          page: "Admin.qml"
-                      }
+                        id: pageModel
+                        objectName: "pageModel2"
+                          ListElement {
+                              title: "Network"
+                              page: "network.qml"
+                              objectName: "networK"
+                          }
+                          ListElement {
+                              title: "Local"
+                              page: "Local.qml"
+                          }
+                          ListElement {
+                              title: "Wifi"
+                              page: "Wifi.qml"
+                          }
+                          ListElement {
+                              title: "Admin"
+                              page: "Admin.qml"
+                          }
                   }
 
 
