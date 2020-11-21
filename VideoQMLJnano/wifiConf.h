@@ -1,6 +1,7 @@
 #include <QObject>
 #include <QVector>
 #include <QString>
+#include <QMutex>
 
 class WifiConf : public QObject
 {
@@ -51,5 +52,6 @@ class WifiConf : public QObject
     QString hotSpotSsid;
     QString stationPassword;
     QString stationSsid;
+    QMutex mutex;
 
 };

@@ -34,32 +34,69 @@ WifiConf::WifiConf(): QObject()
         qDebug()<<p_stdout;
         // QString str = "madam_curie\nhouse\noffice\noffice2";
 
-        QStringList tmp = p_stdout.split("\n");
-        for(int i = 0 ; i < tmp.size(); i++)
+        QStringList tmpList = p_stdout.split("\n");
+        for(int i = 0 ; i < tmpList.size(); i++)
         {
-            int truncateAt = tmp[i].size();
+            int truncateAt = tmpList[i].size();
             int j = truncateAt-1;
             for(; j >= 0; j--)
             {
-                if(tmp[i][j] != ' ')
+                if(tmpList[i][j] != ' ') // check at() is supported by qt QStringList
                 {
                     break;
                 }
             }
-            tmp[i].truncate(j+1);
+            tmpList[i].truncate(j+1);
         }
-        for(int i = 0; i < tmp.size(); i++)
+        for(int i = 0; i < tmpList.size(); i++)
         {
-            qDebug()<<tmp[i];
+            qDebug()<<"cons "<<tmpList[i];
         }
 
-        tmp.removeFirst(); // first is dummy SSID
-        tmp.removeLast(); // last char
+        tmpList.removeFirst(); // first is dummy SSID
+
+        if(!tmpList.isEmpty())
+        tmpList.removeLast(); // last char
         //ssidNames = tmp;
-        setSsidNames(tmp);
+        setSsidNames(tmpList);
 
         enableHot = false;
+        if(tmpList.isEmpty())
+        {
+            QTimer::singleShot(3000,[this](){
+                QProcess processSingle;
+                processSingle.start("bash", QStringList()<<"-c"<<"nmcli -f SSID device wifi");
+                if(!processSingle.waitForFinished())
+                    qDebug()<<"can not ssid list";
+                QString p_stdout = processSingle.readAllStandardOutput();
+                qDebug()<<p_stdout;
+                // QString str = "madam_curie\nhouse\noffice\noffice2";
 
+                QStringList tmp = p_stdout.split("\n");
+                for(int i = 0 ; i < tmp.size(); i++)
+                {
+                    int truncateAt = tmp[i].size();
+                    int j = truncateAt-1;
+                    for(; j >= 0; j--)
+                    {
+                        if(tmp[i][j] != ' ')
+                        {
+                            break;
+                        }
+                    }
+                    tmp[i].truncate(j+1);
+                }
+                for(int i = 0; i < tmp.size(); i++)
+                {
+                    qDebug()<<tmp[i];
+                }
+
+                tmp.removeFirst(); // first is dummy SSID
+                tmp.removeLast(); // last char
+                //ssidNames = tmp;
+                setSsidNames(tmp);
+            });
+        }
 
     }
 }
@@ -74,8 +111,10 @@ void WifiConf::setEnableHot(const bool flag)
 
 void WifiConf::setSsidNames(const QStringList list)
 {
+    mutex.lock();
     ssidNames = list;
     emit ssidNamesChanged();
+    mutex.unlock();
 }
 
 void WifiConf::setHotSpotPassword(const QString pass)
