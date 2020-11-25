@@ -8,9 +8,9 @@ Item {
     objectName: "networkSettings"
     Component.onCompleted: {
 
-        console.log("Network loaded");
-        console.log(networkManager.enableDHCP);
-        console.log(networkManager.enableAP);
+        //console.log("Network loaded");
+        //console.log(networkManager.enableDHCP);
+        //console.log(networkManager.enableAP);
 
         tabBar.currentIndex = networkManager.enableDHCP;
       //  connectionTab.currentIndex = networkManager.enableAP;
@@ -110,7 +110,7 @@ Item {
 
                     if(networkManager.enableDHCP === false)
                     {
-                        console.log("dhcp mode active");
+                        //console.log("dhcp mode active");
                         control.text = networkManager.ipAddr;
                         mask.text = networkManager.maskAddr
                         gateway.text = networkManager.routerAddr
@@ -118,7 +118,7 @@ Item {
                     }
                     else if(networkManager.enableDHCP === true)
                     {
-                        console.log("static mode active");
+                        //console.log("static mode active");
                         control.text = networkManager.ipAddr;
                         mask.text = networkManager.maskAddr
                         gateway.text = networkManager.routerAddr
@@ -143,14 +143,14 @@ Item {
 
                     if(networkManager.enableAP === false)
                     {
-                        console.log("ap mode active");
+                        //console.log("ap mode active");
                         control.text = networkManager.wlanIpAddr;
                         mask.text = networkManager.wlanMaskAddr
                         gateway.text = networkManager.wlanRouterAddr
                     }
                     else if(networkManager.enableAP === true)
                     {
-                        console.log("station mode active");
+                        //console.log("station mode active");
                         control.text = networkManager.wlanIpAddr;
                         mask.text = networkManager.wlanMaskAddr
                         gateway.text = networkManager.wlanRouterAddr
@@ -305,7 +305,7 @@ Item {
                     if(connectionTab.currentIndex === 0)
                     {
                         control.text = ipAddr;
-                        console.log("ipaddr is updated");
+                        //console.log("ipaddr is updated");
                     }
                 }
 
@@ -313,7 +313,7 @@ Item {
                     if(connectionTab.currentIndex === 0)
                     {
                         mask.text = maskAddr;
-                        console.log("maskAddr is updated");
+                        //console.log("maskAddr is updated");
                     }
                 }
 
@@ -321,7 +321,7 @@ Item {
                     if(connectionTab.currentIndex === 0)
                     {
                         gateway.text = routerAddr;
-                        console.log("routerAddr is updated");
+                        //console.log("routerAddr is updated");
                     }
                 }
 
@@ -329,7 +329,7 @@ Item {
                     if(connectionTab.currentIndex === 1)
                     {
                         control.text = wlanIpAddr;
-                        console.log("Wipaddr is updated");
+                        //console.log("Wipaddr is updated");
                     }
                 }
 
@@ -337,7 +337,7 @@ Item {
                     if(connectionTab.currentIndex === 1)
                     {
                         mask.text = wlanMaskAddr;
-                        console.log("WmaskAddr is updated");
+                        //console.log("WmaskAddr is updated");
                     }
                 }
 
@@ -345,7 +345,7 @@ Item {
                     if(connectionTab.currentIndex === 1)
                     {
                         gateway.text = wlanRouterAddr;
-                        console.log("WrouterAddr is updated");
+                        //console.log("WrouterAddr is updated");
                     }
                 }
 
@@ -353,7 +353,7 @@ Item {
                     if(connectionTab.currentIndex === 0)
                     {
                         tabBar.currentIndex = enableDHCP;
-                        console.log("enableDHCP is updated");
+                        //console.log("enableDHCP is updated");
                     }
                 }
 
@@ -361,7 +361,7 @@ Item {
                      if(connectionTab.currentIndex === 1)
                      {
                         tabBar.currentIndex = enableAP;
-                        console.log("enableAP is updated");
+                        //console.log("enableAP is updated");
                      }
                 }
 
@@ -370,9 +370,9 @@ Item {
             onClicked:
             {
                 //controlButton.qmlSignalForIpChange()
-                console.log("Apply is clicked");
-                console.log("tabbar "+tabBar.currentIndex);
-                console.log("connectionTab "+connectionTab.currentIndex);
+                //console.log("Apply is clicked");
+                //console.log("tabbar "+tabBar.currentIndex);
+                //console.log("connectionTab "+connectionTab.currentIndex);
                 if(connectionTab.currentIndex === 0)
                 {
                     if(tabBar.currentIndex === 0)
@@ -382,7 +382,7 @@ Item {
                     }
                     else if(tabBar.currentIndex === 1)
                     {
-                        console.log("static configuration");
+                        //console.log("static configuration");
                         networkManager.ipAddr = control.text;
                         networkManager.maskAddr = mask.text;
                         networkManager.routerAddr = gateway.text;

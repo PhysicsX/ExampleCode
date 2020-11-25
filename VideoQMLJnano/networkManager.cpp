@@ -12,11 +12,11 @@ NetworkManager::NetworkManager(): QObject()
     process.waitForFinished();
     QString p_stdout = process.readAllStandardOutput();
     QString p_stderr = process.readAllStandardError();
-    qDebug()<<p_stdout;
+    //qDebug()<<p_stdout;
     int lastSlash = p_stdout.lastIndexOf('\n');
     int prevSpace = p_stdout.lastIndexOf(' ');
     QString out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
-    qDebug()<<out;
+    //qDebug()<<out;
     if(out.contains("\n"))
         out = "";
 
@@ -58,11 +58,11 @@ NetworkManager::NetworkManager(): QObject()
     process.waitForFinished();
      p_stdout = process.readAllStandardOutput();
      p_stderr = process.readAllStandardError();
-    qDebug()<<p_stdout;
+    //qDebug()<<p_stdout;
     lastSlash = p_stdout.lastIndexOf('\n');
     prevSpace = p_stdout.lastIndexOf(' ');
     out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
-    qDebug()<<out;
+    //qDebug()<<out;
     if(out.contains("\n"))
         out = "";
 
@@ -72,11 +72,11 @@ NetworkManager::NetworkManager(): QObject()
     process.waitForFinished();
     p_stdout = process.readAllStandardOutput();
     p_stderr = process.readAllStandardError();
-    qDebug()<<p_stdout;
+    //qDebug()<<p_stdout;
     lastSlash = p_stdout.lastIndexOf('\n');
     prevSpace = p_stdout.lastIndexOf(' ');
     out = p_stdout.mid(prevSpace+1, lastSlash - prevSpace-1);
-    qDebug()<<out;
+    //qDebug()<<out;
     if(out.contains("\n"))
         out = "";
 
@@ -153,18 +153,18 @@ void NetworkManager::setStaticConf(QString ip, QString mask, QString gateway)
 
 void NetworkManager::applyNetwork(bool tabBar, bool conTab)
 {
-    qDebug()<<"applyNetwork is called";
-    qDebug()<<tabBar<<" "<<conTab;
+    //qDebug()<<"applyNetwork is called";
+    //qDebug()<<tabBar<<" "<<conTab;
     if(conTab == 0)
     {
         if(tabBar == 0)
         {
-            qDebug()<<"Wired DHCP settings";
+            //qDebug()<<"Wired DHCP settings";
             setDHCP();
         }
         else
         {
-            qDebug()<<"Wired Static settings";
+            //qDebug()<<"Wired Static settings";
             setStatic();
         }
 
@@ -174,7 +174,7 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
 
         if(tabBar == 0)
         {
-            qDebug()<<"Wifi AP settings";
+            //qDebug()<<"Wifi AP settings";
 
             QProcess process;
 
@@ -207,7 +207,7 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
 
             QTimer::singleShot(2000,[&]()
             {
-                qDebug()<<"timer single";
+                //qDebug()<<"timer single";
                 QProcess process;
                 process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
                 if(process.waitForFinished())
@@ -254,7 +254,7 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
         }
         else
         {
-            qDebug()<<"Wifi Station settings";
+            //qDebug()<<"Wifi Station settings";
 
             QProcess process;
 
@@ -294,14 +294,14 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
 
 void NetworkManager::setIpAddr(const QString &ip)
 {
-    qDebug()<<"setIpAddr";
+    //qDebug()<<"setIpAddr";
     m_ipAddr = ip;
     emit ipAddrChanged();
 }
 
 void NetworkManager::setEnableDHCP(const bool flag)
 {
-    qDebug()<<"setEnableDHCP";
+    //qDebug()<<"setEnableDHCP";
     m_enableDHCP = flag;
     emit enableDHCPChanged();
 }
@@ -458,7 +458,7 @@ bool NetworkManager::setStatic()
     bool result = false;
 
     QProcess process;
-    qDebug()<<"SetStatic function is called";
+    //qDebug()<<"SetStatic function is called";
     // set Manual for wired
     process.start("bash", QStringList()<<"-c"<<staticCmd);
     result = process.waitForFinished();
@@ -480,14 +480,14 @@ bool NetworkManager::setStatic()
     qDebug()<<p_stderr;
 
     QString gateway = m_routerAddr;
-    qDebug()<<gateway;
+    //qDebug()<<gateway;
     cmd = "nmcli con mod 'Wired connection 1' ipv4.gateway "+gateway;
     process.start("bash", QStringList()<<"-c"<<cmd);
     process.waitForFinished();
     p_stdout = process.readAllStandardOutput();
     p_stderr = process.readAllStandardError();
-    qDebug()<<p_stdout;
-    qDebug()<<p_stderr;
+    //qDebug()<<p_stdout;
+    //qDebug()<<p_stderr;
 
 //    QString mask = m_maskAddr;
 //    process.start("bash", QStringList()<<"-c"<<"nmcli con mod 'Wired connection 1' ipv4.method "+mask);

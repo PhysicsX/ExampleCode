@@ -6,7 +6,7 @@
 
 WifiConf::WifiConf(): QObject()
 {
-    qDebug()<<"wifi conf is called";
+    //qDebug()<<"wifi conf is called";
     QProcess process;
     QString p_stdout;
     QString p_stderr;
@@ -19,13 +19,13 @@ WifiConf::WifiConf(): QObject()
     QString hotspot = "Hotspot";
     if(p_stdout.contains(hotspot, Qt::CaseInsensitive))
     {
-        qDebug()<<"hotspot is active";
+        //qDebug()<<"hotspot is active";
         enableHot = true;
 
     }
     else
     {
-        qDebug()<<"station is active";
+        //qDebug()<<"station is active";
 
         process.start("bash", QStringList()<<"-c"<<"nmcli -f SSID device wifi");
         if(!process.waitForFinished())
@@ -35,6 +35,7 @@ WifiConf::WifiConf(): QObject()
         // QString str = "madam_curie\nhouse\noffice\noffice2";
 
         QStringList tmpList = p_stdout.split("\n");
+        //qDebug()<<"tmpList.size "<<tmpList.size();
         for(int i = 0 ; i < tmpList.size(); i++)
         {
             int truncateAt = tmpList[i].size();
@@ -48,15 +49,15 @@ WifiConf::WifiConf(): QObject()
             }
             tmpList[i].truncate(j+1);
         }
-        for(int i = 0; i < tmpList.size(); i++)
-        {
-            qDebug()<<"cons "<<tmpList[i];
-        }
-
-        tmpList.removeFirst(); // first is dummy SSID
+//        for(int i = 0; i < tmpList.size(); i++)
+//        {
+//            qDebug()<<"cons "<<tmpList[i];
+//        }
+        if(!tmpList.isEmpty())
+            tmpList.removeFirst(); // first is dummy SSID
 
         if(!tmpList.isEmpty())
-        tmpList.removeLast(); // last char
+            tmpList.removeLast(); // last char
         //ssidNames = tmp;
         setSsidNames(tmpList);
 
@@ -69,7 +70,7 @@ WifiConf::WifiConf(): QObject()
                 if(!processSingle.waitForFinished())
                     qDebug()<<"can not ssid list";
                 QString p_stdout = processSingle.readAllStandardOutput();
-                qDebug()<<p_stdout;
+               // qDebug()<<p_stdout;
                 // QString str = "madam_curie\nhouse\noffice\noffice2";
 
                 QStringList tmp = p_stdout.split("\n");
@@ -90,9 +91,10 @@ WifiConf::WifiConf(): QObject()
                 {
                     qDebug()<<tmp[i];
                 }
-
-                tmp.removeFirst(); // first is dummy SSID
-                tmp.removeLast(); // last char
+                if(!tmp.isEmpty())
+                    tmp.removeFirst(); // first is dummy SSID
+                if(!tmp.isEmpty())
+                    tmp.removeLast(); // last char
                 //ssidNames = tmp;
                 setSsidNames(tmp);
             });
@@ -175,7 +177,7 @@ QString WifiConf::getStationSsid() const
 
 void WifiConf::updateHotspot(QString name, QString pass)
 {
-    qDebug()<<"hotspot name "<<name<<" pass "<<pass;
+    //qDebug()<<"hotspot name "<<name<<" pass "<<pass;
     QProcess process;
     process.start("bash", QStringList()<<"-c"<<"nmcli -g general.connection device show wlan0"); // get connection name (id)
     if(!process.waitForFinished())
@@ -205,20 +207,20 @@ void WifiConf::updateHotspot(QString name, QString pass)
 
 void WifiConf::connectToNetwork(QString name, QString pass)
 {
-    qDebug()<<"connect name "<<name<<" pass "<<pass;
-    qDebug()<<name.length();
+    //qDebug()<<"connect name "<<name<<" pass "<<pass;
+    //qDebug()<<name.length();
     QProcess process;
     QString p_stdout;
     process.start("bash", QStringList()<<"-c"<<"nmcli d wifi connect '"+name+"' password '"+pass+"'");
     if(!process.waitForFinished())
         qDebug()<<"can not connect "+name;
     p_stdout = process.readAllStandardOutput();
-    qDebug()<<p_stdout;
+    //qDebug()<<p_stdout;
 }
 
 void WifiConf::reScan()
 {
-    qDebug()<<"reScan network";
+    //qDebug()<<"reScan network";
     QProcess process;
     QString p_stdout;
     process.start("bash", QStringList()<<"-c"<<"nmcli -f SSID device wifi");

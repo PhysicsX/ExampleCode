@@ -327,12 +327,12 @@ Window {
                               objectName: "networK"
                           }
                           ListElement {
-                              title: "Local"
-                              page: "Local.qml"
-                          }
-                          ListElement {
                               title: "Wifi"
                               page: "Wifi.qml"
+                          }
+                          ListElement {
+                              title: "Local"
+                              page: "Local.qml"
                           }
                           ListElement {
                               title: "Admin"

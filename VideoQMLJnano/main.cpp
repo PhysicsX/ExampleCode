@@ -11,11 +11,11 @@
 #include <QQmlProperty>
 #include <QVariant>
 #include <QProcess>
-#include "myclass.h"
+#include "helper.h"
 #include "networkManager.h"
 #include "wifiConf.h"
 
-//#define QT_NO_DEBUG_OUTPUT
+#define QT_NO_DEBUG_OUTPUT
 int main(int argc, char *argv[])
 {
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
         if(item2 == NULL)
             qDebug()<<"NUL";
 
-    MyClass myClass;
+    Helper helper;
 
-    myClass.setItem(item2);
+    helper.setItem(item2);
 
-    QObject::connect(item,SIGNAL(qmlSignal()),&myClass,SLOT(foo()));
+    QObject::connect(item,SIGNAL(qmlSignal()),&helper,SLOT(hideSettings()));
 
 
     QObject* item3 = NULL;
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
         qDebug()<<"NUL3";
 
 
-    MyClass myClass2; //experimental
+    //MyClass myClass2; //experimental
     //myClass2.setItem(item4);
-    QObject::connect(item3,SIGNAL(editingFinished()),&myClass2,SLOT(foo2()));
+    //QObject::connect(item3,SIGNAL(editingFinished()),&myClass2,SLOT(foo2()));
 
 
     auto rootObj = engine.rootObjects().at(0); //assume main.qml is loaded

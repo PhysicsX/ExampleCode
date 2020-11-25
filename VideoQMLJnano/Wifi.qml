@@ -11,8 +11,8 @@ Item {
 
     Component.onCompleted: {
 
-        console.log("wifiqml is loaded");
-        console.log(wifiConf.enableHot)
+        //console.log("wifiqml is loaded");
+        //console.log(wifiConf.enableHot)
         if(!wifiConf.enableHot)
         {
             station.visible = true;
@@ -23,8 +23,8 @@ Item {
             station.visible = false;
             hotspot.visible = true;
         }
-        console.log(wifiConf.ssidNames.length)
-        console.log(wifiConf.ssidNames[2])
+        //console.log(wifiConf.ssidNames.length)
+        //console.log(wifiConf.ssidNames[2])
 
         model.clear();
         for(var i = 0; i < wifiConf.ssidNames.length; i++)
@@ -42,7 +42,7 @@ Item {
     id: wifiConf
         onSsidNamesChanged:
         {
-            console.log("ssids updated");
+            //console.log("ssids updated");
             model.clear();
             for(var i = 0; i < wifiConf.ssidNames.length; i++)
             {
@@ -134,7 +134,7 @@ Item {
             id:hotspotButton
             onClicked:
             {
-                console.log("hotspotButton network is clicked");
+                //console.log("hotspotButton network is clicked");
                 wifiConf.updateHotspot(hotspotSsid.text, hotspotpass.text);
             }
         }
@@ -176,7 +176,7 @@ Item {
                             {
                                 list.currentIndex = index
                                 flagToUpt = true;
-                                console.log(flagToUpt)
+                                //console.log(flagToUpt)
                                 //rec2.color = "black";
                             }
 
@@ -242,9 +242,9 @@ Item {
                 id:connectButton
                 onClicked:
                 {
-                    console.log(control.text);
-                    console.log(model.get(list.currentIndex).name);
-                    console.log("connect network is clicked");
+                    //console.log(control.text);
+                    //console.log(model.get(list.currentIndex).name);
+                    //console.log("connect network is clicked");
                     wifiConf.connectToNetwork(model.get(list.currentIndex).name, control.text);
                 }
             }
@@ -271,7 +271,7 @@ Item {
             id:scanBtn
             onClicked:
             {
-                console.log("scanBtn is clicked");
+                //console.log("scanBtn is clicked");
                 wifiConf.reScan();
             }
             }

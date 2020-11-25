@@ -1,16 +1,15 @@
 #include <iostream>
 #include <QDebug>
 #include <QObject>
-#include "myclass.h"
+#include "helper.h"
 
-MyClass::MyClass():QObject()
+Helper::Helper():QObject()
 {
 
 }
 
-void MyClass::foo()
+void Helper::hideSettings()
 {
-    qDebug()<<"foo() is called";
     if(!item->property("visible").toBool())
     {
         item->setProperty("visible",true);
@@ -26,12 +25,12 @@ void MyClass::foo()
     }
 }
 
-void MyClass::setItem(QObject* it)
+void Helper::setItem(QObject* it)
 {
     item = it;
 }
 
-void MyClass::foo2()
-{
-    qDebug()<<"foo2() is called";
-}
+//void Helper::foo2()
+//{
+//    qDebug()<<"foo2() is called";
+//}

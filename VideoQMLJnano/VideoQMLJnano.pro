@@ -14,8 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        helper.cpp \
         main.cpp \
-        myclass.cpp \
         networkManager.cpp \
         wifiConf.cpp
 
@@ -33,7 +33,7 @@ else: unix:!android: target.path = /home/ulas/Desktop
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    myclass.h \
+    helper.h \
     networkManager.h \
     wifiConf.h
 

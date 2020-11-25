@@ -1,18 +1,18 @@
 #include <QObject>
 #include <QTimer>
 
-class MyClass : public QObject
+class Helper : public QObject
 {
 public:
     Q_OBJECT
         public slots:
-        void foo();
-        void foo2();
+        void hideSettings();
+        //void foo2();
 
         public:
         void setItem(QObject* it);
         QTimer timer;
         QObject* item;
-        MyClass();
-        ~MyClass(){};
+        Helper();
+        ~Helper(){};
 };
