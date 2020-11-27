@@ -70,7 +70,8 @@ Window {
         {
         //source:"qrc:/settings.png"
         //source:"file:/home/jnano/Downloads/settings.png"
-        source:"file:/home/ulas/Desktop/settings.png"
+        //source:"file:/home/ulas/Desktop/settings.png"
+        source:"settings.png"
         fillMode:  Image.Tile
         anchors.fill: parent
         opacity: 0.3
@@ -143,7 +144,8 @@ Window {
                         {
                         //source:"qrc:/back.png"
                         //source:"file:/home/jnano/Downloads/back.png"
-                        source:"file:/home/ulas/Desktop/back.png"
+                        //source:"file:/home/ulas/Desktop/back.png"
+                        source:"back.png"
                         fillMode:  Image.PreserveAspectFit
                         anchors.fill: parent
                         sourceSize.width: 40
@@ -265,7 +267,8 @@ Window {
                       {
                       //source:"qrc:/back.png"
                       //source:"file:/home/jnano/Downloads/back.png"
-                      source:"file:/home/ulas/Desktop/back.png"
+                      //source:"file:/home/ulas/Desktop/back.png"
+                      source:"back.png"
                       fillMode:  Image.PreserveAspectFit
                       anchors.fill: parent
                       sourceSize.width: 40
@@ -382,7 +385,7 @@ Window {
                                     fillMode: Image.PreserveAspectFit
                                     //source:"qrc:/"+title+".png"
                                     //source:"file:/home/jnano/Downloads/"+title+".png"
-                                    source:"file:/home/ulas/Desktop/"+title+".png"
+                                    source:""+title+".png"
                                 }
                                 onClicked: stackView.push(Qt.resolvedUrl(page))
                             }
