@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QProcess>
 #include "networkManager.h"
-
+#include <thread>
 
 NetworkManager::NetworkManager(): QObject()
 {
@@ -204,10 +204,10 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
                 qDebug()<<"wifi can not started, check wifi hardware is exist";
 
 
+            std::thread t([this](){
 
-            QTimer::singleShot(2000,[&]()
-            {
-                //qDebug()<<"timer single";
+                std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
                 QProcess process;
                 process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
                 if(process.waitForFinished())
@@ -238,7 +238,7 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
                 process.start("bash", QStringList()<<"-c"<<cmd);
                 process.waitForFinished();
                 p_stdout = process.readAllStandardOutput();
-                qDebug()<<"wif ip addr " + p_stdout;
+                //qDebug()<<"wif ip addr " + p_stdout;
 
                 int lastSlash = p_stdout.lastIndexOf('/');
                 //prevSpace = p_stdout.lastIndexOf(' ');
@@ -250,7 +250,57 @@ void NetworkManager::applyNetwork(bool tabBar, bool conTab)
                 setWlanIpAddr(wIp);
                 setWlanMaskAddr("");
                 setWlanRouterAddr("");
+
             });
+            t.detach();
+
+
+//            QTimer::singleShot(2000,[&]()
+//            {
+//                //qDebug()<<"timer single";
+//                QProcess process;
+//                process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
+//                if(process.waitForFinished())
+//                    qDebug()<<"Hotspot is created";
+//                else
+//                    qDebug()<<"Hotspot can not be created";
+
+
+//                process.start("bash", QStringList()<<"-c"<<"nmcli -g general.connection device show wlan0"); // get connection name (id)
+//                if(!process.waitForFinished())
+//                    qDebug()<<"can not get hotspot name";
+//                QString p_stdout = process.readAllStandardOutput();
+//                qDebug()<<p_stdout;
+//                QString hotspot = "Hotspot";
+//                if(p_stdout.contains(hotspot, Qt::CaseInsensitive))
+//                {
+//                    QString cmd = "nmcli con up"+hotspot;
+//                    process.start("bash", QStringList()<<"-c"<<cmd);
+//                    if(!process.waitForFinished())
+//                        qDebug()<<"Hotspot can not bring up";
+//                }
+//                else
+//                {
+//                    qDebug()<<"Hotspot name can not find";
+//                }
+
+//                QString cmd = "nmcli -g ip4.address device show wlan0";
+//                process.start("bash", QStringList()<<"-c"<<cmd);
+//                process.waitForFinished();
+//                p_stdout = process.readAllStandardOutput();
+//                qDebug()<<"wif ip addr " + p_stdout;
+
+//                int lastSlash = p_stdout.lastIndexOf('/');
+//                //prevSpace = p_stdout.lastIndexOf(' ');
+//                QString out = p_stdout.mid(0, lastSlash);
+//                if(out.contains("\n"))
+//                    out = "";
+
+//                QString wIp = out;
+//                setWlanIpAddr(wIp);
+//                setWlanMaskAddr("");
+//                setWlanRouterAddr("");
+//            });
         }
         else
         {

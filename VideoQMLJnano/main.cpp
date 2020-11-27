@@ -14,6 +14,7 @@
 #include "helper.h"
 #include "networkManager.h"
 #include "wifiConf.h"
+#include <thread>
 
 #define QT_NO_DEBUG_OUTPUT
 int main(int argc, char *argv[])
@@ -93,8 +94,10 @@ int main(int argc, char *argv[])
         qDebug()<<"wifi can not started, check wifi hardware is exist";
 
 
+    std::thread t([](){
 
-    QTimer::singleShot(2000,[&](){
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
         QProcess process;
         process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
         if(process.waitForFinished())
@@ -121,6 +124,36 @@ int main(int argc, char *argv[])
         }
 
     });
+    t.detach();
+
+
+//    QTimer::singleShot(2000,[&](){
+//        QProcess process;
+//        process.start("bash", QStringList()<<"-c"<<"nmcli dev wifi hotspot ifname wlan0 ssid EPILOG_AP password 'epilog2020'");
+//        if(process.waitForFinished())
+//            qDebug()<<"Hotspot is created";
+//        else
+//            qDebug()<<"Hotspot can not be created";
+
+//        process.start("bash", QStringList()<<"-c"<<"nmcli -g general.connection device show wlan0"); // get connection name (id)
+//        if(!process.waitForFinished())
+//            qDebug()<<"can not get hotspot name";
+//        QString p_stdout = process.readAllStandardOutput();
+//        qDebug()<<p_stdout;
+//        QString hotspot = "Hotspot";
+//        if(p_stdout.contains(hotspot, Qt::CaseInsensitive))
+//        {
+//            QString cmd = "nmcli con up"+hotspot;
+//            process.start("bash", QStringList()<<"-c"<<cmd);
+//            if(!process.waitForFinished())
+//                qDebug()<<"Hotspot can not bring up";
+//        }
+//        else
+//        {
+//            qDebug()<<"Hotspot name can not find";
+//        }
+
+//    });
 
     return app.exec();
 }

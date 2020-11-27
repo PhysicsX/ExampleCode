@@ -72,7 +72,7 @@ Item {
             color: "green"
             font.pixelSize: 28
             font.weight: Font.DemiBold
-            text: wifiConf.enableHot ? 'Update ssid and password' : 'Double tap to connect'
+            text: wifiConf.enableHot ? 'Update ssid and password' : 'choose to connect'
          }
     }
 
@@ -172,7 +172,8 @@ Item {
                             font.weight: Font.DemiBold
                             text: 'Strength: ' + number }
                         TapHandler{
-                            onDoubleTapped:
+                            //onDoubleTapped:
+                            onTapped:
                             {
                                 list.currentIndex = index
                                 flagToUpt = true;
@@ -198,7 +199,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
-                    text: 'Connect to ' + model.get(list.currentIndex).name
+                    //text: 'Connect to ' + model.get(list.currentIndex).name
                     color: flagToUpt ? 'white' : 'transparent'
                     font.pixelSize: 18
                 }
