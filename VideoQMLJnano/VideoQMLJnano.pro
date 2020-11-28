@@ -14,7 +14,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        admin.cpp \
+        alarm.cpp \
         helper.cpp \
+        local.cpp \
         main.cpp \
         networkManager.cpp \
         wifiConf.cpp
@@ -33,7 +36,10 @@ else: unix:!android: target.path = /home/ulas/Desktop
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    admin.h \
+    alarm.h \
     helper.h \
+    local.h \
     networkManager.h \
     wifiConf.h
 
@@ -42,10 +48,12 @@ DISTFILES += \
     AndroidDelegate.qml \
     DesignDelegate.qml \
     Local.qml \
+    Wifi.png \
     Wifi.qml \
     content/Admin.qml \
     content/Alarm.qml \
     content/DesignDelegate.qml \
     delegate.qml \
     index.png \
-    network.qml
+    network.qml \
+    settings.png

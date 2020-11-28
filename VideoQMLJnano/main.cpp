@@ -15,6 +15,7 @@
 #include "networkManager.h"
 #include "wifiConf.h"
 #include <thread>
+#include "admin.h"
 
 #define QT_NO_DEBUG_OUTPUT
 int main(int argc, char *argv[])
@@ -28,6 +29,9 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<NetworkManager>("com.ulasdikme.networkManager",1,0,"NetworkManager");
     qmlRegisterType<WifiConf>("com.ulasdikme.wifiConf",1,0,"WifiConf");
+    qmlRegisterType<WifiConf>("com.ulasdikme.admin",1,0,"Admin");
+    qmlRegisterType<WifiConf>("com.ulasdikme.local",1,0,"Local");
+    qmlRegisterType<WifiConf>("com.ulasdikme.alarm",1,0,"Alarm");
 
 
     QQmlApplicationEngine engine;

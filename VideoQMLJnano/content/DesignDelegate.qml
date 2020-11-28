@@ -108,7 +108,7 @@ Item {
             //anchors.fill: parent
             onTapped: {
                 root.clicked()
-                console.log("right clicked")
+                //console.log("right clicked")
             }
         }
 }

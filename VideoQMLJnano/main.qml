@@ -128,9 +128,9 @@ Window {
                 id: title
                 y: 14
                 color: "blue"
-                width: 800
+                width: windowMain.width
                 height: 40
-                z:99;
+                z:99
                 Rectangle
                 {
                     id:back
@@ -250,7 +250,7 @@ Window {
               id: titleSettings
               y: 14
               color: "blue"
-              width: 800
+              width: parent.width
               height: 40
 
               Rectangle
@@ -334,13 +334,18 @@ Window {
                               page: "Wifi.qml"
                           }
                           ListElement {
-                              title: "Local"
-                              page: "Local.qml"
-                          }
-                          ListElement {
                               title: "Admin"
                               page: "Admin.qml"
                           }
+                          ListElement {
+                              title: "Alarm"
+                              page: "Alarm.qml"
+                          }
+                          ListElement {
+                              title: "Local"
+                              page: "Local.qml"
+                          }
+
                   }
 
 
