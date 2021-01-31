@@ -1,0 +1,10 @@
+; UNTITLED1W32.def : Declares the module parameters.
+
+LIBRARY      "Untitled1W32.DLL"
+
+EXPORTS
+	DllCanUnloadNow      PRIVATE
+	DllGetClassObject    PRIVATE
+	DllRegisterServer    PRIVATE
+	DllUnregisterServer	 PRIVATE
+	DllGetTcCtrl		 PRIVATE
