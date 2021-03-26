@@ -1,8 +1,5 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <cstdlib>
-#include <functional>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -40,6 +37,7 @@ int main(int argc, char* argv[])
                 websocket::stream<tcp::socket> ws{std::move(const_cast<tcp::socket&>(q))};
                     
                 // Set a decorator to change the Server of the handshake
+                // no need to set. It ıs not necessary
                 ws.set_option(websocket::stream_base::decorator(
                     [](websocket::response_type& res)
                     {
