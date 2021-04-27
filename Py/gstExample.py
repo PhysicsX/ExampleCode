@@ -3,17 +3,17 @@ print(cv2.__version__)
 
 
 # Cam properties
-fps = 30.
-frame_width = 1920
-frame_height = 1080
+fps = 30
+frame_width = 960
+frame_height = 720
 
+#gst-launch-1.0 shmsrc socket-path=/tmp/foo ! 'video/x-raw, format=(string)I420, width=(int)960, height=(int)720, framerate=(fraction)30/1' ! xvimagesink
 
-
-dispW=640
-dispH=480
-flip=2
+dispW=960
+dispH=720
+flip=0
 #Uncomment These next Two Line for Pi Camera
-camSet='nvarguscamerasrc !  video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method='+str(flip)+' ! video/x-raw, width='+str(dispW)+', height='+str(dispH)+', format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
+camSet='nvarguscamerasrc !  video/x-raw(memory:NVMM), width=960, height=720, format=(string)NV12, framerate=(fraction)30/1 ! nvvidconv flip-method=0 ! video/x-raw, width='+str(dispW)+', height='+str(dispH)+', format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
 cam= cv2.VideoCapture(camSet)
  
 #Or, if you have a WEB cam, uncomment the next line
