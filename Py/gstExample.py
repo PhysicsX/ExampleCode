@@ -1,35 +1,48 @@
 import cv2
 print(cv2.__version__)
 
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+def detect_face(img):
+    face_img = img.copy()
+    face_rectangle = face_cascade.detectMultiScale(face_img)
+
+    for (x, y, w, h) in face_rectangle:
+        cv2.rectangle(face_img, (x, y), (x + w, y + h), (255, 255, 255), 10)
+
+    return face_img
 
 # Cam properties
-fps = 30
-frame_width = 960
+fps = 21
+frame_width = 1280
 frame_height = 720
 
 #gst-launch-1.0 shmsrc socket-path=/tmp/foo ! 'video/x-raw, format=(string)I420, width=(int)960, height=(int)720, framerate=(fraction)30/1' ! xvimagesink
 
-dispW=960
+dispW=1280
 dispH=720
 flip=0
 #Uncomment These next Two Line for Pi Camera
-camSet='nvarguscamerasrc !  video/x-raw(memory:NVMM), width=960, height=720, format=(string)NV12, framerate=(fraction)30/1 ! nvvidconv flip-method=0 ! video/x-raw, width='+str(dispW)+', height='+str(dispH)+', format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
+camSet='nvarguscamerasrc !  video/x-raw(memory:NVMM), width=3820, height=2464, format=(string)NV12, framerate=(fraction)21/1 ! nvvidconv flip-method=0 ! video/x-raw, width='+str(dispW)+', height='+str(dispH)+', format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
 cam= cv2.VideoCapture(camSet)
  
 #Or, if you have a WEB cam, uncomment the next line
 #(If it does not work, try setting to '1' instead of '0')
 #cam=cv2.VideoCapture(0)
-gst_str = "appsrc ! videoconvert ! shmsink socket-path=/tmp/foo sync=true wait-for-connection=false shm-size=10000000"
+gst_str = "appsrc ! queue ! shmsink socket-path=/tmp/foo sync=false wait-for-connection=false"
 
 
 # Create videowriter as a SHM sink
-out = cv2.VideoWriter(gst_str, 0, fps, (frame_width, frame_height), True)
+
+fourcc = cv2.VideoWriter_fourcc('I','4','2','0')
+out = cv2.VideoWriter(gst_str, fourcc, fps, (frame_width, frame_height), True)
 
 
 
 while True:
     ret, frame = cam.read()
-    #cv2.imshow('nanoCam',frame)
+    frame = detect_face(frame)
+    cv2.imshow('nanoCam',frame)
     frame = cv2.flip(frame,1)
     out.write(frame)
     if cv2.waitKey(1)==ord('q'):
