@@ -17,6 +17,11 @@ fps = 21
 frame_width = 1280
 frame_height = 720
 
+
+#Example for clıent
+# gst-launch-1.0 shmsrc socket-path=/tmp/foo do-timestamp=true ! "video/x-raw, format=(string)BGR, width=(int)1280, height=(int)720, framerate=(fraction)30/1" ! autovideoconvert ! xvimagesink
+
+#this is wrong. Format should be converted to BGR.
 #gst-launch-1.0 shmsrc socket-path=/tmp/foo ! 'video/x-raw, format=(string)I420, width=(int)960, height=(int)720, framerate=(fraction)30/1' ! xvimagesink
 
 dispW=1280
