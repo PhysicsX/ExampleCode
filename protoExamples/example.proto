@@ -1,0 +1,26 @@
+// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto3";
+
+// [START messages]
+message Person {
+
+  optional uint32 id = 1; 
+  optional uint32 number = 2;  // Unique ID number for this person.
+  optional uint32 anotherId = 3; 
+  optional uint32 aid = 4;
+  optional uint32 bid = 5;
+  optional uint32 cid = 6;
+  optional uint32 did = 7;
+  optional uint32 eid = 8;
+  optional uint32 fid = 9;
+  optional uint32 gid = 10;
+
+}
