@@ -56,19 +56,29 @@ int main()
 
 
         // getting response from server
-        boost::asio::streambuf receive_buffer;
-        boost::asio::read(socket, receive_buffer,boost::asio::transfer_exactly(size), error);
-        
+        boost::array<char,1024> buf;
+
+        size_t len = socket.read_some(boost::asio::buffer(buf), error);
+    
         if( error ) {
             std::cout << "receive failed: " << error.message() << std::endl;
         }
         else {
-            const char* data = boost::asio::buffer_cast<const char*>(receive_buffer.data());
             
             Person per2;
-            per2.ParseFromArray(data, sizeof(data));
+            per2.ParseFromArray(buf.data(), len);
+
             //std::cout<<per2.id()<<std::endl;
+            //std::cout<<per2.anotherid()<<std::endl;
             //std::cout<<per2.number()<<std::endl;
+            //std::cout<<per2.aid()<<std::endl;
+            //std::cout<<per2.bid()<<std::endl;
+            //std::cout<<per2.cid()<<std::endl;
+            //std::cout<<per2.did()<<std::endl;
+            //std::cout<<per2.eid()<<std::endl;
+            //std::cout<<per2.fid()<<std::endl;
+            //std::cout<<per2.gid()<<std::endl; 
+            
         }
 
 

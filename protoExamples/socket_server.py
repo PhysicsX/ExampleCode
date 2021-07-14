@@ -5,7 +5,7 @@ from time import sleep
 import example_pb2
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 7000        # Port to listen on (non-privileged ports are > 1023)
+PORT = 2389        # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -43,8 +43,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             write.fid = 5001
             write.gid = 5001
             out = write.SerializeToString()
-   
-
+  
             conn.sendall(out)
-            #sleep(0.01)
             
