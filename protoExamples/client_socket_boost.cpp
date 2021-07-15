@@ -48,12 +48,12 @@ int main()
             std::cout<<"serialize problem"<<std::endl;
         
         boost::system::error_code error;
-	    boost::asio::write( socket, boost::asio::buffer(buffer, size), error );
+	    //boost::asio::write( socket, boost::asio::buffer(buffer, size), error );
+        socket.write_some(boost::asio::buffer(buffer, size),error);
         if(error)
 	    {
 		    std::cout << "send failed: " << error.message() << std::endl;
         }
-
 
         // getting response from server
         boost::array<char,1024> buf;
@@ -64,21 +64,19 @@ int main()
             std::cout << "receive failed: " << error.message() << std::endl;
         }
         else {
-            
+
             Person per2;
             per2.ParseFromArray(buf.data(), len);
-
-            //std::cout<<per2.id()<<std::endl;
-            //std::cout<<per2.anotherid()<<std::endl;
-            //std::cout<<per2.number()<<std::endl;
-            //std::cout<<per2.aid()<<std::endl;
-            //std::cout<<per2.bid()<<std::endl;
-            //std::cout<<per2.cid()<<std::endl;
-            //std::cout<<per2.did()<<std::endl;
-            //std::cout<<per2.eid()<<std::endl;
-            //std::cout<<per2.fid()<<std::endl;
-            //std::cout<<per2.gid()<<std::endl; 
-            
+            // std::cout<<per2.id()<<std::endl;
+            // std::cout<<per2.anotherid()<<std::endl;
+            // std::cout<<per2.number()<<std::endl;
+            // std::cout<<per2.aid()<<std::endl;
+            // std::cout<<per2.bid()<<std::endl;
+            // std::cout<<per2.cid()<<std::endl;
+            // std::cout<<per2.did()<<std::endl;
+            // std::cout<<per2.eid()<<std::endl;
+            // std::cout<<per2.fid()<<std::endl;
+            // std::cout<<per2.gid()<<std::endl; 
         }
 
 
