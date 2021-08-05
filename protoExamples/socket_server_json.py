@@ -17,19 +17,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data = conn.recv(1024)
             if not data:
                 break
-            #x = '{"name":"John", "age":30, "city":"New York"}'
 
             data = data.decode('utf-8')
-            print(data)
-            #print(x)
-            y = json.loads(data)
-
-            print(y)
-            print(y['action'])
+            #print(data)
             d = json.dumps(data)
 
             send_data = {}
-            send_data['key'] = 'value'
+            send_data['id'] = '5000'
+            send_data['id2'] = '5000'
+            send_data['id3'] = '5000'
+            send_data['id4'] = '5000'
+            send_data['id5'] = '5000'
+            send_data['id6'] = '5000'
+            send_data['id7'] = '5000'            
+            send_data['id8'] = '5000'
+            send_data['id9'] = '5000'
+            send_data['id10'] = '5000'
             json_data = json.dumps(send_data)
 
             conn.sendall(bytes(json_data,encoding="utf-8"))
