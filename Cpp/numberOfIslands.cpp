@@ -18,35 +18,35 @@ class Solution
 			
 			int numberOfRows = vec.size();
 			int numberOfColumns = vec.at(0).size();
-			vector<int> neighborCorr = {0,1,0,-1,0};
+			vector<std::pair<int,int>> neighborCorr = {{0,1},{1,0},{0,-1},{-1,0}};
 
 			for(int i=0; i<numberOfRows; i++)
 			{
 				for(int j=0; j<numberOfColumns; j++)
 				{
-					if(vec.at(i).at(j) == '1')
+					if(vec[i][j] == '1')
 					{
 						result++;
 						queue<pair<int,int>> que;
 						que.push({i,j});
-						vec.at(i).at(j) = '0';
+						vec[i][j] = '0';
 
 						while(!que.empty())
 						{
 							auto p = que.front();
 							que.pop();
 
-							for(int k=0; k<neighborCorr.size(); k++)
+							for(const auto& coor : neighborCorr)
 							{
 							
-								int x = p.first + neighborCorr[k];
-								int y = p.second + neighborCorr[k+1];
+								int x = p.first + coor.first;
+								int y = p.second + coor.second;
 
 								if(x>=0 && x<numberOfRows && y>=0 && y<numberOfColumns)
 								{
-									if(vec.at(x).at(y) == '1')
+									if(vec[x][y] == '1')
 									{
-										vec.at(x).at(y) = '0';
+										vec[x][y] = '0';
 										que.push({x,y});
 									}
 								}
@@ -70,14 +70,14 @@ int main()
         {'0','1','0','1','1','1','0'},
         {'1','1','0','1','1','1','0'},
         {'0','1','0','1','1','1','0'},
-        {'1','0','0','1','1','1','0'},
+        {'1','0','0','0','0','0','0'},
         {'0','1','0','1','1','1','0'},
         {'0','1','0','1','1','1','0'},
         {'0','1','0','1','1','1','0'}
 
         };
-        Solution s;
-        cout<<s.numOfIsland(grid)<<endl;
+        
+        cout<<Solution().numOfIsland(grid)<<endl;
 
         return 1;
 }
