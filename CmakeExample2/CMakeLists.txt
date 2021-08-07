@@ -3,8 +3,6 @@ project(ExampleProject)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(src)
-
 add_subdirectory(tst)
 add_subdirectory(src)
 
