@@ -14,22 +14,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print('Connected by', addr)
         while True:
-            data = conn.recv(1024)
+            data = conn.recv(30) # fix for size of the protobuf message
             if not data:
                 break
             
             example = example_pb2.Person()
             example.ParseFromString(data)
-            #print ("Person ID:", example.id)
-            #print ("Person ID:", example.number)
-            #print ("Person ID:", example.anotherId)
-            #print ("Person ID:", example.aid)
-            #print ("Person ID:", example.bid)
-            #print ("Person ID:", example.cid)
-            #print ("Person ID:", example.did)
-            #print ("Person ID:", example.eid)
-            #print ("Person ID:", example.fid)
-            #print ("Person ID:", example.gid)
+            # print ("Person ID:", example.id)
+            # print ("Person ID:", example.number)
+            # print ("Person ID:", example.anotherId)
+            # print ("Person ID:", example.aid)
+            # print ("Person ID:", example.bid)
+            # print ("Person ID:", example.cid)
+            # print ("Person ID:", example.did)
+            # print ("Person ID:", example.eid)
+            # print ("Person ID:", example.fid)
+            # print ("Person ID:", example.gid)
 
             write = example_pb2.Person()
             write.id = 5001

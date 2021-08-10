@@ -49,7 +49,7 @@ int main()
         Json::StreamWriterBuilder builder;
         const std::string json_file = Json::writeString(builder, root);
         //std::cout << json_file << std::endl;
-
+        boost::system::error_code error;
         socket.write_some(boost::asio::buffer(json_file.c_str(), json_file.size()),error);
         if(error)
         {
@@ -59,7 +59,7 @@ int main()
         boost::array<char,1024> buf;
 
         size_t len = socket.read_some(boost::asio::buffer(buf), error);
-        
+        std::cout<<len<<std::endl;
         std::string str;
 
         std::copy(buf.begin(), buf.begin()+len, std::back_inserter(str));
