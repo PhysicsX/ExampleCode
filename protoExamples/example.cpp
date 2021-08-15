@@ -1,7 +1,6 @@
 #include <iostream>
-#include "example.pb.h"
+#include "test.pb.h"
 #include <fstream>      // std::filebuf
-
 #include <chrono>
 #include <thread> 
 int main()
@@ -9,6 +8,44 @@ int main()
 
     /// serialize to bytearray
 
+	Test test;
+
+	test.set_number(1);
+	test.set_name("something");
+
+	endl(std::cout);
+	size_t size = test.ByteSizeLong();
+	std::cout<<"size "<<size<<std::endl;
+
+	// serialize to array
+	void *buffer = malloc(size);
+	bool flag = test.SerializeToArray(buffer, size);
+	if(flag == false)
+		std::cout<<"problem"<<std::endl;
+
+	Test testRead;
+	testRead.ParseFromArray(buffer, size);
+	std::cout<<"number "<<testRead.number()<<std::endl;
+	std::cout<<"name "<<testRead.name()<<std::endl;
+
+	
+	// serialize to string
+	Test testString;
+	testString.set_number(23);
+	testString.add_id(24);
+	testString.add_id(25);
+	testString.add_id(26);
+
+	std::string str = testString.SerializeAsString();
+
+	Test testStringRead;
+	testStringRead.ParseFromString(str);
+	std::cout<<"number string "<<testStringRead.number()<<std::endl;
+	std::cout<<testStringRead.id_size()<<std::endl;
+	std::cout<<testStringRead.id(0)<<std::endl;
+
+	std::cout<<testStringRead.id(1)<<std::endl;
+	/*
     Person per;
     per.set_id(5000);
     per.set_number(5000);
@@ -40,9 +77,6 @@ int main()
     std::cout<<"id "<<per3.number();
     endl(std::cout);
     std::cout<<"id "<<per3.anotherid();
-
-
-
 
     //serialize to string
 
@@ -97,7 +131,7 @@ int main()
 
 
 
-
+*/
 
     return 0;
 }

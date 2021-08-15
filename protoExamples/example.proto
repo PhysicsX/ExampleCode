@@ -12,8 +12,8 @@ syntax = "proto3";
 // [START messages]
 message Person {
 
-  optional uint32 id = 1; 
-  optional uint32 number = 2;  // Unique ID number for this person.
+  optional uint32 id = 1;
+  optional string number = 2;  // Unique ID number for this person.
   optional uint32 anotherId = 3; 
   optional uint32 aid = 4;
   optional uint32 bid = 5;
