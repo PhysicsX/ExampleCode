@@ -97,7 +97,7 @@ public:
 int main(int argc, char* argv[])
 {
 
-    auto const port = static_cast<unsigned short int>(std::atoi("8083"));
+    auto const port = 8083;
     net::io_context ioc{};
 
     std::make_shared<Listener>(ioc,port)->asyncAccept();
