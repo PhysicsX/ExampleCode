@@ -15,22 +15,18 @@ int MaxChildRanges(iter b1, iter e1, iter b2, iter e2)
 {
     auto& mem = vec[e1-b1][e2-b2];
     
+    int result;
     if(mem != -1)
-        return mem;
+        result = mem;
+    else if(b1==e1 || b2==e2)
+        result = 0;
+    else if(*b1 == *b2)
+        result = 1 + MaxChildRanges(next(b1), e1, next(b2), e2);
+    else
+        result = max( MaxChildRanges(next(b1), e1, b2, e2),
+                    MaxChildRanges(b1, e1, next(b2), e2));
 
-    if(b1==e1 || b2==e2)
-        return 0;
-
-    if(*b1 == *b2)
-    {
-        mem = 1 + MaxChildRanges(next(b1), e1, next(b2), e2);
-        return mem;
-    }
-
-    mem = max( MaxChildRanges(next(b1), e1, b2, e2),
-                MaxChildRanges(b1, e1, next(b2), e2));
-
-    return mem;
+    return result;
 }
 
 int commonChild(const string& s1, const string& s2) {
