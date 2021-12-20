@@ -2,10 +2,13 @@
 #include <iostream>
 #include <vector>
   
+// A directed graph G is acyclic if and only if 
+// a depth first search of G yields no back edges
 class Graph
 {
+    using graph = std::vector<std::vector<int>>;
     int V;    // No. of vertices
-    std::vector<std::vector<int>> graph; // two dimensional graph
+    graph g; // two dimensional vector to represent the graph
     bool isCyclicUtil(int v, std::vector<bool>& visited, std::vector<bool>& rs);  // used by isCyclic()
 public:
     Graph(int V);   // Constructor
@@ -16,12 +19,12 @@ public:
 Graph::Graph(int V)
 {
     this->V = V;
-    graph = std::vector<std::vector<int>>(V,std::vector<int>());
+    g = std::move(graph(V,std::vector<int>()));
 }
    
 void Graph::addEdge(int v, int w)
 {
-    graph[v].push_back(w);  // add  v and w to graph
+    g[v].push_back(w);  // add  v and w to graph
 }
   
 bool Graph::isCyclicUtil(int v, std::vector<bool>& visited, std::vector<bool>& recStack)
@@ -30,7 +33,7 @@ bool Graph::isCyclicUtil(int v, std::vector<bool>& visited, std::vector<bool>& r
         visited[v] = true;
         recStack[v] = true;
         // Recur for all the vertices adjacent to this vertex
-        for(auto s : graph[v])
+        for(auto s : g[v])
         {
             if(visited[v] == false)
             {
