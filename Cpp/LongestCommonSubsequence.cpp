@@ -8,7 +8,7 @@ using iter = std::string::const_iterator;
 int MaxChildRanges(iter b1, iter e1, iter b2, iter e2, 
 const std::vector<std::vector<int>>& vec)
 {
-    auto& mem = vec[e1-b1][e2-b2];
+    const auto& mem = vec[e1-b1][e2-b2];
     
     int result;
     if(mem != -1)
