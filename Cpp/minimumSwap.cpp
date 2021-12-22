@@ -8,14 +8,14 @@ class Solution
     public:
 
         
-        int minimumSwapToSort(std::vector<int>& vec)
+        int minimumSwapToSort(const std::vector<int>& vec)
         {
-            int result = 0;
-            int size = vec.size();
+            int result{0};
+            const size_t size{vec.size()};
             
             std::pair<int,int> pos[size];
             
-            for(int i = 0; i<size; i++)
+            for(size_t i = 0; i<size; i++)
             {
                 pos[i].first = vec[i];
                 pos[i].second = i;
@@ -28,12 +28,12 @@ class Solution
             
             std::vector<int> visited(size, false);
             
-            for(int i=0; i<size; i++)
+            for(size_t i=0; i<size; i++)
             {
-                if(visited[i] || pos[i].second == i)
+                if(visited[i] || pos[i].second == (int)i)
                     continue;
                 
-                int cycleSize = 0;
+                int cycleSize{0};
                 int j = i;
                 while(!visited[j])
                 {
@@ -44,15 +44,10 @@ class Solution
                 }
                 
                 if(cycleSize > 0)
-                    result += (cycleSize -1);
-                    
+                    result += (cycleSize -1);       
             }
-                                         
-            
             return result;
         }
-        
-
 };
 
 
