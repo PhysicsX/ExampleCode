@@ -29,21 +29,23 @@ void Graph::addEdge(int v, int w)
   
 bool Graph::isCyclicUtil(int v, std::vector<bool>& visited, std::vector<bool>& recStack)
 {
-        // Mark the current node as visited and part of recursion stack
-        visited[v] = true;
-        recStack[v] = true;
-        // Recur for all the vertices adjacent to this vertex
-        for(auto s : g[v])
+    // Mark the current node as visited and part of recursion stack
+    visited[v] = true;
+    recStack[v] = true;
+    
+    // Recur for all the vertices adjacent to this vertex
+    for(auto s : g[v])
+    {
+        if(visited[s] == false)
         {
-            if(visited[s] == false)
-            {
-                if (!visited[s] && isCyclicUtil(s, visited, recStack) )
-                    return true;
-            }
-            else if (recStack[s]) // If visited[s] is TRUE then check only recursionStack
+            if (isCyclicUtil(s, visited, recStack))
                 return true;
-            
         }
+        else if (recStack[s]) // If visited[s] is TRUE then check only recursionStack
+            return true;
+            
+    }
+    
     recStack[v] = false;  // remove the vertex from recursion stack
     return false;
 }
