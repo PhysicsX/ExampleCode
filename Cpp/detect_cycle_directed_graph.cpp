@@ -35,12 +35,12 @@ bool Graph::isCyclicUtil(int v, std::vector<bool>& visited, std::vector<bool>& r
         // Recur for all the vertices adjacent to this vertex
         for(auto s : g[v])
         {
-            if(visited[v] == false)
+            if(visited[s] == false)
             {
                 if (!visited[s] && isCyclicUtil(s, visited, recStack) )
                     return true;
             }
-            else if (recStack[s])
+            else if (recStack[s]) // If visited[s] is TRUE then check only recursionStack
                 return true;
             
         }
@@ -76,8 +76,25 @@ int main()
     g.addEdge(3, 3);
   
     if(g.isCyclic())
-        std::cout << "Graph contains cycle";
+        std::cout << "Graph contains cycle"<<std::endl;
     else
-        std::cout << "Graph doesn't contain cycle";
+        std::cout << "Graph doesn't contain cycle"<<std::endl;
+    
+    Graph g2(9);
+    g2.addEdge(0,1);
+    g2.addEdge(1,2);
+    g2.addEdge(2,3);
+    g2.addEdge(3,4);
+    g2.addEdge(2,5);
+    g2.addEdge(6,1);
+    g2.addEdge(6,7);
+    g2.addEdge(7,8);
+    g2.addEdge(8,6);
+    
+    if(g2.isCyclic())
+        std::cout << "Graph contains cycle"<<std::endl;
+    else
+        std::cout << "Graph doesn't contain cycle"<<std::endl;
+
     return 0;
 }
