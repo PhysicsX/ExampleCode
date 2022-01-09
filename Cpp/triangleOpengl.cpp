@@ -5,17 +5,22 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
 #define GL_SILENCE_DEPRECATION 1
-//g++ -pthread -o gradient shaderCircle.cpp -lGLU -lGL -lXrandr -lXi -lX11 `pkg-config --static --libs glfw3`
-
 
 // vertex shader source
+// g++ -pthread -o multipleVBO multipleVBO.cpp -lGLU -lGL -lXrandr -lXi -lX11 `pkg-config --static --libs glfw3` && ./multipleVBO 
 
 const GLchar* vertex120 = R"END(
 #version 120
-attribute vec3 inPosition;
+attribute vec4 inPosition;
+attribute vec4 inColor;
+uniform mat4 matrix;
+// pass color info to fragment shader with varying keyword.
+// It will interpolate the color over the vertices
+varying vec4 outColor;
 void main()
 {
-    gl_Position = vec4(inPosition,1.f);
+    outColor = inColor;
+    gl_Position = inPosition * matrix;
 }
 )END";
 
@@ -23,19 +28,10 @@ void main()
 
 const GLchar* raster120 = R"END(
 #version 120
-uniform vec2 res;
-uniform float time;
+varying vec4 outColor;
 void main()
 {
-    vec2 centerPoint = res/4.f;
-    
-    vec2 currentPoint = gl_FragCoord.xy/2.f;
-    
-    if (length(currentPoint - centerPoint) < 100.f) {
-        gl_FragColor = vec4(1,1,1,1);
-    } else {
-        gl_FragColor = vec4(0,0,0,1);
-    }
+    gl_FragColor = outColor; //vec4(1.0f, 0.5f, 0.2f, 1.0f);
 }
 )END";
 
@@ -120,43 +116,73 @@ int main()
     
     // ---------------- VBOs
     
-    GLfloat positions[] = {
-        -1, -1, 0,
-        -1,  1, 0,
-         1, -1, 0,
-         1, -1, 0,
-        -1,  1, 0,
-         1,  1, 0
+    GLfloat colors[] = {
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1,
+        0, 1, 0,
+        1, 0, 0,
+        0, 0, 1
+    };
+
+    GLfloat vertices[] = {
+        // First triangle
+        -1.0f, -1.0f, 0.0f,  // Left 
+        0.0f, 1.0f, 0.0f,  // Right
+        0.0f, -1.0f, 0.0f,  // Top 
+        // Second triangle
+         0.0f, 1.0f, 0.0f,  // Left
+         1.0f, -1.0f, 0.0f,  // Right
+         0.0f, -1.0f, 0.0f   // Top 
     };
     
     GLuint positionsData;
     glGenBuffers(1, &positionsData);
     glBindBuffer(GL_ARRAY_BUFFER,positionsData);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    GLuint colorsData;
+    glGenBuffers(1, &colorsData);
+    glBindBuffer(GL_ARRAY_BUFFER, colorsData);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW); // memcpy() -> to GPU's vram buffer
     
     // ----------------- attributes
     GLuint attribPosition;
+    GLuint attribColor;
     
     attribPosition = glGetAttribLocation(shaderProgram, "inPosition");
     glEnableVertexAttribArray(attribPosition);
     glBindBuffer(GL_ARRAY_BUFFER, positionsData);
     glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    attribColor = glGetAttribLocation(shaderProgram, "inColor");
+    glEnableVertexAttribArray(attribColor);
+    glBindBuffer(GL_ARRAY_BUFFER, colorsData);
+    glVertexAttribPointer(attribColor, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
 
-    GLuint uniformRes;
-    uniformRes = glGetUniformLocation(shaderProgram, "res");
-    glUniform2f(uniformRes, 600.f, 600.f);
-    
-    GLuint uniformTime;
-    uniformTime = glGetUniformLocation(shaderProgram, "time");
-    
+    //uniforms
+    GLuint attributeMatrix = glGetUniformLocation(shaderProgram, "matrix");
+    float alpha = 0;
+
     // ----------------- render loop
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0,0,0,0);
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        float time = glfwGetTime();
-        glUniform1f(uniformTime, time);
+
+        float sa = 0.6 * sin(alpha);
+        float ca = 0.6 * cos(alpha);
+        alpha += 0.001;
+
+        const GLfloat matrix[]={
+            sa, -ca, 0, 0,
+            ca,  sa, 0, 0,
+            0,   0,  1, 0,
+            0,   0,  0, 1
+        };
+
+        glUniformMatrix4fv(attributeMatrix, 1, GL_FALSE, matrix);
         
         glDrawArrays(GL_TRIANGLES, 0, 6);
         
