@@ -1,63 +1,55 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <algorithm>
-// minimum swap for descending order.
 
-class Solution
+// to order the array/vector in descending order calculate necessary minimum swap number
+
+int numberOfSwap(const std::vector<int>& vec)
 {
-    public:
+    int result{0};
+    size_t size{vec.size()};
+    
+    std::vector<std::pair<int, int>> p(size);
+    for(size_t i=0; i<size; i++)
+    {
+        p[i].first = vec[i];
+        p[i].second = i;
+    }
 
-        
-        int minimumSwapToSort(const std::vector<int>& vec)
+    std::sort(p.begin(), p.end(),
+        [](const std::pair<int,int> &p1, const std::pair<int,int> &p2){
+            return (p1.first > p2.first);    
+        });
+
+    // keep visited nodes in another vector
+    std::vector<bool> vis(size, false);
+    
+    // find cycle in array
+    // (edge number of the cycle - 1) is the minimum operation number
+    for(size_t i=0; i<size; i++)
+    {
+        if(vis[i] || p[i].second == (int)i)
+            continue;
+            
+        int edgeNumber{0};
+        int j = i;
+        while(!vis[j])
         {
-            int result{0};
-            const size_t size{vec.size()};
-            
-            std::pair<int,int> pos[size];
-            
-            for(size_t i = 0; i<size; i++)
-            {
-                pos[i].first = vec[i];
-                pos[i].second = i;
-            }
-            
-            std::sort(pos, pos+size, 
-                [](const std::pair<int,int> &p1, const std::pair<int,int> &p2){
-                    return (p1.first > p2.first);    
-                });
-            
-            std::vector<int> visited(size, false);
-            
-            for(size_t i=0; i<size; i++)
-            {
-                if(visited[i] || pos[i].second == (int)i)
-                    continue;
-                
-                int cycleSize{0};
-                int j = i;
-                while(!visited[j])
-                {
-                    visited[j] = true;
-                    
-                    j = pos[j].second;
-                    cycleSize++;
-                }
-                
-                if(cycleSize > 0)
-                    result += (cycleSize -1);       
-            }
-            return result;
+            vis[j] = true;
+            j = p[j].second;
+            edgeNumber++;
         }
-};
-
-
+        
+        if(edgeNumber > 0)
+            result += (edgeNumber - 1);
+    }
+    
+    return result;
+}
 
 int main()
 {
-
-    std::vector<int> vec {1,5,4,3,2,1};
-    
-    std::cout<<Solution().minimumSwapToSort(vec);
-
-
+    std::vector<int> vec{2, 4, 5, 1, 3};
+    std::cout<<numberOfSwap(vec)<<std::endl;
 }
