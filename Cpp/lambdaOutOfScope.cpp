@@ -8,6 +8,9 @@
 
 // should be used *this. It is available after c++17
 
+// note: with this (without *this) example will NOT work with x86-64 gcc 11.2
+// but it will work with x86-64 clang 13.0.0
+
 struct foo
 {
     int id;
