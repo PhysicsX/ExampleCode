@@ -1,18 +1,22 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 14)
 
 project(ExampleGtest LANGUAGES CXX)
 
-#find_package(GTest REQUIRED)
-#message("GTest_INCLUDE_DIRS = ${GTest_INCLUDE_DIRS}")
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        bf66935e07825318ae519675d73d0f3e313b3ec6 
+)
+FetchContent_MakeAvailable(googletest)
 
-include_directories(googletest/googletest/include googletest/googlemock/include  include)
 add_executable(${PROJECT_NAME} src/example.cpp src/dummy.cpp src/foo.cpp test/test_example.cpp)
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/googletest/build/lib/libgtest.a ${CMAKE_SOURCE_DIR}/googletest/build/lib/libgtest_main.a ${CMAKE_SOURCE_DIR}/googletest/build/lib/libgmock.a ${CMAKE_SOURCE_DIR}/googletest/build/lib/libgmock_main.a)
 
-set(CMAKE_THREAD_LIBS_INIT "-lpthread")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-set(CMAKE_HAVE_THREADS_LIBRARY 1)
-set(CMAKE_USE_WIN32_THREADS_INIT 0)
-set(CMAKE_USE_PTHREADS_INIT 1)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
+target_link_libraries(${PROJECT_NAME} gtest_main gmock_main)
+
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME})
+
+#include headers
+include_directories(include)
