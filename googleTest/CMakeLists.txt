@@ -35,6 +35,12 @@ target_link_libraries(${PROJECT_NAME} gtest_main gmock_main)
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME})
 
+
+
+find_program(GCOV_PATH gcov REQUIRED)
+find_program(LCOV_PATH lcov REQUIRED)
+find_program(GENHTML_PATH genhtml REQUIRED)
+
 # Create the gcov target. Run coverage tests with 'make gcov'
 add_custom_target(gcov
     COMMAND mkdir -p gcoverage
@@ -44,7 +50,7 @@ add_custom_target(gcov
 
 add_custom_command(TARGET gcov
     COMMAND echo "=================== GCOV ===================="
-    COMMAND gcov -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR}
+    COMMAND ${GCOV_PATH} -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR} 
     COMMAND echo "-- Source diretorie: ${CMAKE_SOURCE_DIR}/src/"
     COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/gcoverage"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
@@ -59,9 +65,11 @@ add_custom_target(lcov
 add_custom_command(TARGET lcov
     COMMAND echo "=================== LCOV ===================="
     COMMAND echo "-- Passing lcov tool under code coverage"
-    COMMAND lcov --capture --directory ${OBJECT_DIR} --output-file lcoverage/main_coverage.info
+    COMMAND lcov --capture --directory ${OBJECT_DIR} --output-file lcoverage/main_coverage.info -b .
+    COMMAND echo "-- Remove undesired files from main_coverage"
+    COMMAND lcov --remove lcoverage/main_coverage.info '*/usr/include/*' '*/gtest/*' -o lcoverage/filtered_coverage.info
     COMMAND echo "-- Generating HTML output files"
-    COMMAND genhtml lcoverage/main_coverage.info --output-directory lcoverage
+    COMMAND genhtml lcoverage/filtered_coverage.info --output-directory lcoverage
     )
 
 
@@ -80,8 +88,8 @@ add_custom_target(init
 # Testing
 enable_testing()
 
-#add_test(output_test ${CMAKE_CURRENT_BINARY_DIR}/test)
-
+add_test(output_test ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+set_tests_properties(output_test PROPERTIES PASS_REGULAR_EXPRESSION "0;5;10")
 
 #include headers
 include_directories(include)
