@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 14)
 
-message(STATUS "CMAKE_MAKE_PROGRAM= ${CMAKE_MAKE_PROGRAM}")
-
 project(ExampleGtest LANGUAGES CXX)
 
 include(FetchContent)
@@ -13,12 +11,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-# add definitions
-add_definitions(-fprofile-arcs -ftest-coverage)
-
-add_compile_options(-fprofile-arcs -lgcov)
-link_libraries(-fprofile-arcs -lgcov)
-
 # Set the compiler options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -O0 -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
@@ -27,15 +19,12 @@ set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 set(OBJECT_DIR ${CMAKE_BINARY_DIR}/CMakeFiles/ExampleGtest.dir/src)
 message("-- Object files will be output to: ${OBJECT_DIR}")
 
-
 add_executable(${PROJECT_NAME} src/example.cpp src/dummy.cpp src/foo.cpp test/test_example.cpp)
 
 target_link_libraries(${PROJECT_NAME} gtest_main gmock_main)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME})
-
-
 
 find_program(GCOV_PATH gcov REQUIRED)
 find_program(LCOV_PATH lcov REQUIRED)
@@ -70,16 +59,17 @@ add_custom_command(TARGET lcov
     COMMAND lcov --remove lcoverage/main_coverage.info '*/usr/include/*' '*/gtest/*' -o lcoverage/filtered_coverage.info
     COMMAND echo "-- Generating HTML output files"
     COMMAND genhtml lcoverage/filtered_coverage.info --output-directory lcoverage
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-
 
 # Make sure to clean up the coverage folder
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES gcoverage)
 
 # Create the gcov-clean target. This cleans the build as well as generated 
-# .gcda and .gcno files.
-add_custom_target(init
+# .gcda and .gcno files. ${CMAKE_MAKE_PROGRAM} is /usr/bin/make
+add_custom_target(refresh
     COMMAND ${CMAKE_MAKE_PROGRAM} clean
+    COMMAND rm CMakeCache.txt
     COMMAND rm -f ${OBJECT_DIR}/*.gcno
     COMMAND rm -f ${OBJECT_DIR}/*.gcda
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
