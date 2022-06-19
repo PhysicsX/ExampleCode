@@ -45,25 +45,38 @@ int main()
 
     // generate vector with 0 - 9999
     std::vector<int> v;
-    for(int i{0}; i<10000; i++)
+    for(int i{1}; i<10000; i++)
     {
         v.push_back(i);    
     }
     
-    // with kadane's algorithm o(n)
+    // shffle generated vector
     auto rng = std::default_random_engine {};
     std::shuffle(std::begin(v), std::end(v), rng);
 
-    std::cout << "Maximum difference is ";
+    // with kadane's algorithm o(n)
     auto start = std::chrono::steady_clock::now();
     int res = Solution().maximumDifference(v);
-    std::cout << "Elapsed(us)=" << since(start).count() << std::endl;
-    std::cout << res;
+    auto passedTime {since(start).count()};
+    std::cout << "Maximum difference is with kadane's algorithm ";    
+    std::cout << res<<std::endl;
+    std::cout << "Elapsed(us)=" << passedTime << std::endl;
     std::cout<<std::endl;
     
-    
+    // with sort (nlogn)
+    std::vector<int> vecCopy = v;
+    int resultSort {0};
+    start = std::chrono::steady_clock::now();    
+    std::sort(vecCopy.begin(), vecCopy.end());
+    resultSort = vecCopy[vecCopy.size()-1] - vecCopy[0];
+    passedTime = since(start).count();
+    std::cout << "Maximum difference is with sort ";    
+    std::cout<<resultSort<<std::endl;
+    std::cout << "Elapsed(us)=" << passedTime << std::endl;
+    std::cout<<std::endl;
+
     // with (n2)
-    int result = 0;
+    int result {0};
     start = std::chrono::steady_clock::now();
     for(size_t i{0}; i<v.size(); i++)
     {
@@ -72,8 +85,10 @@ int main()
             result = std::max(result, v[j] - v[i]);
         }
     }
-    std::cout << "Elapsed(us)=" << since(start).count() << std::endl;
+    passedTime = since(start).count();
+    std::cout << "Maximum difference is with n2 ";    
     std::cout<<result<<std::endl;
+    std::cout << "Elapsed(us)=" << passedTime << std::endl;
 
     return 0;
 }
