@@ -11,11 +11,11 @@
 
 class Solution {
 public:
-    int maximumDifference(std::vector<int>& nums) {
+    int maximumDifference(const std::vector<int>& nums) {
         int currentMax {0};
-        int resultMax = {-1};
+        int resultMax {-1};
         
-        for (size_t i = 0; i < nums.size()-1; i++) {
+        for (size_t i {0}; i < nums.size()-1; i++) {
             int diff = nums[i+1]-nums[i];
             if (diff == 0) continue;
             currentMax = std::max(diff + currentMax, diff);
@@ -38,7 +38,7 @@ auto since(std::chrono::time_point<clock_t, duration_t> const& start)
  
 int main()
 {    
-
+    // test with small data set
     std::vector<int> vec { 1, 3, 4, 6, 2, 5};
     std::cout << "Maximum difference is " << Solution().maximumDifference(vec);
     std::cout<<std::endl;
@@ -51,15 +51,15 @@ int main()
     }
     
     // shffle generated vector
-    auto rng = std::default_random_engine {};
+    auto rng {std::default_random_engine {}};
     std::shuffle(std::begin(v), std::end(v), rng);
 
     // with kadane's algorithm o(n)
-    auto start = std::chrono::steady_clock::now();
-    int res = Solution().maximumDifference(v);
+    auto start {std::chrono::steady_clock::now()};
+    int resKadane = Solution().maximumDifference(v);
     auto passedTime {since(start).count()};
     std::cout << "Maximum difference is with kadane's algorithm ";    
-    std::cout << res<<std::endl;
+    std::cout << resKadane <<std::endl;
     std::cout << "Elapsed(us)=" << passedTime << std::endl;
     std::cout<<std::endl;
     
