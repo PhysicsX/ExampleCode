@@ -10,7 +10,7 @@ void foo::fooThrow()
 	// throw runtime error
 }
 
-void foo::callbackMethod(std::function<void(void)> callback)
+void foo::callbackMethod(std::function<void(void)>& callback)
 {
 	callback();
 }

@@ -9,11 +9,11 @@
 class myTestFixture1: public ::testing::Test { 
 public: 
    myTestFixture1( ) { 
-       // initialization code here
-	std::cout<<"testDummy is null "<<(testDummy == nullptr)<<std::endl;
-	//foo fooTest;	
-	//mockFoo fooTest;	
-	testDummy = std::make_unique<dummy>(fooTest);
+    // initialization code here
+    // This function will be called again for each test of beginning
+	// testDummy will be null for each test
+    std::cout<<"testDummy is null "<<(mTestDummy == nullptr)<<std::endl;
+	mTestDummy = std::make_unique<dummy>(mMockFoo);
    } 
 
    void SetUp( ) { 
@@ -28,8 +28,9 @@ public:
    ~myTestFixture1( )  { 
        // cleanup any pending stuff, but no exceptions allowed
    }
-   mockFoo fooTest;
-   std::unique_ptr<dummy> testDummy;
+
+   mockFoo mMockFoo;
+   std::unique_ptr<dummy> mTestDummy;
    // put in any custom data members that you need 
 };
 
@@ -38,8 +39,8 @@ public:
 TEST_F (myTestFixture1, TestDummyStr) { 
 	std::string testString;
 	std::string returnStr {"testString"};
-	EXPECT_CALL(fooTest, fooStr(::testing::_)).WillOnce(::testing::SetArgReferee<0>(returnStr));
-	testDummy->dummyStr(testString);
+	EXPECT_CALL(mMockFoo, fooStr(::testing::_)).WillOnce(::testing::SetArgReferee<0>(returnStr));
+	mTestDummy->dummyStr(testString);
 	
 	ASSERT_EQ(testString,returnStr);
 }
@@ -56,8 +57,8 @@ ACTION(throwError)
 
 TEST_F (myTestFixture1, ThrowTest) { 
 
-    EXPECT_CALL(fooTest, fooThrow()).WillOnce(throwError());
-    ASSERT_THROW(testDummy->dummyThrow(), std::runtime_error);
+    EXPECT_CALL(mMockFoo, fooThrow()).WillOnce(throwError());
+    ASSERT_THROW(mTestDummy->dummyThrow(), std::runtime_error);
 }
 
 
@@ -69,17 +70,17 @@ void throwFunction()
 
 TEST_F (myTestFixture1, ThrowTest2) { 
 
-    EXPECT_CALL(fooTest, fooThrow()).WillOnce(testing::Throw(std::runtime_error("ERROR_TEST")));
-    ASSERT_THROW(testDummy->dummyThrow(), std::runtime_error);
+    EXPECT_CALL(mMockFoo, fooThrow()).WillOnce(testing::Throw(std::runtime_error("ERROR_TEST")));
+    ASSERT_THROW(mTestDummy->dummyThrow(), std::runtime_error);
 
-    EXPECT_CALL(fooTest, fooThrow()).WillOnce(testing::Invoke([](){
+    EXPECT_CALL(mMockFoo, fooThrow()).WillOnce(testing::Invoke([](){
             std::cout << "ERROR!\n";
     throw std::runtime_error("ERROR_TEST");
     }));
-    ASSERT_THROW(testDummy->dummyThrow(), std::runtime_error);
+    ASSERT_THROW(mTestDummy->dummyThrow(), std::runtime_error);
 
-    EXPECT_CALL(fooTest, fooThrow()).WillOnce(testing::Invoke(throwFunction));
-    ASSERT_THROW(testDummy->dummyThrow(), std::runtime_error);
+    EXPECT_CALL(mMockFoo, fooThrow()).WillOnce(testing::Invoke(throwFunction));
+    ASSERT_THROW(mTestDummy->dummyThrow(), std::runtime_error);
 }
 
 
@@ -87,10 +88,10 @@ TEST_F (myTestFixture1, TestCallback) {
 
     testing::MockFunction<void(void)> testFunc;
     // std::function is not ==, that is why _ is used. Call can be checked.
-    EXPECT_CALL(fooTest, callbackMethod(::testing::_)).Times(1) 
-    .WillOnce(testing::InvokeArgument<0>());;
+    EXPECT_CALL(mMockFoo, callbackMethod(::testing::_)).Times(1) 
+    .WillOnce(testing::InvokeArgument<0>());
     EXPECT_CALL(testFunc, Call());
     
-    testDummy->dummyCallback(testFunc.AsStdFunction());
+    mTestDummy->dummyCallback(testFunc.AsStdFunction());
     
 }

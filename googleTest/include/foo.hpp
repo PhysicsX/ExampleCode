@@ -10,7 +10,7 @@ class foo : public fooIf
 	public:
 	void fooStr(std::string& str);
 	void fooThrow();
-	void callbackMethod(std::function<void(void)> callback);
+	void callbackMethod(std::function<void(void)>& callback);
 };
 
 #endif

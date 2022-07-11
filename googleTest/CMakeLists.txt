@@ -19,7 +19,8 @@ set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 set(OBJECT_DIR ${CMAKE_BINARY_DIR}/CMakeFiles/ExampleGtest.dir/src)
 message("-- Object files will be output to: ${OBJECT_DIR}")
 
-add_executable(${PROJECT_NAME} src/example.cpp src/dummy.cpp src/foo.cpp test/test_example.cpp)
+add_executable(${PROJECT_NAME} src/example.cpp 
+src/dummy.cpp src/foo.cpp test/test_example.cpp)
 
 target_link_libraries(${PROJECT_NAME} gtest_main gmock_main)
 
@@ -77,9 +78,6 @@ add_custom_target(refresh
 
 # Testing
 enable_testing()
-
-add_test(output_test ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
-set_tests_properties(output_test PROPERTIES PASS_REGULAR_EXPRESSION "0;5;10")
 
 #include headers
 include_directories(include)
