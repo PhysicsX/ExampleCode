@@ -1,0 +1,39 @@
+@startuml
+
+class fooIf<<Interface>>
+{
++ {abstract} fooStr(std::string&): void
+}
+
+class foo
+{
++ fooStr(std::string&): void
+}
+
+class mockFoo
+{
++ fooStr(std::string&): void
+}
+
+class dummy
+{
++ dummy(fooIf&)
+# fooIf foo
+}
+
+class test
+{
+# mockFoo fooMock
+# unique_ptr<dummy> testDummy
+}
+
+
+
+fooIf <|.. foo
+fooIf <|.. mockFoo
+dummy -right-> fooIf
+
+test --* dummy
+test --* mockFoo
+
+@enduml
