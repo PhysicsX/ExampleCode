@@ -12,7 +12,7 @@ class Solution
         std::vector<std::vector<int>> vec(str1.size()+1, std::vector<int>(str2.size()+1,0));
         for(int i = 1; i <= str1.size(); i++)
             for(int j = 1; j <= str2.size(); j++)
-                if(str1[i] == str2[j])
+                if(str1[i-1] == str2[j-1])
                     vec[i][j] = 1 + vec[i-1][j-1];
                 else
                     vec[i][j] = std::max(vec[i-1][j], vec[i][j-1]);
