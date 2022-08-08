@@ -1,5 +1,5 @@
-#ifndef DUMMY_IF_HPP      
-#define DUMMY_IF_HPP
+#ifndef FOO_IF_HPP      
+#define FOO_IF_HPP
 #include <iostream>
 #include <functional>
 
