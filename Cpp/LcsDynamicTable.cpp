@@ -10,30 +10,37 @@ class Solution
     std::string str1;
     std::string str2;
 
-    int longestCommonSubsequence(std::string str1, std::string str2)
+    Solution(std::string str1_, std::string str2_):
+    str1(str1_), str2(str2_)
+    {}
+
+    int longestCommonSubsequence()
     {
-        std::vector<std::vector<int>> vec(str1.size()+1, std::vector<int>(str2.size()+1,0));
+        const size_t firstStrSize {str1.size()};
+        const size_t secondStrSize {str2.size()};
+
+        std::vector<std::vector<int>> vec(firstStrSize+1, 
+        std::vector<int>(secondStrSize+1,0));
     
-        for(int i = 1; i <= str1.size(); i++)
-            for(int j = 1; j <= str2.size(); j++)
+        for(int i = 1; i <= firstStrSize; i++)
+            for(int j = 1; j <= secondStrSize; j++)
                 if(str1[i-1] == str2[j-1])
                     vec[i][j] = 1 + vec[i-1][j-1];
                 else
                     vec[i][j] = std::max(vec[i-1][j], vec[i][j-1]);
 
-        this->vec = vec;  
-        this->str1 = str1;
-        this->str2 = str2;
+        int result = vec[firstStrSize][secondStrSize];
+        this->vec = std::move(vec);  
 
-        return vec[str1.size()][str2.size()];
+        return result;
     }
 
     std::string returnLCSstring()
     {
         for(auto v : vec)
         {    for(auto z : v)
-            {    std::cout<<z<<"   ";
-            
+            {    
+                std::cout<<z<<"   ";
             }
             std::cout<<std::endl;
         }
@@ -74,7 +81,7 @@ int main() {
     std::string str1 {"SHINCHAN"};
     std::string str2 {"NOHARAAA"};
 
-    Solution s;
-    std::cout<<s.longestCommonSubsequence(str1, str2)<<std::endl;
+    Solution s(str1, str2);
+    std::cout<<s.longestCommonSubsequence()<<std::endl;
     std::cout<<s.returnLCSstring()<<std::endl;
 }
