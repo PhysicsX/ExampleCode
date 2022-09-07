@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 #include <QDebug>
 #include <QImage>
 
@@ -32,14 +33,14 @@ int main(int argc, char *argv[])
     
     QTimer timer;
 	
-    cv::VideoCapture cap("/home/a.mp4");
-
+    cv::VideoCapture cap("/home/b.mp4");
+    
     QObject::connect(&timer, &QTimer::timeout, [&]()
     {
 
 	cv::Mat frame;	
 	cap >> frame;
-
+	
         if(frame.empty())
 	{
 		// to clean lsat frame
@@ -51,14 +52,18 @@ int main(int argc, char *argv[])
 		timer.stop();
         	return;
 	}
-	
-	QImage imgIn= QImage((uchar*) frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888).rgbSwapped();
+	// Opencv use BGR but QImage use RGB so color information
+	// should be swapped for this case Mat->QImage
+	// no need to swap when Mat->QImage->Mat
+	cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);	
+	QImage imgIn= QImage((uchar*) frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+	//.rgbSwapped();
 
  	ptrQmlType->updateImage(imgIn);
 
     }
     );
-    timer.start(40);
+    timer.start(60);
  
     return app.exec();
 }
