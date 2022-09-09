@@ -1,42 +1,43 @@
-#include <stdio.h>
 #include <iostream>
-
-using namespace std;
+#include <string>
 
 class Solution
 {
 public:
-	string longestPalindrome(string s)
-	{
-		
-		if(s.empty()) return "";
-		if(s.size() == 1) return s;
-		int min_start = 0, max_len = 1;
-		for(int i = 0; i < s.size();)
-		{
-				if(s.size() - i <= max_len / 2) break;
-				int j = i, k = i;
-				while(k < s.size()-1 && s[k + 1] == s[k]) ++k; // skip duplicate characters
-				i = k + 1;
-				while(k < s.size()-1 && j > 0 && s[k + 1] == s[j - 1])
-				{
-					++k; 
-					--j;
-				} // expand
-				int new_len = k - j + 1;
-				if(new_len > max_len){min_start = j; max_len = new_len;}
-		}
-		return s.substr(min_start, max_len);
-	}
+    std::string longestPalindrome(const std::string& s)
+    {
+        size_t size {s.size()};
+        
+        unsigned int max_length {0};
+        unsigned int min_start {0};
+
+        for(unsigned int i{0}; i < size;)
+        {
+            if((size-i) <= max_length/2) break;
+            unsigned int k {i}, j {i};
+
+            while( k<size-1 && s[k+1] == s[k]) k++; // skip duplicate elements
+
+            i = k + 1;
+            while( k<size-1 && j > 0 && (s[k+1] == s[j-1])) // expand
+            {
+                ++k;
+                --j;
+            }
+
+            unsigned int new_length {k-j+1};
+            if(new_length > max_length){ max_length = new_length; min_start=j;}
+        }
+
+        return size ? size==1 ? s : s.substr(min_start,max_length) : "";
+    }
 };
 
-int main(int argc, char **argv)
+int main()
 {
-	const string str = "acbbabad";
+	const std::string str = "asddabbasswe";
 	
-	Solution s;
-	std::cout<<s.longestPalindrome(str);
-	
-	cout<<endl;
-	return 0;
+	std::cout<<Solution{}.longestPalindrome(str);
+
+    return 0;
 }
