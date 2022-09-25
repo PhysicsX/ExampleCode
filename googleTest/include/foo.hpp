@@ -8,6 +8,7 @@
 class foo : public fooIf
 {
 	public:
+	int fooInt(std::string& str);
 	void fooStr(std::string& str);
 	void fooThrow();
 	void callbackMethod(std::function<void(void)>& callback);
