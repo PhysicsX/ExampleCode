@@ -198,6 +198,7 @@ For instance in this example you can see that foo class is mocked, if you check 
 class mockFoo : public fooIf
 {
 	public:
+	MOCK_METHOD(int, fooInt, (std::string& str), (override));
 	MOCK_METHOD(void, fooStr, (std::string& str), (override));
 	MOCK_METHOD(void, fooThrow, (), (override));
 	MOCK_METHOD(void, callbackMethod, (std::function<void(void)>),(override));
@@ -218,6 +219,8 @@ Then in the test fixture, you can use it like :
 EXPECT_CALL(fooMock, fooStr(::testing::_)).WillOnce(::testing::SetArgReferee<0>(returnStr));
 ```
 What does it mean ? Simply fooStr method of the mock, must be called and return the string from argument for this test, otherwise gtest will fail.
+
+Not for all cases it is necessary to inherit the interface. According to situation, it is possible to use mock class without inheritance. This usage is called standalone mocking.
 
 If you want you can check this diagram to understand the relationship better for mock and test classess. ( design is for this simple example. Relationship can be different according to you requirements. )
 
