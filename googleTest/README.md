@@ -41,11 +41,7 @@ int main(int argc, char **argv)
 Here, one main method and one test method have the name TestName.test1. To compile it, you can use simply:
 
 ```bash
-<<<<<<< HEAD
-$ g++ example.cpp ../googletest/build/lib/libgtest.a ../googletest/build/lib/libgtest_main.a -lpthread -I ../googletest/googletest/include/
-=======
 g++ example.cpp ../googletest/build/lib/libgtest.a googletest/build/lib/libgtest_main.a -lpthread -I googletest/googletest/include/
->>>>>>> e73449202a0b37e0c835d83d7739327bb60c2972
 ```
 
 After this, it will give you a.out when you run it.
