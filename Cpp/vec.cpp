@@ -5,7 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
+#include <memory>
+ 
 class Example
 {
 	private:
@@ -173,6 +174,56 @@ int main()
 	for(auto s : vecExample)
 		std::cout<<s;
 
+
+    struct exampleStruct
+    {
+        int x;
+        int y;
+        int z;
+    } st;
+
+    std::shared_ptr<std::vector<int>> vecShared = 
+    std::make_shared<std::vector<int>>(10, 12);
+
+    exampleStruct default_subject;
+    default_subject.x = 20;
+    default_subject.y = 20;
+    default_subject.z = 20;
+
+    // std::vector<coordinate> vvec (3,st);
+
+    std::vector<exampleStruct> vvec (3,default_subject);
+    for(auto v : vvec)
+        std::cout<<v.x<<" "<<v.y<<" "<<v.z<<std::endl;
+    
+    
+    std::shared_ptr<std::vector<exampleStruct>> vecStruct = 
+    std::make_shared<std::vector<exampleStruct>>(std::vector<exampleStruct>({{6, 4, 9},
+                                                                       {1, 2, 3}}));
+    
+    for(int i = 0; i < vecStruct->size(); i++)
+    {
+        std::cout<<vecStruct->at(i).x<<" "<<vecStruct->at(i).y<<" "<<vecStruct->at(i).z<<std::endl;    
+    }
+    
+    //std::shared_ptr<std::vector<coordinate>> vec3 = 
+    auto vec3 = 
+    std::make_shared<std::vector<exampleStruct>>(10, default_subject);
+
+    for(int i = 0; i < vec3->size(); i++)
+    {
+        std::cout<<vec3->at(i).x<<" "<<vec3->at(i).y<<" "<<vec3->at(i).z<<std::endl;    
+    }
+    
+
+    auto vec53 = 
+    std::make_shared<std::vector<exampleStruct>>(10, st);
+
+
+    auto vec533 = 
+    std::make_shared<std::vector<exampleStruct>>(10, exampleStruct{0,1,3});
+
+	auto vecInitList = make_shared<std::vector<int>>(std::initializer_list<int>{ 6, 4, 9 });
 
 
 	return 0;
