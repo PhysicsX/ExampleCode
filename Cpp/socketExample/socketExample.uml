@@ -1,0 +1,69 @@
+# PlantUML Editor
+
+@startuml
+
+class QTcpServer {
+ #void {abstract} incomingConnection()
+  
+}
+
+class MyServer {
+ -QThreadPool* pool
+ #startServer():void
+ #void incomingConnection()
+}
+
+note left of  MyServer::incomingConnection
+  Inherited method from QTcpServer, for each connection
+this will be called and creates the MyClient instance
+end note
+
+class QObject {
+}
+
+class QRunnable {
+  # void {abstract} run()
+}
+
+class MyClient {
+  MyClient(QObject *parent = 0, QThreadPool *pool = 0)
+  -QTcpSocket *socket
+  -QThreadPool *pool
+  -void connected()
+  -void disconnected()
+  -void readyRead()
+  -void TaskResult(int Number)
+  +void setSocket(qintptr Descriptor)
+}
+
+note left of MyClient::readyRead
+  This will create MyTask instance and send to pool
+end note
+
+note left of MyClient::setSocket
+
+    three methods will be connected to sockets object equivalent
+    connect(socket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+
+end note
+
+
+class MyTask {
+  MyTask()
+  # void run()
+}
+
+
+MyServer -left-|> QTcpServer
+MyClient -up-|> QObject
+
+MyServer -down-> MyClient
+
+MyTask -up-|> QObject
+MyTask -|> QRunnable
+
+MyClient -> MyTask
+
+@enduml
