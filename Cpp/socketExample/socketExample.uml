@@ -15,7 +15,7 @@ class MyServer {
 
 note left of  MyServer::incomingConnection
   Inherited method from QTcpServer, for each connection
-this will be called and creates the MyClient instance
+  this will be called and creates the MyClient instance
 end note
 
 class QObject {
@@ -56,14 +56,14 @@ class MyTask {
 }
 
 
-MyServer -left-|> QTcpServer
-MyClient -up-|> QObject
+MyServer -up-|> QTcpServer
+MyClient -down-|> QObject
 
 MyServer -down-> MyClient
 
-MyTask -up-|> QObject
-MyTask -|> QRunnable
+MyTask -right-|> QObject
+MyTask -left-|> QRunnable
 
-MyClient -> MyTask
+MyClient -down-> MyTask
 
 @enduml
