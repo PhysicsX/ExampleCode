@@ -14,3 +14,7 @@ int main(int argc, char *argv[])
 
 // while true; do echo "ulas" | netcat localhost 1234 -w 1; sleep 0.1; done;
 // echo "ulas" | netcat localhost 1234 -w 1
+
+// stress test
+// while true; do echo "ulas" | netcat localhost 1234 & disown; done;
+
