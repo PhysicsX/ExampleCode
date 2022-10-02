@@ -72,4 +72,6 @@ void MyClient::TaskResult(int Number)
     Buffer.append(QString::number(Number));
 
     socket->write(Buffer);
+
+    socket->deleteLater();
 }
