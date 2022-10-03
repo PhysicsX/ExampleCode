@@ -65,8 +65,7 @@ jnano@jnano:~$ ./a.out
 ```
 
 If you want to test method of a class, you need to create an object inside these tests or need to create one global object.
-These are not cool solutions, so we need a design or approach that we can keep all objects which are under test in environment.
-We can do this with test fixtures, We will see it in the next.
+
 
 ```bash
 #include <iostream>
@@ -104,6 +103,62 @@ int main(int argc, char **argv)
 
 
 ```
+
+Therefore, these are not cool solutions, so we need a design or approach that we can keep all objects which are under test under single class.
+We can do this with test fixtures:
+
+
+```bash
+#include <iostream>
+#include <gtest/gtest.h>
+
+using namespace std;
+
+class example
+{
+	public:
+		int foo()
+		{
+			return 1;
+		}
+		
+};
+
+class exampleFixture : public testing::Test 
+{
+	public:
+	exampleFixture(){
+		testExPtr = new example();
+	}
+	~exampleFixture()
+	{
+		delete testExPtr;
+	}
+
+	void SetUp(){}
+	void TearDown(){}
+	
+	example* testExPtr;
+};
+
+TEST_F(exampleFixture, test1)
+{
+	ASSERT_EQ(1,testExPtr->foo());
+}
+
+TEST_F(exampleFixture, test2)
+{
+	ASSERT_NE(0,testExPtr->foo());
+}
+
+int main(int argc, char **argv)
+{
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
+```
+As you see, after TEST macro there is _F. And each test case starts with name of the class which encapsulates object under test.
+
 
 But we do not use the command line to compile our projects. Then it is a good idea to use CMake to compile all.
 Create a file named CMakeLists.txt
