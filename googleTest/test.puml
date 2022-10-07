@@ -33,7 +33,7 @@ fooIf <|.. foo
 fooIf <|.. mockFoo
 dummy -right-> fooIf
 
-test --* dummy
-test --* mockFoo
+test *-- dummy
+test *-- mockFoo
 
 @enduml
