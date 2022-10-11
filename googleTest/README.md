@@ -1,4 +1,8 @@
-## Gtest example with gmock
+## GoogleTest Introduction with CMake - GMOCK Usage
+
+You can find the video content for introduction for gtest/gmock. 
+
+[![Youtube video link](https://img.youtube.com/vi/zfgFphZ63UY/0.jpg)](//www.youtube.com/watch?v=zfgFphZ63UY?t=0s "ulas dikme")
 
 Install googletest and compile
 ```bash
