@@ -45,11 +45,7 @@ int main(int argc, char **argv)
 Here, one main method and one test method have the name TestName.test1. To compile it, you can use simply:
 
 ```bash
-<<<<<<< HEAD
-$ g++ example.cpp ../googletest/build/lib/libgtest.a ../googletest/build/lib/libgtest_main.a -lpthread -I ../googletest/googletest/include/
-=======
 g++ example.cpp ../googletest/build/lib/libgtest.a googletest/build/lib/libgtest_main.a -lpthread -I googletest/googletest/include/
->>>>>>> e73449202a0b37e0c835d83d7739327bb60c2972
 ```
 
 After this, it will give you a.out when you run it.
@@ -346,50 +342,5 @@ This will produce lcoverage directory go there, then you may be able to see inde
 You can check the line coverage visually file by file.
 Btw, I added all the stuff in one CMakeLists.txt file, I think it is not best practice, it is a good idea to split it :)
 
-## Gmock example
 
-So what is gmock ? When you have dependecies for your object, during the unit testing these dependencies should be mocked. When you mocked them, your object does not call the real methods of dependencies but mocked methods. 
-It will be good to have to use interfaces in your design. ( interface is good thing )
-
-For instance in this example you can see that foo class is mocked, if you check under include directory, there is a mock_foo.hpp file. ( keeping this in include with others is not a good idea ofcourse).
-
-```bash
-#include "foo_if.hpp"
-#include <gmock/gmock.h>
-#include <string>
-
-class mockFoo : public fooIf
-{
-	public:
-	MOCK_METHOD(int, fooInt, (std::string& str), (override));
-	MOCK_METHOD(void, fooStr, (std::string& str), (override));
-	MOCK_METHOD(void, fooThrow, (), (override));
-	MOCK_METHOD(void, callbackMethod, (std::function<void(void)>),(override));
-
-};
-```
-
-As you see, it implements the fooIf interface. The way of implementaion is different from syntax perspective. You need to use MOCK_METHOD gtest macro and first define return of function then name finally the arguments.
-To inject this, you will use constructor of your object.
-
-```bash
-testDummy = std::make_unique<dummy>(fooMock);
-```
-Because we can pass it, why ? we use same interface, so we are able to see here that one of the advantage of using interfaces.
-
-Then in the test fixture, you can use it like :
-```bash
-EXPECT_CALL(fooMock, fooStr(::testing::_)).WillOnce(::testing::SetArgReferee<0>(returnStr));
-```
-What does it mean ? Simply fooStr method of the mock, must be called and return the string from argument for this test, otherwise gtest will fail.
-
-Not for all cases it is necessary to inherit the interface. According to situation, it is possible to use mock class without inheritance. This usage is called standalone mocking.
-
-If you want you can check this diagram to understand the relationship better for mock and test classess. ( design is for this simple example. Relationship can be different according to you requirements. )
-
-![Class Diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/PhysicsX/ExampleCode/master/googleTest/test.puml)
-
- so as you see test class (text fixture) has composition dependecy to dummy class which will be tested, and to mockFoo class not foo class. In this way, during test, real methods of the foo object will not be called. This is because if the mock mechanism.
- 
- So the question is that why we do not use foo itself instead of mockFoo. Because we want to test only dummy class not foo or others. This is the point of unit test. Foo object can have some dependecny which can not be relevant for dummy object test. We need to remove them from the test but at the same time we should not change anything in the dummy implementation so we should mock the dependecies of the dummy object which we want to test.
 
