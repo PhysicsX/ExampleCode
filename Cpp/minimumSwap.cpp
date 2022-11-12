@@ -31,11 +31,11 @@ int numberOfSwap(const std::vector<int>& vec)
     // if there is a back edge that means there is a cycle in the directed graph
     for(size_t i{0}; i<size; i++)
     {
-        if(visited[i] || p[i].second == (int)i)
+        if(visited[i] || p[i].second == static_cast<int>(i))
             continue;
             
         int edgeNumber{0};
-        int j = i;
+        size_t j {i};
         while(!visited[j])
         {
             visited[j] = true;
