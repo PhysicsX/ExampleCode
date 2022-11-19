@@ -42,13 +42,16 @@ class Solution
                     
         const size_t size {prices.size()};
         int profit {0};
-        int peak {0};
+        int peak {INT_MIN};
         
+        // if iteration is from left to right then instead of peak, min value
+        // should be kept (int min{INT_MAX})
+        // min = std::min(prices[i],min);
+        // profit = std::max(profit, prices[i]-min);
+        // because first it is needed to buy the share to sell later
         for(int i = size-1; i>-1; i--)
         {
-            if(prices[i] >= peak)
-                peak = prices[i];
-            
+            peak = std::max(prices[i], peak);   
             profit = std::max(profit, peak - prices[i]);
         }
         
