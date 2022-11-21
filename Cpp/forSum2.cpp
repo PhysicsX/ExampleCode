@@ -17,8 +17,8 @@ class Solution
 
             std::unordered_map<int, int> map;
 
-            size_t size = v1.size();
-
+            const size_t size {v1.size()};
+            // nums1[i] + nums2[j] = -(nums3[k] + nums4[l])
             for(int i{0}; i<size; i++)
                 for(int j{0}; j<size; j++)
                     map[v1[i] + v2[j]]++;
