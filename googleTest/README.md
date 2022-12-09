@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 Here, one main method and one test method have the name TestName.test1. To compile it, you can use simply:
 
 ```bash
-g++ example.cpp ../googletest/build/lib/libgtest.a googletest/build/lib/libgtest_main.a -lpthread -I googletest/googletest/include/
+g++ example.cpp ../build/lib/libgtest.a -lpthread -I googletest/googletest/include/
 ```
 
 After this, it will give you a.out when you run it.
@@ -63,6 +63,28 @@ jnano@jnano:~$ ./a.out
 [==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
 ```
+
+If you want to run it without main(), then you should add libgtest_main.a
+
+```bash
+#include <iostream>
+#include <gtest/gtest.h>
+
+using namespace std;
+
+TEST(TestName, test1)
+{
+	ASSERT_EQ(1, 1);
+}
+
+```
+
+```bash
+g++ example.cpp ../build/lib/libgtest.a ../build/lib/libgtest_main.a -lpthread -I ../googletest/googletest/include/
+```
+will produce same output, In the video I used both libgtest_main and libgtest which is not exactly correct.
+Not: If you use pre-installed gtest then libgtest_main is lgtest_maind. ( you can try with godbolt compiler).
+
 
 If you want to test method of a class, you need to create an object inside these tests or need to create one global object.
 
