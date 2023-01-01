@@ -34,12 +34,44 @@ public:
         return cnt;
     }
 };
- 
+
+// faster one
+class Solution2
+{
+public:
+    int minSteps(const std::string& s, const std::string& t) {
+
+	// Initialize the counts of each letter to 0
+	std::array<int, 26> sCount{};
+	std::array<int, 26> tCount{};
+
+	// Count the number of occurrences of each letter in s and t
+	for (char c : s) {
+		sCount[c - 'a']++;
+	}
+
+	for (char c : t) {
+    		tCount[c - 'a']++;
+  	}
+
+  	int steps = 0;
+
+  	// Count the number of characters in s that are not in t, or the number of extra
+  	// occurrences of a character in s
+  	for (int i = 0; i < 26; i++) {
+    		steps += std::abs(sCount[i] - tCount[i]);
+  	}
+
+  	return steps;
+    }
+
+};
+
 int main ()
 {
     std::string s1 {"leetcode"};
     std::string s2 {"coats"};
     
     std::cout<<Solution{}.minSteps(s1, s2)<<std::endl;
-
+    std::cout<<Solution2{}.minSteps(s1, s2)<<std::endl;
 }
