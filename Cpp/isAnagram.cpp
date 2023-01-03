@@ -32,6 +32,28 @@ bool isAnagram(std::string str1, std::string str2)
 
 }
 
+class Solution {
+public:
+bool isAnagram(std::string s, std::string t) {
+    // Return false if s and t have different sizes.
+    if (s.size() != t.size()) {
+        return false;
+    }
+
+    // Create an array to store the frequency of each character in s and t.
+    std::array<int, 26> sCount{}, tCount{};
+
+    // Iterate through s and t, and increment the corresponding element in sCount and tCount.
+    for (int i = 0; i < s.size(); ++i) {
+        ++sCount[s[i] - 'a'];
+        ++tCount[t[i] - 'a'];
+    }
+
+    // Compare sCount and tCount.
+    return sCount == tCount;
+}
+};
+
 
 int main()
 {
@@ -39,7 +61,8 @@ int main()
 	std::string str1 ="ulasdikme";
 	std::string str2 ="dikmaulas";
 
-	std::cout<<isAnagram(str1, str2);
+	std::cout<<isAnagram(str1, str2)<<std::endl;
+	std::cout<<Solution{}.isAnagram(str1, str2)<<std::endl;
 	return 0;
 }
 
