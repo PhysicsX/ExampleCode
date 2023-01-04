@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <chrono>
 
+class SolutionWithMap {
+public:
 bool isAnagram(std::string str1, std::string str2)
 {
 	if(str1.size() != str2.size())
@@ -31,8 +34,9 @@ bool isAnagram(std::string str1, std::string str2)
 	return 0 == map.size();
 
 }
+};
 
-class Solution {
+class SolutionWithArray {
 public:
 bool isAnagram(std::string s, std::string t) {
     // Return false if s and t have different sizes.
@@ -61,8 +65,40 @@ int main()
 	std::string str1 ="ulasdikme";
 	std::string str2 ="dikmaulas";
 
-	std::cout<<isAnagram(str1, str2)<<std::endl;
-	std::cout<<Solution{}.isAnagram(str1, str2)<<std::endl;
+	std::cout<<SolutionWithMap{}.isAnagram(str1, str2)<<std::endl;
+	std::cout<<SolutionWithArray{}.isAnagram(str1, str2)<<std::endl;
+	
+	
+	std::string testStr1 {"sedutperspiciatisundeomnisistenatuserrorsitvoluptatemaccusantiumdoloremquelaudantiumtotamremaperiameaqueipsaquaeabilloinventoreveritatisetquasiarchitectobeataevitaedictasuntexplicabonemoenimipsamvoluptatemquiavoluptassitaspernaturautoditautfugitsedquiaconsequunturmagnidoloreseosquirationevoluptatemsequinesciuntnequeporroquisquamestquidoloremipsumquiadolorsitametconsecteturadipiscivelitsedquianonnumquameiusmoditemporainciduntutlaboreetdoloremagnamaliquamquaeratvoluptatemutenimadminimaveniamquisnostrumexercitationemullamcorporissuscipitlaboriosamnisiutaliquidexeacommodiconsequaturquisautemveleumiurereprehenderitquiineavoluptatevelitessequamnihilmolestiaeconsequaturvelillumquidoloremeumfugiatquovoluptasnullapariatur"};
+
+	std::string testStr2 {"ptenduruianmcuauepisttuvmnllecdqsueanipiunuunlscdvuisoseaeeeiauotuvaoaqsiaalnnmpmasvoanprtilvrqcesmvseanuisactetrlelesilmmuodanatnremueuqlilavqattnoeromtsdanadummrauorideiuaounisuqcmieesleiapmxatvgvtrmsopqapeoihsielratpaqmiaadmurmuuatbraeoeereqtlntqtiuneuifctteaneuectinrmsnrrunlmtueiniuitbprtaqtutidropcotslcdsaiuenoeearpaoecmarssisutnaestmqbiamtmttteeotooaieivoiqevaumlnaueonilaeavndtinuxdliuomoemnulamilnmomretairivioumoqeeeaeaioaalseupiipqttoutrmdlmesiadqiemmporlirltiltqsoseiueuttoaueatoteusqumitqiotmatssqeiasuetommrrdutiseitqauumoiuodbaliqicsptiousraputtacsmpqouxarsiasvoginurdaariaputlrleoehorcequieinueqaurqareidtlivuoctsiucuitprbpaniesuuilaoutqcoulrieamemlaeeeeooisunmredgisnotgeephcutsoeitlactfiunnessiiiuedttoo"};
+	
+
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+	for(size_t i {0}; i<10000; i++)
+	{
+		SolutionWithMap{}.isAnagram(testStr1, testStr2);
+	}
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        
+	auto speedMap = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count(); 
+
+	std::cout<<"Time difference with map = "<<speedMap<<"[ms]"<<std::endl;
+	
+        begin = std::chrono::steady_clock::now();
+
+	for(size_t i {0}; i<10000; i++)
+	{
+		SolutionWithArray{}.isAnagram(testStr1, testStr2);
+	}
+        end = std::chrono::steady_clock::now();
+	
+	auto speedArray = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count(); 
+        std::cout<<"Time difference with array = "<<speedArray<<"[ms]"<<std::endl;
+	
+	std::cout<<"Array is faster than map "<<speedMap/speedArray<<" times"<<std::endl;
+	
 	return 0;
 }
 
