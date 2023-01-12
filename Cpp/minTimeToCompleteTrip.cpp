@@ -4,14 +4,16 @@
 // 2187. Minimum Time to Complete Trips
 
 class Solution {
-public:
 
+    using lng = long long int;	
+public:
+	
     long long minimumTime(std::vector<int>& arr ,  int totalTrips) {
-        long long int lowestTime = 1;
-        long long int highestTime = 1e14;
+        lng lowestTime = 1;
+        lng highestTime = 1e14;
         while(lowestTime<highestTime)
         {
-            long long int mid = lowestTime + (highestTime-lowestTime)/2;
+            lng mid = lowestTime + (highestTime-lowestTime)/2;
 
             if([&]()
             {
@@ -19,11 +21,11 @@ public:
             	// a = [1,2,3] , and at time 3 how many trips we can take? 
 	        // 3/1 + 3/2 + 3/3 => 3 + 1 + 1 = 5 Trips
 
-                long long int totalTrips = 0;
-                for(auto x : arr)
+                lng totalTrips = 0;
+                for(const auto& x : arr)
                 {
                     // convert it to long long int 
-                    long long int val = x;
+                    lng val = x;
                     
                     totalTrips += (mid / val);
                 }
