@@ -1,5 +1,10 @@
 #include "foo.hpp"
 
+int foo::fooInt(std::string& str)
+{
+	return str.size();
+}
+
 void foo::fooStr(std::string& str)
 {
 	str = "ExampleStr";

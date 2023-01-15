@@ -8,6 +8,7 @@ class dummy
 {
 	public:
 	dummy(fooIf& f):mfoo(f){}
+	int dummyInt(std::string& str);
 	void dummyStr(std::string& str);
 	void dummyThrow();
 	void dummyCallback(std::function<void(void)> callback);

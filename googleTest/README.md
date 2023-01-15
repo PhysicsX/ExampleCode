@@ -1,4 +1,8 @@
-## Gtest example with gmock
+## GoogleTest Introduction with CMake - GMOCK Usage
+
+You can find the video content for introduction for gtest/gmock. 
+
+[![Youtube video link](https://img.youtube.com/vi/zfgFphZ63UY/0.jpg)](//www.youtube.com/watch?v=zfgFphZ63UY?t=0s "ulas dikme")
 
 Install googletest and compile
 ```bash
@@ -41,7 +45,7 @@ int main(int argc, char **argv)
 Here, one main method and one test method have the name TestName.test1. To compile it, you can use simply:
 
 ```bash
-g++ example.cpp ../googletest/build/lib/libgtest.a googletest/build/lib/libgtest_main.a -lpthread -I googletest/googletest/include/
+g++ example.cpp ../build/lib/libgtest.a -lpthread -I googletest/googletest/include/
 ```
 
 After this, it will give you a.out when you run it.
@@ -60,9 +64,30 @@ jnano@jnano:~$ ./a.out
 [  PASSED  ] 1 test.
 ```
 
+If you want to run it without main(), then you should add libgtest_main.a
+
+```bash
+#include <iostream>
+#include <gtest/gtest.h>
+
+using namespace std;
+
+TEST(TestName, test1)
+{
+	ASSERT_EQ(1, 1);
+}
+
+```
+
+```bash
+g++ example.cpp ../build/lib/libgtest.a ../build/lib/libgtest_main.a -lpthread -I ../googletest/googletest/include/
+```
+will produce same output, In the video I used both libgtest_main and libgtest which is not exactly correct.
+Not: If you use pre-installed gtest then libgtest_main is lgtest_maind. ( you can try with godbolt compiler).
+
+
 If you want to test method of a class, you need to create an object inside these tests or need to create one global object.
-These are not cool solutions, so we need a design or approach that we can keep all objects which are under test in environment.
-We can do this with test fixtures, We will see it in the next.
+
 
 ```bash
 #include <iostream>
@@ -100,6 +125,62 @@ int main(int argc, char **argv)
 
 
 ```
+
+Therefore, these are not cool solutions, so we need a design or approach that we can keep all objects which are under test under single class.
+We can do this with test fixtures:
+
+
+```bash
+#include <iostream>
+#include <gtest/gtest.h>
+
+using namespace std;
+
+class example
+{
+	public:
+		int foo()
+		{
+			return 1;
+		}
+		
+};
+
+class exampleFixture : public testing::Test 
+{
+	public:
+	exampleFixture(){
+		testExPtr = new example();
+	}
+	~exampleFixture()
+	{
+		delete testExPtr;
+	}
+
+	void SetUp(){}
+	void TearDown(){}
+	
+	example* testExPtr;
+};
+
+TEST_F(exampleFixture, test1)
+{
+	ASSERT_EQ(1,testExPtr->foo());
+}
+
+TEST_F(exampleFixture, test2)
+{
+	ASSERT_NE(0,testExPtr->foo());
+}
+
+int main(int argc, char **argv)
+{
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
+```
+As you see, after TEST macro there is _F. And each test case starts with name of the class which encapsulates object under test.
+
 
 But we do not use the command line to compile our projects. Then it is a good idea to use CMake to compile all.
 Create a file named CMakeLists.txt
@@ -280,5 +361,8 @@ This will produce lcoverage directory go there, then you may be able to see inde
 
 ![alt text](linecoverage.png?raw=true)
 
-You can check the line coverage visually, file by file.
-Btw, I added all the stuff in one CMakeLists.txt file; I think it is not best practice, but it is a good idea to split it :)
+You can check the line coverage visually file by file.
+Btw, I added all the stuff in one CMakeLists.txt file, I think it is not best practice, it is a good idea to split it :)
+
+
+
