@@ -38,15 +38,26 @@ int main()
     int result = -1;
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-    while(left <= right)
+    // while(left <= right) // while(1) ?
+    // {
+    //     const auto mid {(left+right)/2};
+    //     if(numbers[mid]>target)
+    //         right = mid - 1;
+    //     else if(numbers[mid]<target)
+    //         left = mid + 1;
+    //     else { result = mid; break; }
+    // }
+     
+    while(left < right)
     {
+        // const auto mid {left + (right-left)/2};
         const auto mid {(left+right)/2};
-        if(numbers[mid]>target)
-            right = mid - 1;
+        if(numbers[mid]>=target)
+            right = mid;
         else if(numbers[mid]<target)
             left = mid + 1;
-        else { result = mid; break; }
     }
+    result = left;
 
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout<<"Time difference = "<<std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()<<"[us]"<<std::endl;
