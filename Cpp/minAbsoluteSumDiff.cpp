@@ -4,6 +4,11 @@
 
 using namespace std;
 
+// find the element to swap in the first array to make absolute sum diff minimum.
+// To point which element is swapped, check closest element to the element with same 
+// index in the second array, To do this, copy first array and sort it, use binary
+// search to find closest or same number to swap, keep gain for each iteration.
+
 class Solution {
 public:
     int minAbsoluteSumDiff(const vector<int>& nums1, const vector<int>& nums2) {
