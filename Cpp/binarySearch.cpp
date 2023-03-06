@@ -51,7 +51,8 @@ int main()
     while(left < right)
     {
         // const auto mid {left + (right-left)/2};
-        const auto mid {(left+right)/2};
+        // const auto mid {(left+right)/2};
+        const auto mid {(left & right)+ ((left ^ right )>>1)};
         if(numbers[mid]>=target)
             right = mid;
         else if(numbers[mid]<target)
