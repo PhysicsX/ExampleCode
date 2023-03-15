@@ -25,12 +25,12 @@ def draw(l, r, mid, target, img):
         if x/38 == l:
             thickness = -1
             color = (255, 0, 0)
-        # elif x/38 == r and x/38 == mid:
-        #     thickness = -1
-        #     color = (255, 255, 112)
-        # elif x/38 == r:
-        #     thickness = -1
-        #     color = (255, 255, 255)
+        elif x/38 == r and x/38 == mid:
+            thickness = -1
+            color = (255, 255, 112)
+        elif x/38 == r:
+            thickness = -1
+            color = (255, 255, 255)
         elif x/38 == mid:
             thickness = -1
             color = (0, 0, 112)
@@ -78,6 +78,22 @@ def binary_search(arr ,target, l, r):
 
     return (mid,l,r,result)
 
+def binary_search2(arr ,target, l, r):
+
+    mid = l + (r - l)//2
+    if arr[mid] > target:
+        r = mid - 1
+    elif arr[mid] < target:
+        l = mid +1
+    print(l)
+
+    if arr[mid] == target:
+        result = False
+    else:
+        result = True
+
+    return (mid,l,r,result)
+
 var = 0
 
 arr=[]
@@ -92,6 +108,7 @@ r = len(arr)-1
 target = 26
 
 mid = l + (r - l)//2
+
 img = np.zeros((400,1800,3), np.uint8)
 # draw first frame before the loop
 draw(l, r, mid, target, img)
@@ -105,11 +122,13 @@ while result:
         img = np.zeros((400, 1800, 3), dtype=np.uint8)
         time.sleep(2)
 
-        m, left, right, res = binary_search(arr ,target, l, r)
+        m, left, right, res = binary_search2(arr ,target, l, r)
+        
         mid = m
         l = left
         r = right
         result = res 
+        
         draw(l, r, mid, target, img)
 
         var += 1
