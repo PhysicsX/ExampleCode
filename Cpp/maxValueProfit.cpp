@@ -28,6 +28,35 @@ long maxValue(int n, std::vector<std::vector<int>>& rounds) {
     return max_investment;
 }
 
+class Solution
+{
+    public:
+        int maxValueWithDoubleLoop(int n, std::vector<std::vector<int>>& rounds)
+        {
+            std::vector<long long> balances(n+1);
+            std::vector<long long> startBalances(n+1);
+            std::vector<long long> endBalances(n+1);
+
+            for(auto round : rounds)
+            {
+                int start = round[0];
+                int end = round[1];
+                long long amount = round[2];
+                startBalances[start] += amount;
+                endBalances[end] += amount;
+            }
+
+            long long maxBalance = 0;
+            for(int i=1; i<=n; i++)
+            {
+                balances[i] = balances[i-1] + startBalances[i] -endBalances[i-1];
+                maxBalance = std::max(maxBalance, balances[i]); 
+            }
+
+            return maxBalance;
+        }
+};
+
 int main() {
 
     //std::vector<std::vector<int>> rounds = {{1, 5, 100}, {2, 4, 200}, {3, 3, 50}};
@@ -45,6 +74,7 @@ int main() {
 
     long maxInvestment = maxValue(5, rounds);
     std::cout << "Maximum investment: " << maxInvestment << std::endl;
+    std::cout << "Maximum investment: " << Solution{}.maxValueWithDoubleLoop(5, rounds) << std::endl;
 
     return 0;
 
