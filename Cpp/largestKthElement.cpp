@@ -1,88 +1,85 @@
-#include <iostream>
 #include <vector>
-#include <utility>
+#include <algorithm>
+#include <iostream>
 
-class Solution
-{
-        /*
-        The algorithm for finding the k-th largest element in an unsorted array is based 
-        on the QuickSelect algorithm, which is a modification of the QuickSort algorithm. 
-        The idea is to repeatedly partition the input array and narrow down the search space 
-        based on the k-th largest element's position relative to the partition index.
-    
-        Choose a pivot element. In this implementation, the pivot element is always the first 
-        element of the current search space (i.e., nums[left]).
-        
-        Perform a partition operation. Rearrange the elements in the search space such that 
-        elements greater than the pivot come before the pivot, and elements less than the pivot 
-        come after it. The partition function returns the final index of the pivot element.
-        
-        Compare the returned pivot index to k - 1:
-        
-        a. If the pivot index is equal to k - 1, we found the k-th largest element, and the algorithm terminates.
-        b. If the pivot index is less than k - 1, the k-th largest element lies in the right partition. Update the left pointer to pivotIndex + 1 and repeat the process.
-        c. If the pivot index is greater than k - 1, the k-th largest element lies in the left partition.
-        Update the right pointer to pivotIndex - 1 and repeat the process.
-        
-        This process continues until the pivot index is equal to k - 1, at which point the k-th largest 
-        element is found and returned.
-    */
+// finding kth largest element is based on quick select
+// algorithm which is based on quick sort algorithm
+// The idea is to repeadetly partition the input array and
+// narrow down the search space based on kth largest elements
+// position relative to the partition index.
 
-    public:
-        int findKthLargest(std::vector<int>& nums, int k)
+/*
+    1. choose pivot element. In this example, the pivot element is 
+    always the first element of the current search space(nums[left])
+    2. Perform a partition operation. Rearrange the elements in the search
+    space such that elements greater than the pivot come before the pivot,
+    and the elements less than the pivot come after it. The partition funciton
+    returns the final index of the pivot element.
+    3. Compare the returned  pivot index to k-1:
+        a. if the pivot index is equal to k-1, we found kth largest
+        element and the algortihm terminates.
+        b. If the pivot index is less than k-1, the kth largest eleemnt
+        lies in the right partition. Update the left pointer to idx+1 and
+        repeat the process.
+        c. If the pivot index is greater than k-1, the kth largest element
+        lies in the left partition. Update the left pointer to idx-1 and 
+        repeat the process.
+*/
+
+class Solution {
+public:
+    int findKthLargest(std::vector<int>& nums, int k)
+    {
+        int left = 0, right = nums.size() - 1, kth;
+        while(true)
         {
-            int left = 0, right = nums.size()-1, kth;
-            while(true)
+            int idx = partition(nums, left, right);
+            if(idx == k - 1)
             {
-                int idx = partition(nums, left, right);
-                if(idx == k-1)
-                {
-                    kth = nums[idx];
-                    break;
-                }
-                if(idx < k - 1)
-                {
-                    left = idx + 1;
-                }
-                else
-                {
-                    right = idx - 1;
-                }
+                kth = nums[idx];
+                break;
             }
-            return kth;
+            if(idx < k - 1)
+            {
+                left = idx + 1;
+            }
+            else
+            {
+                right = idx - 1;
+            }
         }
-    
-    private:
-        int partition(std::vector<int>& nums, int left, int right)
+        return kth;
+    }
+
+private:
+    int partition(std::vector<int>& nums, int left, int right)
+    {
+        int pivot = nums[left], l = left + 1, r = right;
+        while(l <= r)
         {
-            int pivot = nums[left], l = left + 1, r = right;
-            while(l <= r)
+            if(nums[l] < pivot && nums[r] > pivot)
             {
-                if(nums[l] < pivot && nums[r] > pivot)
-                {
-                    std::swap(nums[l++], nums[r--]);
-                }
-                if(nums[l] >= pivot)
-                {
-                    l++;
-                }
-                if(nums[r] <= pivot)
-                {
-                    r--;
-                }
+                std::swap(nums[l], nums[r]);
             }
-            std::swap(nums[left], nums[r]);
-            return r;
+
+            if(nums[l] >= pivot)
+                l++;
+
+            if(nums[r] <= pivot)
+                r--;
         }
+        std::swap(nums[left], nums[r]);
+        return r;
+    }
+
+
 };
 
-int main() {
+int main()
+{
+    std::vector<int> vec{3,4,5,1,2,0,3,12,3,4,5,6,8,7,4};
 
-    std::vector<int> vec {3,2,1,5,6,4};
-
-    std::cout<<Solution{}.findKthLargest(vec, 2);
-
-    std::cout << std::endl;
+    std::cout<<Solution{}.findKthLargest(vec, 3)<<std::endl;
 
     return 0;
 }
