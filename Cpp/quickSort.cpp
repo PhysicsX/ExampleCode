@@ -19,11 +19,30 @@ int partition(std::vector<int>& vec, int left, int right)
     return index - 1;
 }
 
+int partition2(std::vector<int>& vec, int left, int right)
+{
+    int pivot = vec[right];
+    int index = left - 1;
+
+    for(int i=left; i < right; ++i)
+    {
+        if(vec[i] < pivot)
+        {
+            index ++;
+            std::swap(vec[index], vec[i]);
+        }
+    }
+
+    std::swap(vec[right], vec[index + 1]);
+
+    return index + 1;
+}
+
 void quickSort(std::vector<int>& vec, int low, int high)
 {
     if(low < high)
     {
-        int pivotIndex = partition(vec, low, high);
+        int pivotIndex = partition2(vec, low, high);
         quickSort(vec, low, pivotIndex - 1);
         quickSort(vec, pivotIndex + 1, high);
     }
