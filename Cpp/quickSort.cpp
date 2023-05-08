@@ -20,7 +20,7 @@ int partition(std::vector<int>& vec, int left, int right)
 
     for(int i = left + 1; i <= right; i++)
     {
-        if(vec[i] < pivot)
+        if(vec[i] < pivot) // condition for descending or ascanding order
         {
             std::swap(vec[i], vec[index]);
             index ++;
@@ -35,7 +35,7 @@ int partition2(std::vector<int>& vec, int left, int right)
     int pivot = vec[right];
     int index = left - 1;
 
-    for(int i=left; i < right; ++i)
+    for(int i=left; i <= right; ++i)
     {
         if(vec[i] < pivot)
         {
