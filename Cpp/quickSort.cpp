@@ -35,7 +35,7 @@ int partition2(std::vector<int>& vec, int left, int right)
     int pivot = vec[right];
     int index = left - 1;
 
-    for(int i=left; i <= right; ++i)
+    for(int i=left; i < right; ++i) // pivot is excluded intentionally i < right not i <= right. (both conditions are corrects)
     {
         if(vec[i] < pivot)
         {
