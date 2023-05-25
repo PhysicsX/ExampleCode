@@ -64,7 +64,7 @@ public:
  	int curCap = 0;
 	int day {1};
 
-	for( auto w : ws)
+	for(const auto w : ws)
 	{
 		curCap += w;
 		if(curCap > totCap) day++, curCap = w;
@@ -74,6 +74,14 @@ public:
 
  int shipWithinDays(std::vector<int>& ws, int totalTrips)
  {
+    // minimum capacity will be the largest package (for optimize: minimum capacity
+    // can not less than r/totalTrips,)
+    // for instance: [3, 2, 2, 4, 1, 4]
+    // minimum capacity can be 4, but for 2 days 18/2 = 9. 
+    // so minimum capacity is 9. No need to check 4 and the numbers 
+    // between 4 and 9.
+    // for maximum capacity is the sum of all packages.
+    
  	auto r = std::accumulate(ws.begin(), ws.end(), 0);
 	auto l = std::max(r/totalTrips, *max_element(ws.begin(), ws.end()));
 	while(l<r)
