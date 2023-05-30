@@ -82,8 +82,11 @@ public:
     // between 4 and 9.
     // for maximum capacity is the sum of all packages.
     
+    // maximum capacity is the sum of all packages
  	auto r = std::accumulate(ws.begin(), ws.end(), 0);
-	auto l = std::max(r/totalTrips, *max_element(ws.begin(), ws.end()));
+	
+    // minumum capacity is the largest package
+    auto l = std::max(r/totalTrips, *max_element(ws.begin(), ws.end()));
 	while(l<r)
 	{
 		auto m = (l+r)/2;
