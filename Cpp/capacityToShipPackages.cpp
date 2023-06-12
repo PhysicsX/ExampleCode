@@ -61,7 +61,7 @@ public:
 
  int countDays(std::vector<int>& ws, int totCap)
  {
- 	int curCap = 0;
+ 	int curCap {0};
 	int day {1};
 
 	for(const auto w : ws)
@@ -94,6 +94,20 @@ public:
 		else l = m + 1;
 	}
 	return l;
+
+    // int res {0};
+
+    // while(l <= r)
+    // {
+    //     const auto mid = l + (r-l)/2;
+
+    //     if(countDays(ws, mid) <= totalTrips) res=mid, r=mid-1;
+    //     else l=mid+1;
+
+    // }
+
+    // return res;
+
  }
 };
 
