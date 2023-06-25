@@ -1,6 +1,23 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <limits.h>
+
+// 1578. Minimum Time to Make Rope Colorful
+
+// Find accumulation of array with subracting max element
+// compare current array and maxElement then add the min one into variable
+// compare current and maxElement then keep maxElement
+// repeat process
+
+// int maxElement = 0, result = 0;
+// for(int i=0; i<vec.size(); ++i)
+// {
+//  res += std::min(maxElement, vec[i]);
+//  maxElement = std::max(maxElement, vec[i]);
+// }
+// return res;
+
 
 class Solution
 {
@@ -19,6 +36,41 @@ class Solution
                 currMax = std::max(currMax, neededTime[i]);
             }
 
+            return res;;
+        }
+
+        // stupid solution
+        // try to use "Minimnum movement for 3 identical consecutive letters"
+        // find consecutive elements then process these elements one by one]
+        // this will give time exceed because while loop inside for loop
+        int minCostTimeExceed(std::string colors, std::vector<int>& neededTime) {
+            unsigned int res = 0;
+
+            auto size = colors.size();
+
+            for(int i = 0; i < size;)
+            {
+                int j = i + 1;
+                bool flag =false;
+                while(j < size && (colors[j] == colors[i]))
+                {
+                    j++;
+                    flag = true;
+                }
+
+                int k = i;
+                int l = j -1;
+                while(flag == true && k<l)
+                {
+                    auto it = std::min_element(std::begin(neededTime) + i, std::begin(neededTime) + j);
+                    int indexSmallestEl = std::distance(std::begin(neededTime), it);
+                    res = res + neededTime[indexSmallestEl];
+                    neededTime[indexSmallestEl] = INT_MAX;
+                    k++;
+                }
+
+                i = j;
+            }
             return res;
         }
 };
