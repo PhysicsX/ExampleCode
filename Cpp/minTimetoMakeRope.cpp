@@ -5,7 +5,9 @@
 
 // 1578. Minimum Time to Make Rope Colorful
 
-// Find accumulation of array with subracting max element
+// Base idea - What is the accumulation of elements minus maximum one
+// Greedy approach can be used. Choose maximum element at each step
+// to find overall maximum element in the array.
 // compare current array and maxElement then add the min one into variable
 // compare current and maxElement then keep maxElement
 // repeat process
