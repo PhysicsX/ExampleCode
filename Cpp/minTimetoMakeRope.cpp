@@ -24,6 +24,10 @@ class Solution
     public:
         int minCost(std::string& colors, std::vector<int>& neededTime)
         {
+            std::ios_base::sync_with_stdio(false);
+            std::cin.tie(NULL);
+            std::cout.tie(NULL);
+            
             int res = 0, currMax = 0;
             for(int i=0; i<colors.size(); ++i)
             {
