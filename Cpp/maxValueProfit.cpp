@@ -42,7 +42,7 @@ class Solution
 
                 auto investment = round[2];
 
-                for(int i=start; i<end; i++)
+                for(int i=start; i<=end; i++)
                 {
                     balances[i-1] += investment;
                 }
