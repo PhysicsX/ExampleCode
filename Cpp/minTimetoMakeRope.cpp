@@ -12,6 +12,10 @@
 // compare current and maxElement then keep maxElement
 // repeat process
 
+// Greedy algorithm is any algorithm that follows the problem
+// solving heuristic of making the locally optimal choice at each
+// stage
+
 // int maxElement = 0, result = 0;
 // for(int i=0; i<vec.size(); ++i)
 // {
