@@ -27,6 +27,21 @@ public:
         }
         return maxPro;
     }
+
+    int maxProfit_v2(std::vector<int>& prices)
+    {
+        int currentMax {0}, max{0};
+
+        for(int i=0; i<prices.size()-1; ++i)
+        {
+            int diff = prices[i+1] - prices[i];
+            if(diff == 0) continue;
+            currentMax = std::max(diff+currentMax, diff);
+            max = std::max(currentMax, max);
+        }
+
+        return max;
+    }
 };
 
 int main()
@@ -36,5 +51,9 @@ int main()
     std::cout<<std::endl; // 5
     std::vector<int> prices2 {1,2};
     std::cout<<Solution().maxProfit(prices2); // 1
+    std::cout<<std::endl;
+
+    std::cout<<Solution().maxProfit_v2(prices); // 5
+
 
 }
