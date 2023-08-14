@@ -37,7 +37,10 @@ class Solution
             int res = 0, currMax = 0;
             for(int i=0; i<colors.size(); ++i)
             {
-                if(i>0 && colors[i] != colors[i-1])
+                // set currMax to zero when colors are change
+		// because same colorful ballons is different array
+		// It is needed to find max and do not add to result
+		if(i>0 && colors[i] != colors[i-1])
                 {
                     currMax = 0;
                 }
