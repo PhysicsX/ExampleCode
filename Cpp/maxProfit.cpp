@@ -36,6 +36,10 @@ public:
         {
             int diff = prices[i+1] - prices[i];
             if(diff == 0) continue;
+            // if previous profit is less than the current one (negative profit = loss)
+            // then it should be discarded
+            // that is why maximum of (diff+currentMax) and diff
+            // is checked here
             currentMax = std::max(diff+currentMax, diff);
             max = std::max(currentMax, max);
         }
