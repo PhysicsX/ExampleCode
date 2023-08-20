@@ -40,6 +40,9 @@ public:
             // then it should be discarded
             // that is why maximum of (diff+currentMax) and diff
             // is checked here
+            // For instance 4 6 1 2 3 5 in this array after 6 the
+            // algorithm should be restarted because max diff is 5 -1 = 4.
+            // so max(-5+3 , 2-1) = 1, so calculation will start from 1.
             currentMax = std::max(diff+currentMax, diff);
             max = std::max(currentMax, max);
         }
