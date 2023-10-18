@@ -13,7 +13,7 @@ class testFixture : public testing::Test
     }
     ~testFixture()
     {
-        std::move(global_mock_data_ptr).reset(); // delete the global mock
+        global_mock_data_ptr.reset(); // delete the global mock
     }
 };
 
